@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { paginate, roundOff, rowColor } from "@/utils/index";
+import Link from "next/link";
 import { useDataContext } from "@/context/DataProvider";
 import PaperOrientation from "@/components/PaperOrientation";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
@@ -12,6 +13,7 @@ import { exam, roman_term } from "@/utils/reportList";
 import { RiArrowDownLine, RiBrush2Line } from "react-icons/ri";
 import { Title } from "./StudentUpdateComponent";
 import OLevelGading from "./Report/OLevelGrading";
+import { IoDocumentTextOutline } from "react-icons/io5";
 //
 export default function AResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, setShowPopUp, selected_student, setSelectedStudent }) {
   //
@@ -87,8 +89,8 @@ const sortData = (header)=>{
 
   let colors = colorTin(theme_bg, 10);
   const table_header = {'STUDENT ID':'learner_id',"LEARNER'S NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM', 'CBN':'combination',  'PAPERS':'num_papers', 'SUBJECTS':'num_subjects', 'POINTS':'total_points','S_PSN':'PSN_IN_STREAM', 'PSN':'PSN'}
-  
-// console.log(data_chunk);
+  let data = (transformed_data?.length ? transformed_data : data_chunk)
+console.log(data_chunk);
 
   return (
     <div className="p-1 bg-gray-50 min-h-screen">
@@ -151,15 +153,17 @@ const sortData = (header)=>{
             > 
               <MdOutlineLocalPrintshop style={{fontSize:18}}/> <span className="font-xs">page</span>
             </button>
-            <button
-              style={{
+            <button>
+              <Link 
+                className="flex gap-1 px-1 rounded transition text-xs md:text-sm" 
+                style={{
                   backgroundColor: colors.darker_10,
                   color: brightness(theme_bg) < 65 ? "white" : "black",
-                }}
-                onClick={() => setShowPopUp((prev) => !prev)}
-                className="text-white p-1 rounded-md transition text-xs md:text-sm"
-                >
-              <MdOutlineLocalPrintshop  style={{fontSize:18}}/>
+                  }}
+                  href='/A/web-o-report'>
+                  <IoDocumentTextOutline className="text-sm mt-1"/>
+                  <span className="font-xs">Reports</span>
+              </Link>
             </button>
           </div>
         )}
@@ -252,14 +256,14 @@ const sortData = (header)=>{
               <td className="w-full flex-1">No Student in {table_heading}</td>
             </tr>
           ) : (
-            data_chunk?.map((student, index) => (
+             data?.map((student, index) => (
               <tr
                 style={{
                     backgroundColor:selected_student.includes(student.id)? colors.lighter_70: index%2==1?'#f2f2f2':'white',
                     borderBottomColor:selected_student.includes(student.id)?'#fff':colors.lighter_70,
                     color:!painted?(student["num_subjects"]!==5?'#be0202':'black'):
-                    student["total_points"]<6?'#be0202':(student["total_points"]>=15?'#01ad01':'black'),
-                    borderBottom: `${((data_chunk.length-1)==index)?'3px':'1px'} solid ${((data_chunk.length-1)==index)?theme_bg:colors.lighter_70}`
+                    student["total_points"]<6?'#be0202':(student["total_points"]>=14?'#01ad01':'black'),
+                    borderBottom: `${((data.length-1)==index)?'3px':'1px'} solid ${((data.length-1)==index)?theme_bg:colors.lighter_70}`
                   }}
                 key={index}
                 className={`border-t font-mono text-sm md:text-[15px] hover:bg-gray-200 ${rowColor(student["AVG"]) } bg-[${theme_bg}]`}
@@ -288,7 +292,7 @@ const sortData = (header)=>{
                 <td className="flex-1">
                   {student["learner_id"]}
                 </td>
-                <td className="flex-2">
+                <td className="flex-2 px-1">
                   {student["STUDENT NAME"]}
                 </td>
                 

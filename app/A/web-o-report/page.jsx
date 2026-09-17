@@ -5,16 +5,17 @@ import { useDataContext } from "@/context/DataProvider";
 import WebReportLayout from "@/components/Report/WebReportLayout"
 import MainWebReportLayout from "@/components/Report/MainWebReportLayout"
 import { roundOff } from "@/utils";
-import { subject_full_name } from "@/utils/reportList";
+import { paper_code, subject_full_name } from "@/utils/reportList";
 import OReportSummary from "../../../components/OReportSummary";
 import OReportGeneralSummary from "../../../components/OReportGeneralSummary";
 import { useState } from "react";
 import { ChangeExanAllAoiEoc } from "@/components/StudentUpdateComponent";
 
 export default function AoneClass() {
-  const {report_category,transformed_data, data_chunk, set_time, reserve_exam} = useDataContext()  
+  const {report_category,transformed_data,selected_clas, data_chunk, set_time, reserve_exam} = useDataContext()  
   const [title, setTile] = useState('')
   const [open_title, setOpenTitle] = useState(false)
+  const clas = parseInt(selected_clas.split(' ')[1])
   // 
   let extra_data = {}
   let localStorageData = localStorage.getItem('importantData')
@@ -49,7 +50,62 @@ export default function AoneClass() {
                   extra_data={extra_data}
                   title={title}
                   > 
-                  {set_time.exam==='AOI'?
+                  {clas>4?
+
+                  <table className='w-full'>
+                        <tr className={`border border-black font-bold text-[15px]`}>
+                            <td style={{width:'25%'}} className='border border-black p-1'>SUBJECT</td>
+                            <td className='border border-black text-center p-1'>PAPER</td>
+                            {reserve_exam.split('&')?.map((exm, exm_i)=>(
+                              <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
+                            ))}
+                            <td className='border border-black text-center'>GRADE</td>
+                            <td className='border border-black text-center'>AVG GRADE</td>
+                            <td className='border border-black text-center'>GRADE</td>
+                            <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
+                        </tr>
+                        {Object.keys(_subject)?.map((subject, i2)=>{
+                          
+                          return _subject[subject]?.subjects?.map((subj, i3)=>{                            
+                            const name_array = subj.subject.split(' ');
+                          
+                            return(
+                              <tr key={i3} className='border border-black  text-[15px]'>
+                                  {
+                                    i3===0 &&
+                                  <>
+                                    <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{subject_full_name[subject]}</td>
+                                  </>
+
+                                  }
+                                  <td className={`border border-black p-1 text-center text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{paper_code[name_array[0]]}/{name_array[1]}</td>
+                                {/*  */}
+                                {
+                                  Object.keys(subj.EXAM_05)?.map((exm, exm_i)=>( 
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_05[exm.trim()], 2)||'-'} </td>
+                                  ))
+                                }
+                                {/* {
+                                  Object.keys(subj.EXAM_05)?.map((exm, exm_i)=>( 
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_GRADE[exm.trim()], 2)||'-'} </td>
+                                  ))
+                                } */}
+                                {/*  */}
+                                {i3===0 &&
+                                  <>
+                                    {/* <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black flex-1 text-center font-semibold'>{roundOff(_subject[subject]?.EXAM_AVERAGE_80,0)||'-'}</td> */}
+                                    <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black flex-1 text-center font-semibold'>{roundOff(_subject[subject]?.TOTAL,2)||'-'}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black text-center'>{_subject[subject]?.GRADE || '-'}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length}  className={`border border-black px-1 italic text-${_subject[subject]?.COMMENT?'left':'center'}`}>{_subject[subject]?.COMMENT || '-'}</td>
+                                  </>
+                                }
+                              </tr>
+                            )
+                          })
+                      })}
+                    </table>
+
+                  :set_time.exam==='AOI'?
                     <table className='w-full'>
                         <tr className='border border-black font-bold text-[15px]'>
                             <td style={{width:'25%'}} className='border border-black p-1'>SUBJECT</td>

@@ -45,8 +45,10 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
       { field: "learner", headerName: "LEARNER", cellStyle },
       { field: "stream", headerName: "STREAM", width: 100, cellStyle },
       ...paperColumns,
+      { field: "marks_string_05", headerName: "HOLDER", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
       { field: "grade_string", headerName: "SCORE", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
       { field: "grade_letter", headerName: "GRADE", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
+      { field: "comment", headerName: "COMMENT", cellStyle: { ...cellStyle, flex:3,fontFamily: 'Arial'} },
     ], [paperColumns]);
 
   const defaultColDef = useMemo(() => ({
@@ -66,7 +68,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
       return { color: "#009900" };
     }else if (params.data.grade_letter === 'A') {
       return { color: "#009900" };
-    }else if (['F','O'].includes(params.data.grade_letter)) {
+    }else if (['E','F','O'].includes(params.data.grade_letter)) {
       return { color: "#cc0000" };
     }
   };
@@ -111,6 +113,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
   };
 
   const height = enroled ? window.innerHeight : 50;
+
 
   // console.log(enroled)
   return (

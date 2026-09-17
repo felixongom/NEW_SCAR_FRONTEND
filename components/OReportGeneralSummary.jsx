@@ -13,6 +13,7 @@ export default function OReportGeneralSummary({title}) {
   const [counted_grades, setCountedGrade ] = useState([])
   const [all_class_sammury, setAllClassSummary] = useState([])
   const exam = set_time.exam.split(' & ').reverse()[0]
+  const clas = parseInt(selected_clas.split(' ')[1])
     // 
     useEffect(()=>{
         const _counted_grades = getSubjectGradeCount(transformed_data, uniqu_subject, exam)
@@ -22,9 +23,10 @@ export default function OReportGeneralSummary({title}) {
     }, [exam])  
     // 
 
-  let colors = colorTin(theme_bg, 10);
-  let uniqu_subject = getUniqueSubjects(transformed_data);
-  let table_heading = ['A', 'B', 'C', 'D', 'E', 'MISS',	'TOTAL']
+    let colors = colorTin(theme_bg, 10);
+    let uniqu_subject = getUniqueSubjects(transformed_data);
+    let table_heading = ['A', 'B', 'C', 'D', 'E', 'MISS',	'TOTAL']
+    let grades = clas<5?gradings?.o_level:gradings?.a_level    
 
   return (
     <div className="w-full pb-4 bg-white relative">
@@ -106,6 +108,7 @@ export default function OReportGeneralSummary({title}) {
                 src={main_school_info?.logo}/>
         </div> 
         {/* page */}
+        {clas<5 && 
         <div className="w-full relative min-h-screen break-inside-avoid print:w-screen print:h-screen print:min-h-screen print:break-after-page print:p-0">
             <div className="w-full sm:w-full print:w-full flex flex-col justify-evenly mx-auto">
                 <div className="w-full hidden print:block">
@@ -127,14 +130,15 @@ export default function OReportGeneralSummary({title}) {
                                 <th className="text-center">%AGE</th>
                                 
                             </tr>
-                            {table_heading.map((grade, i)=>{                                
+                            {table_heading.map((grade, i)=>{   
+                                                             
                                 
                                 return (
 
                                     !(grade=="TOTAL"  ||grade=='MISS') && 
                                     <tr key={i} className="font-mono" style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((table_heading.length-3)==i)?'2px':'1px'} solid ${((table_heading.length-3)==i)?theme_bg:colors.lighter_60}`}}>
                                         <td className="text-center w-[10%] py-2 pl-1">{i+1}</td>
-                                        <td className="text-left w-[50%]">{grade} <i >({gradings.olevel_comment[grade]})</i> </td>
+                                        <td className="text-left w-[50%]">{grade} <i >({grades?.comment[grade]})</i> </td>
                                         <td className="text-center">{class_sammury[grade]}</td>
                                         <td className="text-center">{roundOff(class_sammury[grade+'Per'],1)}</td>
                                         
@@ -152,6 +156,7 @@ export default function OReportGeneralSummary({title}) {
                 src={main_school_info?.logo}/>
 
         </div> 
+        }
         {/* footer section */}
         <div>
             <div className="hidden relative print:block bg-white w-full min-h-screen break-inside-avoid print:w-full px-5 print:h-screen print:min-h-screen print:p-0">

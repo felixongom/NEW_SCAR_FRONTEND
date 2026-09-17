@@ -30,7 +30,8 @@ export default function ALayout({children}){
       // 
       dispatch({type:'SCHOOL_INFO', payload:response.data?.info})       
       dispatch({type:'GRADE_RANGE', payload:{grade:response.data?.grade, subsidiary_grade:response.data?.subsidiary_grade}}) 
-      dispatch({type:'GRADINGS', payload:response.data?.o_level_grading}) 
+      dispatch({type:'GRADINGS', payload:response.data?.gradings}) 
+      
       
     }
     fetchSchool()

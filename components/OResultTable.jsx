@@ -99,14 +99,14 @@ const getSingleLearner =(single_student)=>{
   let colors = colorTin(theme_bg, 10);
   const clas = parseInt(selected_clas.split(' ')[1])
   const max_num_subject = clas<=2?12:9
-  // console.log(data_chunk);
+  console.log(data_chunk);
   // 
   let marks_key = set_time.exam=='AOI'?"AOI_TOTAL":set_time.exam=='EOC'?"EXAM_TOTAL":'TOTAL'
   let average = set_time.exam=='AOI'?"AOI_AVERAGE":set_time.exam=='EOC'?'EXAM_AVERAGE':'AVERAGE' //EXAM_AVERAGE_COMMENT
   let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":"AVERAGE_GRADE"//AVERAGE_GRADE
   let comment = set_time.exam=='AOI'?"AOI_AVERAGE_COMMENT":set_time.exam=='EOC'?"EXAM_AVERAGE_COMMENT":"AVERAGE_COMMENT"
   const table_header = {'STUDENT ID':'learner_id',"LEARNER NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM','SUBJ':'num_subjects', 'TOTAL':marks_key,  'AVG':average, 'GRD':grade_key,'COMMENT':comment,'ST_PSN':'PSN_IN_STREAM','PSN':'PSN'}
-  
+  let data = (transformed_data?.length ? transformed_data : data_chunk)
 
   return (
     <div className="p-1 bg-gray-50  print:bg-white min-h-screen">
@@ -241,8 +241,8 @@ const getSingleLearner =(single_student)=>{
           className={`bg-gray-100 font-mono`}
         >
           <tr className="capitalize font-mono text-sm md:text-[15px]" >
-            <td className=" text-left flex-1 font-semibold">#</td>
-            <td className="text-left print:hidden">
+            <td className=" text-left flex-1 px-1 font-semibold">#</td>
+            <td className="text-left px-2 print:hidden">
               <button
                 style={{
                   borderColor: selected_student.length ? theme_bg : "#999",
@@ -276,7 +276,7 @@ const getSingleLearner =(single_student)=>{
             <td className="p-1 font-semibold flex justify-center flex-1 text-xs md:text-sm print:hidden">
               <button className="px-2 rounded-full bg-stone-700 text-white" title="Export/Import Pay Code" onClick={()=>setShowPaycodePopup(prev=>!prev)}>CODE</button>
             </td>
-            <td className="p-1 font-semibold text-center flex-1 text-xs md:text-sm print:hidden">
+            <td className="p-1 px-1 font-semibold text-center flex-1 text-xs md:text-sm print:hidden">
               ACTION
             </td>
           </tr>
@@ -287,7 +287,7 @@ const getSingleLearner =(single_student)=>{
               <td className="w-full flex-1">No Student in {table_heading}</td>
             </tr>
           ) : (
-            [...data_chunk]?.map((student, index) => {
+            data?.map((student, index) => {
             
               
               return(
@@ -298,7 +298,7 @@ const getSingleLearner =(single_student)=>{
                     color:!painted?
                     ((student.num_subjects<8 || student.num_subjects>max_num_subject)?'#be0202':'black'):
                     student[grade_key]==='A'?'#01ad01':(student[grade_key]>='E'?'#be0202':'black'),
-                    borderBottom: `${((data_chunk.length-1)==index)?'2px':'1px'} solid ${((data_chunk.length-1)==index)?theme_bg:colors.lighter_70}`
+                    borderBottom: `${((data.length-1)==index)?'2px':'1px'} solid ${((data.length-1)==index)?theme_bg:colors.lighter_70}`
                   }}
                 key={index}
                 className={`border-t text-sm md:text-[15px] font-mono hover:bg-gray-200 ${rowColor(student["AVG"]) }`}
@@ -327,7 +327,7 @@ const getSingleLearner =(single_student)=>{
                 <td className="flex-1">
                   {student["learner_id"]}
                 </td>
-                <td className="flex py-2">
+                <td className="flex py-2 px-1">
                   {student["STUDENT NAME"]}
                 </td>
                 <td className="flex-1 capitalize text-center">

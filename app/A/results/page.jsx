@@ -149,20 +149,22 @@ export default function Results() {
            onClick={()=>handleSelect(group)}
            className="p-1 px-2 rounded cursor-pointer">{subject_full_name[group?.subject] ||group?.subject }</div>
           ))}
-        </div>
-         {results && (clas>4? 
-         <EnroledMarkSheet 
+          </div>
+          <div className="px-2">
+          {results && (clas>4? 
+          <EnroledMarkSheet 
           enroled={results}
           dispatch={dispatch}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
-         />: 
-         <OEnroledMarkSheet 
+          />: 
+          <OEnroledMarkSheet 
           enroled={results}
           dispatch={dispatch}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
-         />)} 
+          />)} 
+         </div>
       </div>
     </ALayout>
     </>

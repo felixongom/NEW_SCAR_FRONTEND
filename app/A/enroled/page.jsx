@@ -56,7 +56,6 @@ export default function AoneClass() {
             payload: _.orderBy(response?.data, ['STREAM', 'STUDENT NAME'], ['asc', 'asc']),
           })  
           // 
-          
           setLoading(false)
         
       } catch (err) {
@@ -124,7 +123,7 @@ export default function AoneClass() {
               isUploading={is_uploading_paycode}
             />
           </div>} 
-      <div className="flex-1 relative" style={{zIndex:1, height: 100, width: "100%" }}>
+      <div className={`flex-1 ${!show_paycode_popup?'relative':'fixed'}`} style={{zIndex:1, height: 100, width: "100%" }}>
          <NavBar heading="Enrolled"/>
          <SetTime/>
          { parseInt(clas) <5 &&

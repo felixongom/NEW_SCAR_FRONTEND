@@ -374,12 +374,15 @@ export function Title({text=''}){
 }
     // title
 export function ChangeExanAllAoiEoc(){
-    const {dispatch, set_time, reserve_exam} = useDataContext()
+    const {dispatch, set_time, reserve_exam, selected_clas} = useDataContext()
+    let clas = parseInt(selected_clas.split(' ')[1])
 
-    return(<div className="flex justify-center gap-2 bg-white">
+    return(clas<5?
+        <div className="flex justify-center gap-1 bg-white">
         {[reserve_exam, 'AOI', 'EOC'].map(exam=>{
             return(
-            <button onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-3 py-0 h-[30px] rounded-full border border-slate-900 shadow-sm text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
+            <button onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 py-1 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
         )})}
-    </div>)
+        </div>
+        :null)
 }
