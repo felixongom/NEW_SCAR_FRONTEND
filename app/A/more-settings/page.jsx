@@ -28,12 +28,12 @@ export default function MoreSettings() {
   const [fetchedGrade, setFetchGrade] = useState(null);
   const [selecting, setSelecting] = useState(false);
   //auth
-  const router = useRouter();
-  const pathname = usePathname();
-  useEffect(() => {
-    if (main_school_info) return router.push(pathname);
-    if (!main_school_info) return router.push("/");
-  }, []);
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // useEffect(() => {
+  //   if (main_school_info) return router.push(pathname);
+  //   if (!main_school_info) return router.push("/");
+  // }, []);
   //
   useEffect(() => {
     let important_data = localStorage.getItem("importantData");
@@ -122,7 +122,7 @@ export default function MoreSettings() {
   return (
     <ALayout>
       <div className="flex-1 pl-1">
-        <NavBar heading={"Settings"} />
+        <NavBar heading={"SETTINGS"} />
         <div className="flex gap-2 items-center py-1 mt-3 bg-white shadow-sm rounded p-1">
           <h1 className="font-bold text-sm mt-2 " style={{ color: theme_bg }}>
             Runk Students

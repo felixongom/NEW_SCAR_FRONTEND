@@ -1,27 +1,21 @@
 "use client";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { useDataContext } from "@/context/DataProvider";
+import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend} from "chart.js";
 
 import { Bar } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
 
 const WebGraph = ({ data = [] }) => {
+  const {selected_clas} = useDataContext();
+  const clas = parseInt(selected_clas.split(' ')[1])
+  let fbar = clas>4?[{
+        label: "F",
+        data: data.map(item => item.FPer ?? 0),
+        backgroundColor: "#ff0000",
+      }]:[]
+
   const chartData = {
     labels: data.map(item => item.subject),
 
@@ -51,11 +45,12 @@ const WebGraph = ({ data = [] }) => {
         data: data.map(item => item.EPer ?? 0),
         backgroundColor: "#ef4444",
       },
+      ...fbar,
       {
         label: "MISS",
         data: data.map(item => item.MISSPer ?? 0),
         backgroundColor: "#6b7280",
-      },
+      }
     ],
   };
 

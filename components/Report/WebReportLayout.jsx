@@ -6,7 +6,6 @@ import {HeadedPaper} from "@/components/Headers/HeadedPaper";
 import OLevelGading from "@/components/Report/OLevelGrading";
 import { exam, roman_term } from "@/utils/reportList";
 import { roundOff } from '@/utils';
-import {colorTin} from 'color-tin'
 import { Title } from '../StudentUpdateComponent';
 
 
@@ -38,14 +37,14 @@ export default function WebReportLayout({children,student, extra_data, title}) {
         {/* Outer Container: Stretches to fill the exact printed page height/width */}
         <div className="relative w-full min-h-screen break-inside-avoid print:w-full print:h-screen print:min-h-screen print:break-after-page print:p-0 border-[2px] border-gray-800">
           {/* Inner Container: Flex layout stretched to fill 100% of the parent container */}
-          <div className="flex p-1 h-[200vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-gray-500">
+          <div className="flex p-1 h-[200vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-slate-600">
           <img className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={'90%'} height={'90%'} src={main_school_info.logo} />
             
             <HeadedPaper learner_pic={student.image} pics={'/person.png'}/>
             <section className='w-full'>
-              <h4 className="relative flex items-center justify-center text-blue-800 font-bold text-[16px]">
+              <h4 className="relative flex items-center justify-centxe text-blue-800 font-bold text-[16px]">
                 <Title text={title?title:(set_time.exam === 'EOC'? 'END OF CYCLE': exam[set_time?.exam.split('&').reverse()[0].trim()] || 'MID TERM') + ' REPORT'}/>
-                <span className="absolute right-2 text-red-600 text-sm">
+                <span className="absolute right-2 text-red-600 text-xs">
                   {student.learner_id}
                 </span>
               </h4>
@@ -57,7 +56,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
                       <td className='border border-blue-300 px-1 text-center flex-2'>{set_time?.year}</td>
                       <td className='border border-blue-300 px-1 flex-1 w-[80px]'>TERM</td>
                       <td className='border border-blue-300 px-1 text-center flex-1 w-[150px]'>{roman_term[set_time?.term]}</td>
-                      <td className='border border-blue-300 px-5 flex-1 w-[80px]'>CBN</td>
+                      <td className='border border-blue-300 px-5 flex-1 w-[80px]'>COMBN</td>
                       <td className='border border-blue-300 px-3 text-center flex-1'>{student?.combination}</td>
                   </tr>
                   <tr className='border border-blue-300 text-[15px]'>
@@ -93,6 +92,17 @@ export default function WebReportLayout({children,student, extra_data, title}) {
                 </table>
               }
             </section>
+            {/* points */}
+            {clas>4 && 
+            <div className="flex justify-between w-full border-b-2 border-slate-600 text-[15px]">
+              <div>
+                Number of Points:{" "}
+                <span className="font-semibold">{student?.total_points}</span> out of{" "}
+                <span className="font-semibold">17</span>
+              </div>
+                    
+            </div>
+            }
 
             {/* Position in class and in stream */}
             <section className='flex flex-col gap-4 w-full'>
@@ -124,8 +134,13 @@ export default function WebReportLayout({children,student, extra_data, title}) {
             
             {/* Grading System */}
             <section className='w-full gap-1'>
+              <b>GRADING SCALE</b>
               <OLevelGading font_size="sm"/>
-              <p className='italic text-xs w-full text-center py-1'> A:activity of integration, AOI:Average of Activity of Integration, BOT:Beginning of Term, MOT:Mid of Term EOT:End of Term</p>
+              {clas<5? 
+              <p className='italic text-xs w-full text-center py-1'>A:activity of integration, AOI:Average of Activity of Integration, BOT:Beginning of Term, MOT:Mid of Term EOT:End of Term</p>
+              :
+              <p className='italic text-xs w-full text-center py-1'> BOT:Beginning of Term, MOT:Mid of Term, EOT:End of Term, AVG:Average, PGRD:Paper average grade, AV SCR:Subjec average score, GRADE:Subject overall grade</p>
+              }
             </section>
           </div>
         </div>      

@@ -72,10 +72,6 @@ export default function OResultTable({ table_heading, setShowDeletingPopup,setSh
     dispatch({ type: "TRANSFORMED_DATA", payload: sorted })
   }, [sortby.changed]);
 
-  // const handlePrintOneReport = (student) => {
-  //   setShowPopUp((prev) => !prev);
-  //   dispatch({ type: "DATA_CHUNK", payload: student });
-  // };
 //sorting record
 const sortData = (header)=>{    
     if(sortby[header]===undefined){
@@ -169,7 +165,7 @@ const getSingleLearner =(single_student)=>{
                   color: theme_bg,
                 }}
                 onClick={() => print()}
-              className="flex gap-1 px-1 rounded transition text-xs md:text-sm"
+              className={`flex gap-1 px-1 rounded transition text-xs md:text-sm`}
             > 
               <MdOutlineLocalPrintshop style={{fontSize:18}}/> <span className="font-xs">Page</span>
             </button>
@@ -186,16 +182,6 @@ const getSingleLearner =(single_student)=>{
                   <span className="font-xs">Reports</span>
               </Link>
             </button>
-            {/* <button
-              style={{
-                  backgroundColor: colors.darker_10,
-                  color: brightness(theme_bg) < 65 ? "white" : "black",
-                }}
-                onClick={() => setShowPopUp((prev) => !prev)}
-                className="text-white p-1 rounded-md transition text-xs md:text-sm"
-                >
-              <MdOutlineLocalPrintshop  style={{fontSize:18}}/>
-            </button> */}
           </div>
         )}
       </div>
@@ -212,7 +198,7 @@ const getSingleLearner =(single_student)=>{
           Class Size{" "}
           <span
             style={{ backgroundColor: colors.lighter_40 }}
-            className="mt-1 text-xs py-1 px-2 rounded text-white font-thin"
+            className="mt-1 text-xs py-1 px-2 font-xl rounded text-white font-thin"
           >
             {transformed_data?.length}{" "}
           </span>

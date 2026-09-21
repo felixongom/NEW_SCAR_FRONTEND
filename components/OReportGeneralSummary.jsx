@@ -16,17 +16,20 @@ export default function OReportGeneralSummary({title}) {
   const clas = parseInt(selected_clas.split(' ')[1])
     // 
     useEffect(()=>{
-        const _counted_grades = getSubjectGradeCount(transformed_data, uniqu_subject, exam)
-        const _all_class_sammury = countAverageGrades(transformed_data, exam);
+        const _counted_grades = getSubjectGradeCount(transformed_data, uniqu_subject, exam, clas)
         setCountedGrade(_counted_grades)
-        setAllClassSummary(_all_class_sammury)
+        if(clas<5) {
+            const _all_class_sammury = countAverageGrades(transformed_data, exam);
+            setAllClassSummary(_all_class_sammury)
+        }
     }, [exam])  
     // 
 
     let colors = colorTin(theme_bg, 10);
     let uniqu_subject = getUniqueSubjects(transformed_data);
     let table_heading = ['A', 'B', 'C', 'D', 'E', 'MISS',	'TOTAL']
-    let grades = clas<5?gradings?.o_level:gradings?.a_level    
+    let grades = clas<5?gradings?.o_level:gradings?.a_level 
+    table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'F', 'MISS', 'TOTAL']      
 
   return (
     <div className="w-full pb-4 bg-white relative">

@@ -19,7 +19,7 @@ function ColorThemeSetter() {
   }
 
   return (
-    <div className="w-40 h-[100%]" >
+    <div className={`${toggleTheme?'w-40':'w-15'} h-[100%] mx-1`}>
         <button style={{backgroundColor:`${theme_bg}`}} onClick={()=>setToggleTheme(prev=>!prev)} className="px-1 font-semibold text-white rounded cursor-pointer text-xs">App theme</button>
         {toggleTheme && (
             <div className="w-full flex flex-wrap gap-1">

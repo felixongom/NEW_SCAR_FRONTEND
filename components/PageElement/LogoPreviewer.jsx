@@ -5,23 +5,23 @@ const LogoPreviewer = () => {
   const {dispatch, token, school_info, logo, main_school_info} = useDataContext()
   
   return (
-    <div className="p-6 mx-auto flex-col border-b-2 flex justify-center align-middle">
-      <div style={{height:'120px',width:'120px', display: 'flex', flexWrap: 'wrap', marginTop: '3px', position:'relative'}}>
+    <div className="p-1 mx-auto flex-col border-b-1 flex justify-center items-center">
+      <div className="h-[120px] w-[120px] flex flex-wrap relative">
           <img
             src={logo || main_school_info?.logo}
             alt="logo"
             style={{
             width: '120px',
             height: '120px',
-            margin: '10px',
+            margin: '5px',
             border: '1px solid #ccc',
             borderRadius: '8px',
             objectFit: 'cover',
             padding:3,
-            position:"absolute"
             }}
           />
           <input 
+              className="cursor-pointer" 
               type="file" 
               style={{ width: '120px', height: '120px',objectFit: 'cover',position:"absolute", opacity:0}}
               accept="image/*" 

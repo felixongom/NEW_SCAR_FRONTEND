@@ -26,12 +26,12 @@ export default function AoneClass() {
     location:main_school_info?.['LOCATION']
   })
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
   
   //update the school
   useEffect(()=>{    
@@ -79,7 +79,7 @@ export default function AoneClass() {
   return (
     <ALayout>
       <div className="flex-1 pl-1">
-        <NavBar heading="Enrolled"/>
+        <NavBar heading="EDIT SCHOOL"/>
         <div className="pt-2 border-t border-gray-400 bg-white p-2 flex justify-center items-center flex-col">
           <form className="md:w-3/4 w-full shadow p-2">
             <h3 className="font-semibold text-center text-teal-700 mb-2"> EDIT - {main_school_info?.['SCHOOL NAME']} </h3>

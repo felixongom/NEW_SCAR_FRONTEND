@@ -29,13 +29,13 @@ export default function AoneClass() {
   // 
   let clas = selected_clas?selected_clas?.split(' ')[1]:'5'
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
+  // const router = useRouter()
+  // const pathname = usePathname(); 
 
-  useEffect(()=>{        
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // useEffect(()=>{        
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
 
   //
   useEffect(()=>{ 
@@ -124,7 +124,7 @@ export default function AoneClass() {
             />
           </div>} 
       <div className={`flex-1 ${!show_paycode_popup?'relative':'fixed'}`} style={{zIndex:1, height: 100, width: "100%" }}>
-         <NavBar heading="Enrolled"/>
+         <NavBar heading="ENROLED"/>
          <SetTime/>
          { parseInt(clas) <5 &&
           <OResultTable

@@ -1,6 +1,6 @@
 'use client'
 
-import {convertSchoolInfoToObject, countGradeOfAllSubjects, filterSubjects, getAvailableSubjects, getMySubjects, reportOneSubject, transformStudentData } from '@/utils/reshpe_data'
+import {countGradeOfAllSubjects, filterSubjects, getMySubjects, transformStudentData } from '@/utils/reshpe_data'
 import { useState } from 'react'
 import { useDataContext } from '@/context/DataProvider'
 import { useRouter } from 'next/navigation'
@@ -29,7 +29,6 @@ export default function ExcelUploader({level, year_of_entry=0}) {
     setProgress(0)
     setError(null)
     
-    // let allow_all = selected_clas==='DASHBOARD'?true:false
     const formData = new FormData()    
     formData.append('file', selectedFile)
     formData.append('year_of_entry', year_of_entry);
@@ -111,13 +110,12 @@ export default function ExcelUploader({level, year_of_entry=0}) {
       }
       setUploading(false)
     } catch (error) {
-      console.error(error)
       setError('Failed to parse server response.')
     }
   }
 
   const classes = level == 'O'?
-  ['SENIOR 1', 'SENIOR 2', 'SENIOR 3', 'SENIOR 4','DASHBOARD', 'UNEB UCE']:
+  ['DASHBOARD']:
   ['SENIOR 1', 'SENIOR 2', 'SENIOR 3', 'SENIOR 4','SENIOR 5', 'SENIOR 6']
   const clickClass = (clas)=>{
     if(clas==='DASHBOARD'){
@@ -135,10 +133,10 @@ export default function ExcelUploader({level, year_of_entry=0}) {
   }
    // 
   return (
-    <div className="p-4 max-w-md mx-auto space-y-4">
-      <h1 className="text-xl font-bold mb-4 text-teal-800 text-center" style={{color:theme_bg}}>{level=='O'?'SELECT A CLASS AND UPLOAD MARKS':'REGISTER NEW STUDENT'}</h1>
+    <div className="p-4 max-w-md mx-auto space-y-4 w-full">
+      <h1 className="text-xl font-bold mb-4 text-center" style={{color:theme_bg}}>{level=='O'?'WELCOME OT SSCAR':'REGISTER NEW STUDENT'}</h1>
       
-      <div style={{ display: 'flex', width: '100%', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <div className='flex justify-between w-full gap-1 flex-wrap'>
         {classes.map(clas => (
           <button
             style={{
@@ -149,16 +147,16 @@ export default function ExcelUploader({level, year_of_entry=0}) {
               
             key={clas}
             onClick={() => clickClass(clas)}
-            className={`flex ${clas==='DASHBOARD'?'w-full': 'w-[48%]'} p-3 uppercase cursor-pointer mb-1 rounded text-center`}
+            className={`${clas==='DASHBOARD'?'w-full': 'w-[48%]'} font-semibold p-3 uppercase cursor-pointer mb-1 rounded text-center`}
           >
             {clas}
           </button>
         ))}
       </div>
 
-      <div className='bg-gray-300 mt-10 pt-1' />
+      <div className='bg-gray-300 mt-10 pt-0.5' />
 
-      {selected_clas && (
+      {level!='O' && selected_clas && (
         <input
           type="file"
           accept=".xlsx,.xlsm, .xls"

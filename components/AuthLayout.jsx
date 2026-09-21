@@ -2,7 +2,7 @@
 import { useDataContext } from "@/context/DataProvider";
 import { base_api_path } from "@/utils/reportList";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ChangePassword from "./ChangePassword";
 import { getToken } from "@/utils";
 

@@ -41,19 +41,19 @@ export default function AoneClass() {
   let years_list = numbersArray(10, year_of_entry-5).reverse() //[2025,2026,2027,2028,2029,2030 ]
   
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  // 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // // 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
 
   // fetch list of subject
   useEffect(()=>{
     async function fetchSubjects() {
       try {
-        const response = await axios.get(`${base_api_path}subjecs`)
+        const response = await axios.get(`${base_api_path}subjects`)
         setSubjects(response.data)
       } catch (error) {
         console.log(error);
@@ -178,7 +178,7 @@ export default function AoneClass() {
     </div>} 
     <ALayout>
       <div className={`flex-1 pl-1 ${(show_student_popup || coppy_enrolement_popup) && 'fixed'}`}>
-        <NavBar heading="Enrolled"/>
+        <NavBar heading="ENROLE STUDENTS"/>
         <EnrolementSetTime/>
         <hr />
         <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>

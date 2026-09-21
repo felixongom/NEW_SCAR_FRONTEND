@@ -6,11 +6,18 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import OExportToExcel from '@/hooks/useOExportMarks';
 import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
+import { HeadedPaper } from "../Headers/HeadedPaper";
+import { Title } from "../StudentUpdateComponent";
+import { exam, roman_term, subject_full_name } from "@/utils/reportList";
+import { MdOutlineLocalPrintshop } from "react-icons/md";
+import {colorTin} from 'color-tin'
 
-const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
+const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject_name }) => {
   const gridApiRef = useRef(null);              // stores the grid API
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
-  const { theme_bg, selected_clas } = useDataContext();
+  const { theme_bg,set_time, selected_clas } = useDataContext();
+  const[sheet, setSheet] = useState(true)
+  const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const cellStyle = { display: 'flex', alignItems: 'center' };
 
   const paperColumns = useMemo(() => {
@@ -131,32 +138,67 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
   };
 
   const height = enroled ? window.innerHeight : 50;
-  // let colors = colorTin(theme_bg, 10)
+  let colors = colorTin(theme_bg, 10);
+  console.log(enroled);
+  
   
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <div className="py-3 px-1 border-t border-gray-300" style={{ marginBottom: "10px"}}>
-        <OExportToExcel 
-          data={enroled} 
-          theme_bg={theme_bg} 
-          />
-        <button
-          className="bg-red-700 hover:bg-red-500 rounded-lg transition text-gray-100 px-2 py-1 text-sm"
-          onClick={onDeleteRow}
-          style={{ marginLeft: "10px" }}
-        >
-          Delete Selected
-        </button>
-        <button
-          className="bg-orange-700 hover:bg-orange-500 rounded-lg transition text-gray-100 px-2 py-1"
-          onClick={onUpdateRows}
-          style={{ marginLeft: "10px" }}
-        >
-          Save
-        </button>
-      </div>
+      <div className="py-4 relative flex px-1 mb-[10px] border-b border-gray-300 print:hidden">
+        {sheet && (
+          <>
+            <OExportToExcel 
+              data={enroled} 
+              theme_bg={theme_bg} 
+              />
+            <button
+              className="bg-red-700 ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
+              onClick={onDeleteRow}
+            >
+              Delete Selected
+            </button>
+            <button
+              className="bg-orange-700 hover:bg-orange-500 rounded transition text-gray-100 px-2 py-1 text-xs"
+              onClick={onUpdateRows}
+              style={{ marginLeft: "10px" }}
+            >
+              Save
+            </button>
+          </>
 
+        )}
+        <button className="flex items-center gap-2 right-1 bottom-4 absolute">
+          <button
+            style={{
+              borderColor: theme_bg,
+              borderWidth:1,
+              color: theme_bg,
+            }}
+            onClick={() => setToggleShowHideText(prev=>!prev)}
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
+            <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'}</span>
+          </button>
+          <button
+            style={{
+              borderColor: theme_bg,
+              borderWidth:1,
+              color: theme_bg,
+            }}
+            onClick={() => print()}
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
+            <MdOutlineLocalPrintshop style={{fontSize:18}}/> <span className="font-xs">PRINT</span>
+          </button>
+          <button
+            className={`${sheet===true?'bg-green-700':'bg-slate-900'} ${sheet===true?'hover:bg-green-500':'hover:bg-slate-800'} rounded transition text-gray-100 px-2 py-1 text-xs`}
+            onClick={()=>setSheet(prev=>!prev)}
+            >
+              {!sheet?'DATA ENTRY':'MARKSHEET'}
+          </button>
+        </button>
+
+      </div>
+      {sheet?
       <div className="ag-theme-alpine" style={{ height, width: "100%" }}>
         <AgGridReact
           onGridReady={onGridReady}
@@ -173,6 +215,77 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent }) => {
           rowHeight={38}
         />
       </div>
+      
+      :
+      <div>
+        <div className="w-full hidden print:block print:-mt-2">
+          <HeadedPaper subject_name={subject_name}/>
+          <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${subject_full_name[subject_name]||subject_name}`}/>
+        </div>
+        <div
+        className="border-b flex gap-4 p-2 py-3 text-white"
+        style={{ backgroundColor: theme_bg }}>
+          <h2 className="text-sm font-bold">
+            Class Size{" "}
+            <span
+              style={{ backgroundColor: colors.lighter_40 }}
+              className="mt-1 text-xs py-1 px-2 rounded text-white font-thin"
+            >
+              {enroled?.length}{" "}
+            </span>
+          </h2>
+
+        </div>
+        <table className="w-full">
+          <thead>
+            <tr className={`font-mono text-[15px] font-bold w-full`}
+              style={{
+                color:theme_bg,
+                borderBottom:`2px solid ${theme_bg}`
+              }}
+            >
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%]">LEARNER'S NAME</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center">STREAM</th>
+              {(toggle_show_hide_text?Object.keys(enroled[0]?.aoi_marks || {}):['AOI 1', 'AOI 2', 'AOI 3']).map((_, i)=>(
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}</th> 
+              ))}
+              {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC {i+1}</th> 
+              ))}
+              {toggle_show_hide_text && 
+              <>
+                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">TOTAL</th>
+                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">COMMENT</th>
+              </>
+              }
+            </tr>
+          </thead>
+          {enroled?.map((learner, i)=>{
+            return(
+              <tr style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
+                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
+                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
+                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
+                {(toggle_show_hide_text?Object.values(learner?.aoi_marks || {}):['-','-','-']).map((aoi, i)=>(
+                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && aoi}</td> 
+                ))}
+                {(toggle_show_hide_text?Object.values(learner?.marks || {}):['-','-','-']).map((marks, i)=>(
+                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && marks}</td> 
+                ))}
+                {toggle_show_hide_text && 
+                <>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.marks_plas_aoi}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.marks_comment}</td>
+                </>
+                
+                }
+              </tr>
+            )
+          })}
+        </table>
+      </div>
+      }
     </div>
   );
 };

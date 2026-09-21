@@ -129,11 +129,11 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
         <>
         <div className="absolute w-full h-full bg-black opacity-70 z-10"/>
         <div className="absolute pt-1 shadow-lg w-full h-full z-10 overflow-hidden">
-            <div className="relative shadow-lg bg-white rounded p-3 overflow-hidden lg:w-3/4 w-full h-[98vh] m-auto flex flex-col gap-2">
+            <div className="relative shadow-lg bg-white rounded p-3 overflow-scroll lg:w-3/4 w-[98vw]  h-[98vh] m-auto flex flex-col gap-2">
                 <button className="bg-gray-300 hover:bg-red-400 font-semibold px-1 py-1 w-8 h-8 rounded absolute top-1 right-1"  onClick={()=>setShowEnrolemetPopup(prev=>!prev)}>x</button>
                 <Title text={'COPPY ENROLEMENT FROM PREVIOUS '}/>
                 <h4 className="text-teal-700 font-semibold text-center">SELECT A SUBJECT/PAPER</h4>
-                <div className="flex flex-wrap gap-1 border-b border-gray-300 w-full pb-1">
+                <div className="flex flex-wrap gap-1 border-b border-gray-300 toggleTheme w-full pb-1">
                     {subjects && Object.keys(subjects)?.map((subject, i)=>{
                         const paper_id = parseInt(subjects[subject])
                         return(
@@ -154,7 +154,7 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
                     <h4 className="text-center m-auto text-red-800 py-1 px-5 rounded-full bg-gray-100 w-fit">Pleas wait, this can take sometimes...</h4>
                     </div>}
                 {/*  */}
-                <div className="flex justify-center gap-1 md:gap-3 lg:gap-5 w-full">
+                <div className="flex justify-center gap-1 md:gap-3 lg:gap-5 w-full flex-wrap">
                     <DetailsCard title={'FROM'} current_year={from.year} detail={from} setDetail={setFrom}/>
                     <DetailsCard title={'TO'} current_year={to.year} detail={to} setDetail={setTo}/>
                 </div>

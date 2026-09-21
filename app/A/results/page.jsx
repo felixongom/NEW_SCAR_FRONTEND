@@ -28,12 +28,12 @@ export default function Results() {
   // 
   let clas = selected_clas.split(' ')[1]
    //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
   //
 
   useEffect(()=>{
@@ -58,7 +58,7 @@ export default function Results() {
   // fetch list of subject
   useEffect(()=>{
     async function fetchSubjects() {
-      const response = await axios.get(`${base_api_path}subjecs`)
+      const response = await axios.get(`${base_api_path}subjects`)
       setSubjects(response.data,)
     }
     fetchSubjects()
@@ -80,7 +80,7 @@ export default function Results() {
     }else if(cases==='marks'){//deletes everything about the student
       try {
         setDeleting(true)
-        await axios.post(`${base_api_path}delete-marks`,payload);
+        await axios.post(`${base_api_path}delete-marks/${clas}`,payload);
         
       } catch (err) {
         console.error(err);
@@ -101,7 +101,7 @@ export default function Results() {
     }else if(cases==='update'){//updade marks      
       try {
         setDeleting(true)
-        await axios.post(`${base_api_path}update-marks`,{results:updateStudent});
+        await axios.post(`${base_api_path}update-marks/${clas}`,{results:updateStudent});
         setUpdateStudent(null)
         } catch (err) {
           console.error(err);
@@ -132,11 +132,11 @@ export default function Results() {
   
     <ALayout>
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
-         <NavBar heading={'Results'}/>
+         <NavBar heading={'RESULTS'}/>
          <SetTime/>
          {loading && <Loading/>}
-         <h2 className="mt-3 font-bold ">Select A subject</h2>
-         <div className="flex flex-wrap bg-white shadow-sm gap-3 my-4 p-3">
+         <h2 className="mt-3 font-bold print:hidden">Select A subject</h2>
+         <div className="flex flex-wrap bg-white shadow-sm gap-3 my-4 p-3 print:hidden">
 
           {a_level_subject && a_level_subject?.subject_group?.map((group, i)=>(
            <div
@@ -161,6 +161,7 @@ export default function Results() {
           <OEnroledMarkSheet 
           enroled={results}
           dispatch={dispatch}
+          subject_name ={selectedSubj?.subject}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
           />)} 

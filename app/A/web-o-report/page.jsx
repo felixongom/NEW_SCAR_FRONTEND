@@ -26,6 +26,8 @@ export default function AoneClass() {
     extra_data.put_position = local_data?.put_position
   }
 
+  let exam_list = reserve_exam.split('&');
+  
   // In your App.js
   
   if(report_category=='report cards'){
@@ -37,7 +39,7 @@ export default function AoneClass() {
             <ChangeExanAllAoiEoc/>
           </div>
           {data_chunk.length<=0?
-            <div className="text-gray-400 text-3xl text-center">No card is available</div>
+            <div className="text-slate-500 text-3xl text-center">No card is available</div>
             :data_chunk?.map((student, i)=>{
               let _subject = student?.subjects
               
@@ -54,15 +56,16 @@ export default function AoneClass() {
 
                   <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px]`}>
-                            <td style={{width:'25%'}} className='border border-black p-1'>SUBJECT</td>
+                            <td style={{width:'22%'}} className='border border-black p-1'>SUBJECT</td>
                             <td className='border border-black text-center p-1'>PAPER</td>
-                            {reserve_exam.split('&')?.map((exm, exm_i)=>(
+                            {exam_list?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
+                            {exam_list.length>1 && <td className='border border-black text-center'>AVG</td> }
+                            <td className='border border-black text-center'>PGRD</td>
+                            <td className='border border-black text-center'>AV SCR</td>
                             <td className='border border-black text-center'>GRADE</td>
-                            <td className='border border-black text-center'>AVG GRADE</td>
-                            <td className='border border-black text-center'>GRADE</td>
-                            <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
+                            <td style={{width:'18%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
                         {Object.keys(_subject)?.map((subject, i2)=>{
                           
@@ -82,14 +85,11 @@ export default function AoneClass() {
                                 {/*  */}
                                 {
                                   Object.keys(subj.EXAM_05)?.map((exm, exm_i)=>( 
-                                    <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_05[exm.trim()], 2)||'-'} </td>
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] px-1 py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_05[exm.trim()], 2)||'-'} </td>
                                   ))
                                 }
-                                {/* {
-                                  Object.keys(subj.EXAM_05)?.map((exm, exm_i)=>( 
-                                    <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_GRADE[exm.trim()], 2)||'-'} </td>
-                                  ))
-                                } */}
+                                {exam_list.length>1 && <td className={`border border-black text-center text-[15px] px-1 py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_AVERAGE_05, 2)||'-'} </td>}
+                                <td className={`border border-black text-center text-[15px] px-1 py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_PAPER_AVERAGE_GRADE, 2)||'-'} </td>
                                 {/*  */}
                                 {i3===0 &&
                                   <>

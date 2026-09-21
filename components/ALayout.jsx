@@ -19,9 +19,11 @@ export default function ALayout({children}){
   
   useEffect(() => {
     async function fetchSchool(){
-      const subject_response = await axios.get(`${base_api_path}subjecs`,{
+      const subject_response = await axios.get(`${base_api_path}subjects`,{
         headers:{'Authorization':`Bearer ${getToken('access_token')}`}
-      })      
+      }) 
+      // console.log(subject_response.data);
+           
       dispatch({type:'A_LEVEL_SUBJECT', payload:subject_response.data}) 
       //       
       const response = await axios.get(`${base_api_path}school-info`,{
@@ -31,7 +33,6 @@ export default function ALayout({children}){
       dispatch({type:'SCHOOL_INFO', payload:response.data?.info})       
       dispatch({type:'GRADE_RANGE', payload:{grade:response.data?.grade, subsidiary_grade:response.data?.subsidiary_grade}}) 
       dispatch({type:'GRADINGS', payload:response.data?.gradings}) 
-      
       
     }
     fetchSchool()

@@ -15,11 +15,8 @@ export default function ExcelToJsonBySheetName() {
   const router = useRouter()
    const paths = [
     '/data-files/ENROLEMENT.xlsm',
-    '/data-files/S1__SDM DATA FILE.xlsm',
-    '/data-files/S2__SDM DATA FILE.xlsm',
-    '/data-files/S3__SDM DATA FILE.xlsm',
-    '/data-files/S4__SDM DATA FILE.xlsm',
-    '/data-files/ANALYZE_UCE.xlsx'];
+    '/data-files/ANALYZE_UCE.xlsx']
+    // '/data-files/S1__SDM DATA FILE.xlsm',
   
   useEffect(()=>{
     let importantData = localStorage.getItem('importantData')
@@ -42,7 +39,6 @@ export default function ExcelToJsonBySheetName() {
         <ExcelUploader  level="O"/>
         <div className="pt-10">
           <Download base_api_path={base_api_path.replace('/api', '')} filePaths={paths} title="Student data files" />
-
         </div>
       </div>
     </AuthLayout>

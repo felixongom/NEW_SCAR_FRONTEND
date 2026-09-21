@@ -20,15 +20,13 @@ export default function AoneClass() {
   const [show_delete_popup, setShowDeletingPopup] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
-
-
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
   //
   
   //  fetch images 
@@ -81,7 +79,7 @@ export default function AoneClass() {
     }
     <ALayout>
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
-        <NavBar heading={'Results'}/>
+        <NavBar heading={'PHOTO ALBUM'}/>
         <PreviewStudPics
           setSelectedStudent={setSelectedStudent}
           selected_student={selected_student}

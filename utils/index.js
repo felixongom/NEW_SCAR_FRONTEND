@@ -231,9 +231,15 @@ const getUniqueSubjects = (students) => {
 };
 
 //count grade
-const getSubjectGradeCount = (students, subjects, exam) =>{
+const getSubjectGradeCount = (students, subjects, exam, clas) =>{
   let result = []
   const grades = {A: 0, B: 0, C: 0, D: 0, E: 0 }
+  let grade_weight = {A:7, B:6, C:5, D:4, E:3, F:2, MISS:1}
+  
+  if(clas>4) {
+    grades.F = 0
+  }
+
 
   subjects.forEach((subject) => {
     const gradeCount = {...grades, MISS: 0}
@@ -261,41 +267,35 @@ const getSubjectGradeCount = (students, subjects, exam) =>{
     // TOTAL = sum of all grades including MISS
     gradeCount.TOTAL = Object.keys(grades).reduce((acc, current)=>acc + gradeCount[current],0) + gradeCount.MISS;
 
-      // gradeCount.MISS;
-
     // percentage
 
     gradeCount.subject = subject
 
     result = [...result, gradeCount];
     result = result.map(one_subject=>{
-      let percentage = {
-        APer:one_subject.A/one_subject.TOTAL*100,
-        BPer:one_subject.B/one_subject.TOTAL*100,
-        CPer:one_subject.C/one_subject.TOTAL*100,
-        DPer:one_subject.D/one_subject.TOTAL*100,
-        EPer:one_subject.E/one_subject.TOTAL*100,
-        MISSPer:one_subject.MISS/one_subject.TOTAL*100,
-      }
+      let percentage = {}
+      Object.keys({...grades, MISS:0}).map(grade=>{
+        percentage[grade+'Per'] = one_subject[grade] / one_subject.TOTAL*100
+      })
       // 
-      let weight = {
-        AWeight:percentage.APer*6,
-        BWeight:percentage.BPer*5,
-        CWeight:percentage.CPer*4,
-        Deight:percentage.DPer*3,
-        EWeight:percentage.EPer*2,
-        MISSWeight:percentage.MISSPer*1,
-        
-      }
-      let TOTAL_WEIGHT = Object.values(weight||{}).reduce((acc, current)=>acc+current,0)
+      let weight = {}
+      Object.keys({...grades, MISS:0}).map(grade=>{
+        weight[grade+'Weight'] = percentage[grade+'Per'] / grade_weight[grade]
+      })
+      let _TOTAL_WEIGHT = Object.values(weight||{}).reduce((acc, current)=>acc+current,0)
+      
+      const EXPECTED_WAIGHT = 100 *Object.values(weight||{}).reduce((acc, current)=>acc+current,0) +1
+      const TOTAL_WEIGHT = _TOTAL_WEIGHT/EXPECTED_WAIGHT*100
+      // console.log(_TOTAL_WEIGHT, EXPECTED_WAIGHT);
+
       // 
       return {...one_subject, ...percentage, ...weight, TOTAL_WEIGHT}
     })
   });
-  return  _.orderBy(result, ['TOTAL_WEIGHT', 'AWeight','BWeight', 'CWeight'], ['desc', 'desc','desc','desc']);
+  return  _.orderBy(result, ['TOTAL_WEIGHT', 'AWeight','BWeight', 'CWeight' ], ['asc', 'asc','asc','asc']);
 }
 
-// Count the general grade 
+// Count the general grade for a class
 const countAverageGrades = (students, exam) => {
   const grades = ['A', 'B', 'C', 'D', 'E', 'MISS'];
   

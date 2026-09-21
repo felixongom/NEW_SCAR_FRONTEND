@@ -81,10 +81,10 @@ export default function AoneClass() {
   return (
     <ALayout>
       <div className="flex-1 pl-1">
-        <NavBar heading="Enrolled"/>
-        <div className="flex justify-center gap-2 bg-white border-t border-t-gray-300 py-5">
+        <NavBar heading="REGISTER LEARNERS"/>
+        <div className="flex justify-center gap-2 bg-white border-t border-t-slate-300 py-5">
           {['From Form', 'Upload file'].map(item=>(
-            <button onClick={()=>setActiveForm(item)} className={`py-1 px-3 rounded-full border border-slate-900 shadow-sm text-sm transition-all duration-100 ${item===active_form?'bg-gray-700 font-semibold text-white':'white'}`}>{item}</button>
+            <button onClick={()=>setActiveForm(item)} className={`py-1 px-3 rounded-full border border-slate-900 shadow-sm text-sm transition-all duration-100 ${item===active_form?'bg-slate-700 font-semibold text-white':'white'}`}>{item}</button>
           ))}
         </div>
         <div className="w-full flex flex-col">
@@ -98,7 +98,7 @@ export default function AoneClass() {
                       </span>
                   </div>
                   {openYear && 
-                  <div className='flex flex-col absolute z-10 border-b border-gray-100'>
+                  <div className='flex flex-col absolute z-10 border-b border-slate-100'>
                     {year_list.map(year=>(
                       <span 
                       style={{background:year_of_entry===year?theme_bg:'#e6e6e6',
@@ -114,18 +114,18 @@ export default function AoneClass() {
             </div> 
         </div>
         {active_form === 'From Form' && 
-          <div className="border-t pt-2 border-gray-400 bg-white flex justify-center h-full">
-            <form className="w-[90vw] md:w-1/2 shadow p-2 h-fit border border-gray-300">
+          <div className="border-t pt-2 border-slate-400 bg-white flex justify-center h-full">
+            <form className="w-[90vw] md:w-1/2 rounded p-2 h-fit border border-slate-300">
               
-               <h1 className="text-xl font-bold mb-4 text-center" style={{color:theme_bg}}>REGISTER NEW STUDENT</h1>
+               <h1 className="text-sm mdtext-xl font-bold mb-4 text-center" style={{color:theme_bg}}>REGISTER NEW STUDENT</h1>
               <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Full Name</label>
-                <input value={student_data.name} onChange={(e)=>setSudentData({...student_data,name:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none" />
+                <label className="text-xs font-semibold pb-1 text-slate-400">Full Name</label>
+                <input value={student_data.name} onChange={(e)=>setSudentData({...student_data,name:e.target.value})} className="text py-2 px-1 border border-slate-300 focus:border-blue-500 focus:outline-none" />
               </div>
               {/*  */}
               <div className="w-full py-2 flex flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Sex</label>
-                <select value={student_data.sex} onChange={(e)=>setSudentData({...student_data,sex:e.target.value})} className="py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs">
+                <label className="text-xs font-semibold pb-1 text-slate-400">Sex</label>
+                <select value={student_data.sex} onChange={(e)=>setSudentData({...student_data,sex:e.target.value})} className="py-2 px-1 border border-slate-300 focus:border-blue-500 focus:outline-none text-xs">
                   {[null,'MALE', 'FEMALE'].map(sex=>(
                     <option className="text-xs" key={sex} value={sex}>{sex||'---'}</option>
                   ))}
@@ -133,12 +133,12 @@ export default function AoneClass() {
               </div>
                 {/*  */}
               <div className="w-full py-2 flex flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Stream</label>
-                <input value={student_data.stream} onChange={(e)=>setSudentData({...student_data,stream:e.target.value})} className="py-2 px-1  border border-gray-300 focus:border-blue-500 focus:outline-none" />
+                <label className="text-xs font-semibold pb-1 text-slate-400">Stream</label>
+                <input value={student_data.stream} onChange={(e)=>setSudentData({...student_data,stream:e.target.value})} className="py-2 px-1  border border-slate-300 focus:border-blue-500 focus:outline-none" />
               </div>
               <div className="w-full py-2 flex flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Pay Code</label>
-                <input value={student_data.pay_code} onChange={(e)=>setSudentData({...student_data,pay_code:e.target.value})} className="py-2 px-1  border border-gray-300 focus:border-blue-500 focus:outline-none" />
+                <label className="text-xs font-semibold pb-1 text-slate-400">Pay Code</label>
+                <input value={student_data.pay_code} onChange={(e)=>setSudentData({...student_data,pay_code:e.target.value})} className="py-2 px-1  border border-slate-300 focus:border-blue-500 focus:outline-none" />
               </div>
               
               <div onClick={registerStudent} className="w-full mx-auto mt-2 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
@@ -151,7 +151,7 @@ export default function AoneClass() {
           </div>
         }
         {active_form === 'Upload file' && 
-        <div className="flex justify-center flex-col gap-2 bg-white border-t border-t-gray-300 py-1 h-full">
+        <div className="flex justify-center flex-col gap-2 bg-white border-t border-t-slate-300 py-1 h-full">
            <ExcelUploader year_of_entry={year_of_entry} level="A" />
             <Download base_api_path={base_api_path.replace('/api', '')} filePaths={paths} title="Student data files" />
         </div>}
