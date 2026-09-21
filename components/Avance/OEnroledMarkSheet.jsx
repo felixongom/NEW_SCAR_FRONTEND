@@ -139,7 +139,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
 
   const height = enroled ? window.innerHeight : 50;
   let colors = colorTin(theme_bg, 10);
-  console.log(enroled);
+  // console.log(enroled);
   
   
 
@@ -168,7 +168,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
           </>
 
         )}
-        <button className="flex items-center gap-2 right-1 bottom-4 absolute">
+        <div className="flex items-center gap-2 right-1 absolute">
           <button
             style={{
               borderColor: theme_bg,
@@ -176,7 +176,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               color: theme_bg,
             }}
             onClick={() => setToggleShowHideText(prev=>!prev)}
-            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${!sheet && 'hidden'}`}> 
             <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'}</span>
           </button>
           <button
@@ -195,7 +195,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
             >
               {!sheet?'DATA ENTRY':'MARKSHEET'}
           </button>
-        </button>
+        </div>
 
       </div>
       {sheet?
@@ -291,3 +291,4 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
 };
 
 export default OEnroledMarkSheet;
+

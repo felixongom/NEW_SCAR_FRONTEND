@@ -156,6 +156,7 @@ export default function Results() {
           dispatch={dispatch}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
+          subject_name ={selectedSubj?.subject}
           />: 
           <OEnroledMarkSheet 
           enroled={results}
