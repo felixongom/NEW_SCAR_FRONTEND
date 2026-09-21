@@ -1,20 +1,4 @@
 
-/**
- * LoadingIndicator
- * A simple, accessible loading overlay with a translucent background and a white circular spinner.
- *
- * Props:
- * - visible: boolean (default: true)  -- show/hide the overlay
- * - size: number (pixels, default: 48) -- diameter of the spinner
- * - message: string (optional)        -- short accessible text shown under spinner
- * - backdrop: boolean (default: true) -- whether to show the translucent backdrop
- * - className: string (optional)      -- extra classes for the overlay container
- *
- * Usage:
- * <LoadingIndicator visible={loading} />
- * <LoadingIndicator visible={true} size={64} message="Saving..." />
- */
-
 export default function Loading({
   visible = true,
   size = 48,

@@ -8,7 +8,7 @@ import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
 import { HeadedPaper } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
-import { exam, roman_term, subject_full_name } from "@/utils/reportList";
+import { a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
 
@@ -220,7 +220,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
       <div>
         <div className="w-full hidden print:block print:-mt-2">
           <HeadedPaper subject_name={subject_name}/>
-          <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${subject_full_name[subject_name]||subject_name}`}/>
+          <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${a_subject_full_name[subject_name]||subject_name}`}/>
         </div>
         <div
         className="border-b flex gap-4 p-2 py-3 text-white"

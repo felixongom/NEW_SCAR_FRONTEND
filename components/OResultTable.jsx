@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { paginate, roundOff, rowColor } from "@/utils/index";
+import { paginate, roundOff } from "@/utils/index";
 import { useDataContext } from "@/context/DataProvider";
-import PaperOrientation from "@/components/PaperOrientation";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
 import Pages from "@/components/Pages";
 import { brightness } from "color-tin";
@@ -109,7 +108,6 @@ const getSingleLearner =(single_student)=>{
       <div className="flex justify-between items-center mb-2 bg-white">
         <div className="p-1 print:hidden print:p-0 w-3/4">
           <div className="flex w-full flex-row justify-between">
-            {/* <PaperOrientation /> */}
             <div>
               <p className="text-xs md:text-sm text-gray-600"> Pages</p>
               <Pages
@@ -120,7 +118,7 @@ const getSingleLearner =(single_student)=>{
               />
             </div>
             <div>
-              <div className="h-2"/>
+              <div className="h-2"/>  
               <ChangeExanAllAoiEoc/>
             </div>
             <div>
@@ -287,7 +285,7 @@ const getSingleLearner =(single_student)=>{
                     borderBottom: `${((data.length-1)==index)?'2px':'1px'} solid ${((data.length-1)==index)?theme_bg:colors.lighter_70}`
                   }}
                 key={index}
-                className={`border-t text-sm md:text-[15px] font-mono hover:bg-gray-200 ${rowColor(student["AVG"]) }`}
+                className={`border-t text-sm md:text-[15px] font-mono hover:bg-gray-200`}
               >
                 <td className="flex-1 capitalize">
                   {(parseInt(page_size.page) - 1) * parseInt(page_size.perpage) + index + 1}

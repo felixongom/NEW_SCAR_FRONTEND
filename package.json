@@ -9,10 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ag-media/react-pdf-table": "^2.0.3",
     "@felix-ongom/js-paginator": "^1.0.0",
     "@felix-ongom/mixture": "^1.0.0",
-    "@react-pdf/renderer": "^4.3.0",
     "ag-grid-react": "^34.0.1",
     "axios": "^1.11.0",
     "chart.js": "^4.5.0",

@@ -1,5 +1,5 @@
 import { useDataContext } from "@/context/DataProvider";
-import { exam, roman_term, subject_full_name } from "@/utils/reportList";
+import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { countAverageGrades, getSubjectGradeCount, getUniqueSubjects, roundOff} from "@/utils";
@@ -68,7 +68,7 @@ export default function OReportGeneralSummary({title}) {
                     return (
                         <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((counted_grades.length-1)==i)?'2px':'1px'} solid ${((counted_grades.length-1)==i)?theme_bg:colors.lighter_60}`}}>
                             <td className="text-left w-[5%] py-2 pl-1">{i+1}</td>
-                            <td className="text-left">{subject_full_name[subject.subject]}</td>
+                            <td className="text-left">{a_subject_full_name[subject.subject]}</td>
                             {/*  */}
                             {table_heading.map(grade=>(
                                 <td className="flex-1 w-[10%] text-center">{subject[grade]}</td>

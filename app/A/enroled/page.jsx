@@ -1,5 +1,5 @@
 "use client";
-import { base_api_path, a_level_report_list } from "@/utils/reportList"; 
+import { base_api_path } from "@/utils/reportList"; 
 import ALayout from "@/components/ALayout";
 import NavBar from "@/components/Avance/NavBar";
 import { useEffect, useState } from "react";
@@ -11,7 +11,6 @@ import { usePathname, useRouter } from "next/navigation";
 import SetTime from "@/components/Avance/SetTime";
 import AResultTable from "@/components/AResultTable";
 import OResultTable from "@/components/OResultTable";
-import ReportCardLinks from '@/components/ReportListPopup'
 import { ExportPaycodeComponet } from "@/components/StudentUpdateComponent";
 
 export default function AoneClass() {
@@ -87,7 +86,6 @@ export default function AoneClass() {
       }
     }
   }
-  // let colors = colorTin(theme_bg, 10)    
 
   
   return (
@@ -106,13 +104,8 @@ export default function AoneClass() {
         </>
       
     }
-  
+      
     <ALayout>
-        {showPopUp && (
-          <div className='w-full h-[100vh] fixed z-10 bg-slate-600 backdrop-filter backdrop-blur-md bg-white/30'>
-            <ReportCardLinks report_list={a_level_report_list} setShowPopUp={setShowPopUp}/>
-          </div>
-        )}
       {/* POPUP FOR PAYCODE STUDENT */}
           {show_paycode_popup &&
           <div className="absolute w-full h-full">

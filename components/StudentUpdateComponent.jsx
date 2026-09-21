@@ -358,11 +358,7 @@ function DetailsCard({title, current_year, detail, setDetail}) {
 
         </div>
 
-    )
-        
-        // 
-        
-    }
+    )}
 
     // title
 export function Title({text=''}){
@@ -384,5 +380,5 @@ export function ChangeExanAllAoiEoc(){
             <button onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 py-1 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
         )})}
         </div>
-        :null)
+        :null)   
 }

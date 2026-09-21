@@ -4,8 +4,8 @@ import { useDataContext } from "@/context/DataProvider";
 
 import WebReportLayout from "@/components/Report/WebReportLayout"
 import MainWebReportLayout from "@/components/Report/MainWebReportLayout"
-import { roundOff } from "@/utils";
-import { paper_code, subject_full_name } from "@/utils/reportList";
+import { roundOff, sortAlevelSubjectOnReportCard, sortOlevelSubjectOnReportCard } from "@/utils";
+import { a_subject_full_name, paper_code } from "@/utils/reportList";
 import OReportSummary from "../../../components/OReportSummary";
 import OReportGeneralSummary from "../../../components/OReportGeneralSummary";
 import { useState } from "react";
@@ -67,7 +67,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'18%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {Object.keys(_subject)?.map((subject, i2)=>{
+                        {sortAlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
                           
                           return _subject[subject]?.subjects?.map((subj, i3)=>{                            
                             const name_array = subj.subject.split(' ');
@@ -77,7 +77,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                    <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{subject_full_name[subject]}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{subject==='ICT' && 'SABSIDIARY '} {a_subject_full_name[subject]}</td>
                                   </>
 
                                   }
@@ -115,13 +115,13 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {Object.keys(_subject)?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
                           let _aoi = _subject[subject]?.AOI_AVERAGE_20
                           let aoi = (_aoi && _aoi!==0)?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'
                         
                           return(
                             <tr key={i2} className='border border-black  text-[15px]'>
-                              <td style={{width:'25%'}} className={`border border-black py-${student?.num_subjects<10?'2':'1'}`}>{subject_full_name[subject]}</td>
+                              <td style={{width:'25%'}} className={`border border-black py-${student?.num_subjects<10?'2':'1'}`}>{a_subject_full_name[subject]}</td>
                               <td className='border border-black text-center'> {aoi!=='-'? roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                               <td className='border border-black text-center'> {aoi} </td>
                               <td className='border border-black flex-1 text-center font-semibold'>{aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*100,0):'-'}</td>
@@ -144,7 +144,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {Object.keys(_subject)?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
                           
                           return _subject[subject]?.subjects?.map((subj, i3)=>{                            
                           
@@ -153,7 +153,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                    <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{subject_full_name[subject]}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'2':'1'}`}>{a_subject_full_name[subject]}</td>
                                   </>
 
                                   }
@@ -191,7 +191,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {Object.keys(_subject)?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
                           let _aoi = _subject[subject]?.AOI_AVERAGE_20
                           let aoi = _aoi && _aoi!==0?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'
                           
@@ -202,7 +202,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'3':'1'}`}>{subject_full_name[subject]}</td>
+                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px]'> {aoi && aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] font-semibold'> {aoi && aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'} </td>
                                     </>
@@ -241,7 +241,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {Object.keys(_subject)?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
                           
                           let _aoi = _subject[subject]?.AOI_AVERAGE_20
                           let aoi = _aoi && _aoi!==0?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'
@@ -252,7 +252,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                     <>
-                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'3':'1'}`}>{subject_full_name[subject]}</td>
+                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'25%'}} className={`border border-black p-1 text-[15px] py-${student?.num_subjects<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px]'> {aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] font-semibold'> {aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'} </td>
                                     </>

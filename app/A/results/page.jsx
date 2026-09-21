@@ -1,5 +1,5 @@
 "use client";
-import { base_api_path } from "@/utils/reportList"; 
+import { a_subject_full_name, base_api_path } from "@/utils/reportList"; 
 import EnroledMarkSheet from "@/components/Avance/EnroledMarkSheet"
 import OEnroledMarkSheet from "@/components/Avance/OEnroledMarkSheet"
 import ALayout from "@/components/ALayout";
@@ -9,7 +9,6 @@ import SetTime from "@/components/Avance/SetTime";
 import NavBar from "@/components/Avance/NavBar";
 import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
-import { subject_full_name } from "@/utils/reportList";
 import Loading from "../enroled/loading";
 import { usePathname, useRouter } from "next/navigation";
 import { getToken } from "@/utils";
@@ -147,7 +146,7 @@ export default function Results() {
             fontWeight:`${selectedSubj.subject  === group?.subject? "bold":'normal'}`,
            }} 
            onClick={()=>handleSelect(group)}
-           className="p-1 px-2 rounded cursor-pointer">{subject_full_name[group?.subject] ||group?.subject }</div>
+           className="p-1 px-2 rounded cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</div>
           ))}
           </div>
           <div className="px-2">

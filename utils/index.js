@@ -118,90 +118,7 @@ function countStudentsByStream(dataArray) {
     streams: streamCounts
   };
 }
-//generate range for the string
-function generateGradingRanges(data) {
-  const filtered = data.filter(item => typeof item.RANGE === 'number');
-  const sorted = filtered.sort((a, b) => a.RANGE - b.RANGE);
 
-  const result = sorted.map((item, index) => {
-    const currentStart = Math.round(item.RANGE);
-    const nextItem = sorted[index + 1];
-    const currentEnd = nextItem
-      ? Math.round(nextItem.RANGE - 0.6)
-      : 100;
-
-    return {
-      ...item,
-      RANGE_STRING: `${currentStart==0?currentStart:currentStart+1}-${currentEnd}`
-    };
-  });
-
-  return result;
-}
-
-// assign color to rws
-function rowColor(avg_mark){
-  avg_mark = roundOff(avg_mark,2)
-  if(avg_mark >= 0 && avg_mark < 50) return 'text-red-500';
-  if(avg_mark>=80) return 'text-green-600'
-}
-
-// 
-function getScore(score){
-  if(score===1||score===2){
-    return 'D'+score
-  }else if(score===9){
-    return 'F'+9
-  }else if(score===7 || score===8){
-    return 'P'+score
-  }else if(score===3||score===4 || score===5 ||score===6){
-    return 'C'+score
-  }else{
-    return '-'
-  }
-}
-// 
-function getComment(letter, subject){
-  if(letter ==='A') return 'Exceptional understanding'
-  if(letter ==='B') return 'Strong grasp of concepts'
-  if(letter ==='C') return 'Meets expectation with potentials'
-  if(letter ==='D') return 'Needs improvement in some areas'
-  if(letter ==='E') return 'Can benefit from extra support'
-  if(letter ==='O' && ['ICT', 'SM','S/M', 'GP'].includes(subject.split(' ')[0])) return 'Met passing requirements'
-  if(letter ==='O') return 'Shows basic understanding'
-  if(letter ==='F') return "Didn't meet passing requirements"
-}
-
-/**
- * Sorts an object's keys alphabetically,
- * but always places:
- *   – "GP" as the last key
- *   – and the second-last key as whichever exists first among ["ICT", "SM", "S/M"]
- */
-function sortObjectWithGpIct(obj) {
-  const allKeys = _.keys(obj);
-  // Which of these special keys actually exists?
-  const secondLastKey = _.find(['ICT', 'SM', 'S/M'], k => _.has(obj, k));
-  // Remove GP and the special second-last from the normal list
-  const normalKeys = _.sortBy(
-    _.without(allKeys, 'GP', secondLastKey),
-    _.identity        // simple alphabetical
-  );
-  // Build the final ordered list of keys
-  const finalKeys = secondLastKey
-    ? [...normalKeys, secondLastKey, 'GP']
-    : [...normalKeys, 'GP'];
-  // Recreate the object in that order
-  return _.fromPairs(finalKeys.map(k => [k, obj[k]]));
-}
-
-//CHECK If a suent does a subject
-function isRegistered(AOI_3,EOA_80 ){
-  if(AOI_3 && AOI_3 !='-' && (AOI_3>0 || AOI_3<=20) ) return true
-  if(EOA_80 && EOA_80 !='-' && (EOA_80>0 || EOA_80<=80) ) return true
-  if(AOI_3 === '-' || EOA_80 === '-' ) return true
-  return false
-}
 
 //get token
 function getToken (token){
@@ -213,7 +130,6 @@ function getToken (token){
 const getUniqueSubjects = (students) => {
   if(!(students || students && students.length===0) ) return []
   
-  const preferredOrder = ["ENG","MTC","PHY","CHE","BIO","HIS","GEO"];
   const subjects = [
     ...new Set(
       students.flatMap(student =>
@@ -222,13 +138,32 @@ const getUniqueSubjects = (students) => {
     )
   ];
   // 
+  return sortOlevelSubjectOnReportCard(subjects)
+  
+};
+
+const sortOlevelSubjectOnReportCard = (subjects)=>{
+  const preferredOrder = ["ENG","MTC","PHY","CHE","BIO","HIS","GEO"];
   const preferred = preferredOrder.filter(subject =>subjects.includes(subject));
   const remaining = subjects
     .filter(subject => !preferredOrder.includes(subject))
     .sort((a, b) => a.localeCompare(b));
 
   return [...preferred, ...remaining];
-};
+}
+
+const sortAlevelSubjectOnReportCard = (subjects)=>{
+  const subsidiary = ['ICT', 'SM', 'GP'];
+  const ict = subjects.includes('ICT')?['ICT']:[]
+  const sm = subjects.includes('SM')?['SM']:[]
+  const gp = subjects.includes('GP')?['GP']:[]
+  // 
+  const other_subjects = subjects.filter(subject =>!subsidiary.includes(subject));
+  const sorted_other_subjects = other_subjects.sort((a, b) => a.localeCompare(b));
+
+  return [...sorted_other_subjects, ...ict, ...sm, ...gp];
+}
+
 
 //count grade
 const getSubjectGradeCount = (students, subjects, exam, clas) =>{
@@ -348,8 +283,6 @@ const countAverageGrades = (students, exam) => {
 };
 // 
  export {
-  rowColor,
-  generateGradingRanges,
   countStudentsByStream, 
   roundOff,
   numbersArray,
@@ -357,15 +290,13 @@ const countAverageGrades = (students, exam) => {
   chunkArray,
   pickAndSetImage,
   paginate,
-  getScore,
-  getComment,
-  sortObjectWithGpIct,
-  isRegistered,
   uploadLogo,
   getToken,
   getUniqueSubjects,
   getSubjectGradeCount,
-  countAverageGrades
+  countAverageGrades,
   // 
+  sortOlevelSubjectOnReportCard,
+  sortAlevelSubjectOnReportCard
 }
 

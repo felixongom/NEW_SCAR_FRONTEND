@@ -55,55 +55,11 @@ export default function ExcelUploader({level, year_of_entry=0}) {
       
       let result = res.data      
       if(selected_clas==='UNEB UCE'){
-        let info = {
-          ... result['SCHOOL_INFO'], 
-            ['SCHOOL NAME']:main_school_info['SCHOOL NAME'], //change school name to logged in school name
-            ['logo']:main_school_info.logo, //change school logo to logged in school logo
-            ['DISTRICT/CITY']:main_school_info['DISTRICT/CITY'], //change school district to logged in school district
-            ['LOCATION']:main_school_info.LOCATION, //change school location to logged in school location
-            ['BOX NO']:main_school_info['BOX NO'], //change school box number to logged in school box number
-            ['MOTO']:main_school_info['MOTO'] || result['SCHOOL_INFO'].MOTO, //change school motto to logged in school motto
-            ['EMAIL']:main_school_info['EMAIL'], //change school email to logged in school email
-            ['CAMPUS']:main_school_info['CAMPUS'] //change school CAMPUS to logged in school CAMPUS
-          }
-        dispatch({ type: 'SCHOOL_INFO', payload:info})
         dispatch({ type: 'UNEB_UCE', payload:res.data})
-        router.push(`/uneb-uce?clas=${selected_clas}`)
+        router.push(`/A/uneb`)
 
       }else if (res.status === 200) {
-        if(result === true){
-          router.push(`/A/enrole-students`)
-        }else{
-        //              
-        let info = {
-          ... result['SCHOOL INFO'], 
-            ['SCHOOL NAME']:main_school_info['SCHOOL NAME'], //change school name to logged in school name
-            ['logo']:main_school_info.logo, //change school logo to logged in school logo
-            ['DISTRICT/CITY']:main_school_info['DISTRICT/CITY'], //change school district to logged in school district
-            ['LOCATION']:main_school_info.LOCATION, //change school location to logged in school location
-            ['BOX NO']:main_school_info['BOX NO'], //change school box number to logged in school box number
-            ['MOTO']:main_school_info['MOTO'], //change school motto to logged in school motto
-            ['EMAIL']:main_school_info['EMAIL'], //change school email to logged in school email
-            ['CAMPUS']:main_school_info['CAMPUS'] //change school CAMPUS to logged in school CAMPUS
-        }  
-              
-          dispatch({ type: 'SCHOOL_INFO', payload:info})
-          dispatch({ type: 'GRADINGS', payload: result['GRADINGS'] })
-          dispatch({ type: 'RANKED_DATA', payload: result['CLAS'] })
-          dispatch({
-            type: 'TRANSFORMED_DATA',
-            payload: _.orderBy(transformStudentData(result['CLAS']), ['STREAM', 'STUDENT NAME'], ['asc', 'asc']),
-          })
-          dispatch({ type: 'NUM_PER_STREAM', payload: countStudentsByStream(result['CLAS']), })
-          dispatch({ type: 'GRADE_RANGE', payload: generateGradingRanges(result['GRADINGS']) })
-          dispatch({ type: 'GRADE_COUNT', payload: countGradeOfAllSubjects(result['CLAS']) })
-          dispatch({ type: 'MY_SUBJECTS', payload: getMySubjects(result['CLAS'][0]) })
-          dispatch({ 
-            type: 'MY_SUBJECTS_OBJECT', 
-            payload: filterSubjects(subject_full_name, getMySubjects(result['CLAS'][0])) 
-          })  
-          router.push(`/one-class?clas=${selected_clas}`)
-        }
+        router.push(`/A/enrole-students`)
         
       } else {
         setError('Upload failed with status ' + result.status)

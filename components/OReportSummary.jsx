@@ -3,7 +3,7 @@ import { exam, roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { useEffect, useState } from "react";
-import { getUniqueSubjects, roundOff, rowColor } from "@/utils";
+import { getUniqueSubjects, roundOff } from "@/utils";
 import { RiArrowDownLine, RiBrush2Line } from "react-icons/ri";
 import OLevelGading from "./Report/OLevelGrading";
 import { Title } from "./StudentUpdateComponent";
@@ -206,7 +206,7 @@ export default function OReportSummary({title}) {
                                         : "black",
                                     }}
                                     key={index}
-                                    className={`font-mono text-sm md:text-[15px] border-t hover:bg-gray-200 transition duration-800 ${rowColor(student["AVG"])}`}
+                                    className={`font-mono text-sm md:text-[15px] border-t hover:bg-gray-200 transition duration-800`}
                                 >
                                 <td className="p-1 py-2 print:py-1  flex-1 capitalize">
                                 {index + 1}

@@ -1,7 +1,7 @@
 // ExportToExcel.jsx
 import React from "react";
 import XLSX from "xlsx-js-style";
-import { subject_full_name } from "@/utils/reportList";
+import { a_subject_full_name } from "@/utils/reportList";
 import {brightness} from "color-tin"
 
 export default function OExportToExcel({ data = [], theme_bg }) {  
@@ -151,7 +151,7 @@ export default function OExportToExcel({ data = [], theme_bg }) {
 
     // Save workbook with subject name
     let surfix = `${firstItem.year}_TERM_${firstItem.term}_SENIOR_${firstItem.clas}_${exam_short_name[firstItem.exam]}`
-    XLSX.writeFile(wb, `${subject_full_name[subjectName] || subjectName}_${surfix}.xlsx`);
+    XLSX.writeFile(wb, `${a_subject_full_name[subjectName] || subjectName}_${surfix}.xlsx`);
   };
 
   return (
