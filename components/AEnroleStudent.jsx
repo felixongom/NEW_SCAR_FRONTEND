@@ -9,6 +9,7 @@ import _ from "lodash"
 export default function AEnroleStudents({students,setShowStudentPopup, set_student_loading, selected_student, setSelectedStudent, colors}) {
   const {theme_bg } = useDataContext()
   const [search_student, setSearchStudent] = useState(students);
+  const [sort_column, setSortColumn]= useState({})
 
   const toggleStudent = (id) => {
     if(id===true){
@@ -27,7 +28,14 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
     )    
     setSearchStudent(filtered)
   } 
- 
+  //
+   // 
+  const sortData = (column)=>{
+    const active_column = sort_column[column]=='asc'?'desc':'asc'
+    setSortColumn({[column]:active_column})
+  }
+  const class_list = _.orderBy(search_student, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])
+    
   return (
       <div className="mx-auto max-w-7xls p-1 relative w-full">
         {/* Card */}
@@ -58,7 +66,7 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
                     #
                   </td>
 
-                  <td className="text-left">
+                  <td className="flex pl-1 py-1">
                     <button
                       style={{borderColor:selected_student.length?theme_bg:'#999'}}
                       onClick={() => toggleStudent(true)}
@@ -72,14 +80,14 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
                     STUDENT NO.
                   </td>
 
-                  <td className="text-left">
+                  <td onClick={()=>sortData('STUDENT NAME')} className="text-left cursor-pointer">
                     STUDENT NAME
                   </td>
 
-                  <td className="text-center">
+                  <td onClick={()=>sortData('SEX')} className="text-center cursor-pointer">
                     GENDER
                   </td>
-                  <td className="text-center">
+                  <td onClick={()=>sortData('STREAM')} className="text-center cursor-pointer">
                     STREAM
                   </td>
                   <td className="text-center">
@@ -99,19 +107,18 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
               </thead>
 
               <tbody>
-                {search_student.map((student, index) => (
+                {class_list.map((student, index) => (
                   <tr
                     style={{
                       backgroundColor:selected_student.includes(student.id)? colors.lighter_70: "white",
                       backgroundColor:selected_student.includes(student.id)? colors.lighter_70: index%2==1?'#f2f2f2':'white',
-                      borderBottomColor:selected_student.includes(student.id)?'#fff':colors.lighter_70
+                      borderBottom:selected_student.includes(student.id)?'1px solid #fff':`${(class_list?.length-1 ===index)?'2px solid '+theme_bg:'1px solid '+colors.lighter_70}`
                     }}
                     key={index}
                     className={`border-b transition text-sm md:text-[15px] font-mono font-thin text-gray-800 border-gray-300 border-1 hover:bg-indigo-50`}
                   >
 
                     <td className="px-1 py-2">
-                      {/* {(page - 1) * pageSize + index + 1} */}
                       {index+1}
                     </td>
                         

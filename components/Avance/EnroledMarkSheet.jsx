@@ -11,6 +11,7 @@ import { HeadedPaper } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
 import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import {colorTin} from 'color-tin'
+import _ from 'lodash'
 
 const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject_name }) => {
   const gridApiRef = useRef(null);              // stores the grid API
@@ -18,6 +19,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
   const[sheet, setSheet] = useState(true)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const { theme_bg,set_time, selected_clas} = useDataContext();
+  const [sort_column, setSortColumn]= useState({})
 
   const cellStyle = { display: 'flex', alignItems: 'center' };
 
@@ -119,10 +121,16 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
 
   };
 
+  const sortData = (column)=>{
+    const active_column = sort_column[column]=='asc'?'desc':'asc'
+    setSortColumn({[column]:active_column})
+  }
+
   const height = enroled ? window.innerHeight : 50;
   let colors = colorTin(theme_bg, 10);
+  const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])
+  
 
-  console.log(enroled)
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div className="py-4 relative flex px-1 mb-[10px] border-b border-gray-300 print:hidden" style={{ marginBottom: "10px" }}>
@@ -155,7 +163,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
               color: theme_bg,
             }}
             onClick={() => setToggleShowHideText(prev=>!prev)}
-            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${!sheet && 'hidden'}`}> 
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
             <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'}</span>
           </button>
           <button
@@ -200,7 +208,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
           <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${a_subject_full_name[subject_name]||subject_name}`}/>
         </div>
         <div
-        className="border-b flex gap-4 p-2 py-3 text-white"
+        className="border-b flex gap-4 p-2 py-3 text-white print:hidden"
         style={{ backgroundColor: theme_bg }}>
           <h2 className="text-sm font-bold">
             Class Size{" "}
@@ -211,7 +219,6 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
               {enroled?.length}{" "}
             </span>
           </h2>
-
         </div>
         <table className="w-full">
           <thead>
@@ -222,25 +229,30 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
               }}
             >
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%]">LEARNER'S NAME</th>
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center">STREAM</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%] cursor-pointer"
+              onClick={()=>sortData('learner')}
+              >LEARNER'S NAME</th>
+              <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
               
               {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC {i+1}(%)</th> 
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">PAPER {i+1}(%)</th> 
               ))}
               {toggle_show_hide_text && 
               <>
                 <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">SCORES(x/5)</th>
                 <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">GRADES</th>
-                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AVG GRD</th>
-                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[15%] text-center">COMMENT</th>
+                <th onClick={()=>sortData('grade_letter')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center cursor-pointer">AVG GRD</th>
+                <th onClick={()=>sortData('comments')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[15%] text-center cursor-pointer">COMMENT</th>
               </>
               }
             </tr>
           </thead>
-          {enroled?.map((learner, i)=>{
+          {class_list?.map((learner, i)=>{
             return(
-              <tr style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
+              <tr style={{
+                backgroundColor:i%2==1? colors.lighter_90:'white',
+                borderBottom:(class_list.length-1===i)?`2px solid ${theme_bg}`:''
+                }} className={`font-mono text-[15px]`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
@@ -254,7 +266,6 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.grade_letter}</td>
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.comments}</td>
                 </>
-                
                 }
               </tr>
             )

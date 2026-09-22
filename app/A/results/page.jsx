@@ -10,6 +10,7 @@ import NavBar from "@/components/Avance/NavBar";
 import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
+import _ from 'lodash'
 import { usePathname, useRouter } from "next/navigation";
 import { getToken } from "@/utils";
 
@@ -111,6 +112,8 @@ export default function Results() {
      }
    }
   
+  const enroled = _.orderBy(results, ['stream', 'learner'], ['asc', 'asc'])  
+  
   return (
     <> 
     {
@@ -152,14 +155,14 @@ export default function Results() {
           <div className="px-2">
           {results && (clas>4? 
           <EnroledMarkSheet 
-          enroled={results}
+          enroled={enroled}
           dispatch={dispatch}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
           subject_name ={selectedSubj?.subject}
           />: 
           <OEnroledMarkSheet 
-          enroled={results}
+          enroled={enroled}
           dispatch={dispatch}
           subject_name ={selectedSubj?.subject}
           setDeleteStudent={setDeleteStudent}

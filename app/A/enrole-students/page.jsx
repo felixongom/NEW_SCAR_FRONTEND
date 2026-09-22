@@ -33,12 +33,11 @@ export default function AoneClass() {
     const [show_student_popup, setShowStudentPopup] = useState(null);
     const [coppy_enrolement_popup, setShowEnrolemetPopup] = useState(false)
     const [updating, setUpdating] = useState(false)
-
     //variables 
       
-  let paper_bg = brightness(theme_bg)<60?theme_bg:"#1a1a1a"
-  let paper_color = brightness(theme_bg)<60?'#1a1a00':"white"
-  let years_list = numbersArray(10, year_of_entry-5).reverse() //[2025,2026,2027,2028,2029,2030 ]
+    let paper_bg = brightness(theme_bg)<60?theme_bg:"#1a1a1a"
+    let paper_color = brightness(theme_bg)<60?'#1a1a00':"white"
+    let years_list = numbersArray(10, year_of_entry-5).reverse() //[2025,2026,2027,2028,2029,2030 ]
   
   //auth
   // const router = useRouter()
@@ -135,7 +134,10 @@ export default function AoneClass() {
       setDeleting(false)
     }
   }
+
+  // 
   let colors = colorTin(theme_bg, 10)
+
  
   // In your App.js
   return (
@@ -182,8 +184,8 @@ export default function AoneClass() {
         <EnrolementSetTime/>
         <hr />
         <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
-          <h2 className="mt-2 font-bold text-slate-800">Select Subject/Papers </h2>
-          {!subjects?<Ring size={30} stroke={5} bgOpacity={0} speed={2} color="black"/>:
+          <h2 className="mt-2 font-semibold text-sm md:text-xl text-slate-800">Select Subject/Papers </h2>
+          {!subjects?<Ring size={15} stroke={5} bgOpacity={0} speed={2} color="#262626"/>:
           
         <div className="flex flex-wrap shadow-sm gap-3 mb-4 py-2 text-sm text-slate-600">
           <button
@@ -239,14 +241,14 @@ export default function AoneClass() {
               Copy Enrolment
             </button>
             <button disabled={enroling?true:false} onClick={()=>setActivateDelete(prev=>!prev)} className='bg-red-700 hover:bg-red-600 text-white px-3 rounded text-sm shadow-md ml-1'>
-              {deleting ? <Ring size={20} stroke={3} bgOpacity={0} speed={2} color="white"/>:'Delete'}
+              {deleting ? <Ring size={25} stroke={2} bgOpacity={0} speed={2} color="white"/>:'Delete'}
             </button>
             <button 
               disabled={enroling?true:false} 
               onClick={enroleStudent} className='bg-cyan-700 hover:bg-cyan-600 text-white px-3 rounded text-sm shadow-md ml-1'
               style={{backgroundColor:colors.theme_bg}}
               >
-              {enroling ? 'Enrolling...':'Enrole'}
+              {enroling ? <Ring size={25} stroke={1} bgOpacity={0} speed={2} color="white"/>:'Enrole'}
             </button>
 
           </div>     

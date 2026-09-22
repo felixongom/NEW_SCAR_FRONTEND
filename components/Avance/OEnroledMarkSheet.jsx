@@ -11,6 +11,7 @@ import { Title } from "../StudentUpdateComponent";
 import { a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
+import { roundOff } from "@/utils";
 
 const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject_name }) => {
   const gridApiRef = useRef(null);              // stores the grid API
@@ -18,6 +19,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
   const { theme_bg,set_time, selected_clas } = useDataContext();
   const[sheet, setSheet] = useState(true)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
+  const [sort_column, setSortColumn]= useState({})
   const cellStyle = { display: 'flex', alignItems: 'center' };
 
   const paperColumns = useMemo(() => {
@@ -136,12 +138,15 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
     let aoi_edited = pairMarksWithIds(editedRows.map(row=>({marks:row.aoi_marks, marks_id:row.aoi_id})), 'aoi');
     setUpdateStudent([...edited, ...aoi_edited]);
   };
+  // 
+  const sortData = (column)=>{
+    const active_column = sort_column[column]=='asc'?'desc':'asc'
+    setSortColumn({[column]:active_column})
+  }
 
   const height = enroled ? window.innerHeight : 50;
   let colors = colorTin(theme_bg, 10);
-  // console.log(enroled);
-  
-  
+  const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
@@ -168,7 +173,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
           </>
 
         )}
-        <div className="flex items-center gap-2 right-1 absolute">
+        <div className="flex items-center gap-2 top-2 right-1 absolute">
           <button
             style={{
               borderColor: theme_bg,
@@ -176,7 +181,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               color: theme_bg,
             }}
             onClick={() => setToggleShowHideText(prev=>!prev)}
-            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${!sheet && 'hidden'}`}> 
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
             <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'}</span>
           </button>
           <button
@@ -245,8 +250,8 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               }}
             >
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%]">LEARNER'S NAME</th>
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center">STREAM</th>
+              <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%] cursor-pointer">LEARNER'S NAME</th>
+              <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
               {(toggle_show_hide_text?Object.keys(enroled[0]?.aoi_marks || {}):['AOI 1', 'AOI 2', 'AOI 3']).map((_, i)=>(
                 <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}</th> 
               ))}
@@ -255,27 +260,27 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               ))}
               {toggle_show_hide_text && 
               <>
-                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">TOTAL</th>
+                <th onClick={()=>sortData('marks_plas_aoi')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center cursor-pointer">TOTAL</th>
                 <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">COMMENT</th>
               </>
               }
             </tr>
           </thead>
-          {enroled?.map((learner, i)=>{
+          {class_list?.map((learner, i)=>{
             return(
               <tr style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
                 {(toggle_show_hide_text?Object.values(learner?.aoi_marks || {}):['-','-','-']).map((aoi, i)=>(
-                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && aoi}</td> 
+                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && (aoi || '-')}</td> 
                 ))}
                 {(toggle_show_hide_text?Object.values(learner?.marks || {}):['-','-','-']).map((marks, i)=>(
-                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && marks}</td> 
+                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && (marks || '-')}</td> 
                 ))}
                 {toggle_show_hide_text && 
                 <>
-                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.marks_plas_aoi}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ roundOff(learner.marks_plas_aoi, 0)}</td>
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.marks_comment}</td>
                 </>
                 

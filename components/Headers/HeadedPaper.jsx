@@ -12,7 +12,7 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
                 <div className="flex justify-center flex-col">
                     <h1 className="text-center text-4xl font-bold -mt-3">{main_school_info['SCHOOL NAME']}</h1>
                     <span className="text-center text-[20px] -mt-2">{main_school_info['BOX NO']}, {main_school_info['DISTRICT/CITY']}</span>
-                    {main_school_info['DISTRICT/CITY'] && <i className="text-center text-sm font-semibold italic capitalize -mt-2">{capitalize(main_school_info['CAMPUS'])} Campus</i>}
+                    {main_school_info['CAMPUS'] && <i className="text-center text-sm font-semibold italic capitalize -mt-2">{capitalize(main_school_info['CAMPUS'])} Campus</i>}
                     <p className="text-center font-semibold text-sm">
                         Email:<i className="text-center font-normal">{main_school_info['EMAIL']}</i> |
                         Tel:<i className="text-center font-normal">{main_school_info['PHONE']}</i>

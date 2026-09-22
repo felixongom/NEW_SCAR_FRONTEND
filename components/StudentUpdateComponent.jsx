@@ -120,7 +120,6 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
             setSelectedSubject([...selected_subject, subject_id])
         }else{
             let remove = selected_subject.filter(subj=>subj!==subject_id)
-            console.log(remove);
             setSelectedSubject(remove)
         }
     }
@@ -134,6 +133,10 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
                 <Title text={'COPPY ENROLEMENT FROM PREVIOUS '}/>
                 <h4 className="text-teal-700 font-semibold text-center">SELECT A SUBJECT/PAPER</h4>
                 <div className="flex flex-wrap gap-1 border-b border-gray-300 toggleTheme w-full pb-1">
+                    <button
+                        onClick={()=>setSelectedSubject([])}
+                        className="px-2 rounded-sm text-sm text-white bg-rose-700 hover:bg-rose-500">Reset
+                    </button>
                     {subjects && Object.keys(subjects)?.map((subject, i)=>{
                         const paper_id = parseInt(subjects[subject])
                         return(
