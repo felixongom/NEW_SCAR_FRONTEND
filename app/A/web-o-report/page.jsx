@@ -18,7 +18,8 @@ export default function AoneClass() {
   const clas = parseInt(selected_clas.split(' ')[1])
   // 
   let extra_data = {}
-  let localStorageData = localStorage.getItem('importantData')
+  let localStorageData = window.localStorage.getItem('importantData')
+  
   if(localStorageData){
     let local_data = JSON.parse(localStorageData) 
     extra_data.begins = local_data?.begins
