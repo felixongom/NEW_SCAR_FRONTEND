@@ -61,7 +61,7 @@ async function deleteUser(id){
                     <thead style={{backgroundColor:`${theme_bg}`, color:brightness(theme_bg)<65?"white":'black'}} className={`text-white`}>
                         <tr>
                             <th className="p-1 text-left flex-1 text-sm">#</th>
-                            <th className="p-1 text-left flex-3 text-sm">Admin's Name</th>
+                            <th className="p-1 text-left flex-3 text-sm">Admin&apos;s Name</th>
                             <th className={`p-1 text-left flex-1 text-sm`}>Email</th>
                             <th className="p-1 text-left flex-1 text-sm">Password</th>
                             <th className="p-1 text-center flex-1 text-sm">Status</th>

@@ -38,7 +38,7 @@ export default function ChangePassword({router}) {
           })
           dispatch({ type: 'MAIN_SCHOOL_INFO', payload: school_res.data?.school }) 
          //redirect
-         Object.keys(router).length>0 && router.push(`/home`)
+        return Object.keys(router).length>0 && router.push(`/home`)
     } catch (error) {
       console.log(error);
       

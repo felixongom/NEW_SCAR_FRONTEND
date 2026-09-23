@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "public/excel.worker.js", "components/Button.jsx", "app/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "public/excel.worker.js", "components/Button.jsx", "app/page.jsx", "app/layout.jsx"],
   "exclude": ["node_modules"]
 }

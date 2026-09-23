@@ -14,7 +14,12 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
   const toggleStudent = (id) => {
     if(id===true){
       let ids = students.map(student=>student.id)
-      selected_student.length?setSelectedStudent([]):setSelectedStudent(ids)
+
+      if(selected_student.length){
+        setSelectedStudent([])
+      }else{
+        setSelectedStudent(ids)
+      }
     }else{
       setSelectedStudent((prev) =>prev.includes(id)? prev.filter((x) => x !== id): [...prev, id]);
     }

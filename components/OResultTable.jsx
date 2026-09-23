@@ -15,7 +15,7 @@ import OLevelGading from "./Report/OLevelGrading";
 import { useRouter } from "next/navigation";
 import { ChangeExanAllAoiEoc, Title } from "./StudentUpdateComponent";
 //
-export default function OResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, setShowPopUp, selected_student, setSelectedStudent }) {
+export default function OResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, selected_student, setSelectedStudent }) {
   //
   const { transformed_data,main_school_info, data_chunk, theme_bg, dispatch, set_time, selected_clas } = useDataContext();
   const [page_size, setResizingData] = useState({page:1, perpage:100})
@@ -48,9 +48,11 @@ export default function OResultTable({ table_heading, setShowDeletingPopup,setSh
   const toggleStudent = (id) => {
     if (id === true) {
       let ids = transformed_data.map((student) => student.id);
-      selected_student.length
-        ? setSelectedStudent([])
-        : setSelectedStudent(ids);
+      if(selected_student.length){
+        setSelectedStudent([])
+      }else{
+        setSelectedStudent(ids);
+      }
     } else {
       setSelectedStudent((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
@@ -94,7 +96,6 @@ const getSingleLearner =(single_student)=>{
   let colors = colorTin(theme_bg, 10);
   const clas = parseInt(selected_clas.split(' ')[1])
   const max_num_subject = clas<=2?12:9
-  console.log(data_chunk);
   // 
   let marks_key = set_time.exam=='AOI'?"AOI_TOTAL":set_time.exam=='EOC'?"EXAM_TOTAL":'TOTAL'
   let average = set_time.exam=='AOI'?"AOI_AVERAGE":set_time.exam=='EOC'?'EXAM_AVERAGE':'AVERAGE' //EXAM_AVERAGE_COMMENT
@@ -247,6 +248,7 @@ const getSingleLearner =(single_student)=>{
             {Object.keys(table_header).map((header, i)=>{
                 return(
                     <td 
+                    key={i}
                       onClick={()=>sortData(table_header[header])}
                       className=  {`p-1 font-semibold flex-2`}>
                         <div className={`flex gap-1 justify-${i==0|i==1|i==7?'left':'center'} w-full text-center cursor-pointer`}>

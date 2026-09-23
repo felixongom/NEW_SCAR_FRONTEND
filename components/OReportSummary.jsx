@@ -1,5 +1,5 @@
 import { useDataContext } from "@/context/DataProvider";
-import { exam, roman_term } from "@/utils/reportList";
+import { roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { useEffect, useState } from "react";
@@ -138,7 +138,7 @@ export default function OReportSummary({title}) {
                             className={`p-1 font-semibold flex-2 transition-all duration-200 ease-in-out`}
                         >
                             <div className={`flex gap-1 cursor-pointer`}>
-                            <span className="">LEARNER'S NAME</span>
+                            <span className="">LEARNER&apos;S NAME</span>
                             {Object.keys(sortby).includes("STUDENT NAME") && (
                                 <RiArrowDownLine
                                 className={`mt-1 ${sortby["AVERAGE"] === "asc" ? "rotate-0" : sortby["AVERAGE"] === "desc" ? "rotate-180" : ""} transition print:hidden font-thin`}

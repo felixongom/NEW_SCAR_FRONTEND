@@ -13,13 +13,12 @@ import { HeadedPaper } from './Headers/HeadedPaper';
 import { Title } from './StudentUpdateComponent';
 import { Ring } from 'ldrs/react';
 
-const UploadImages = ({setDoneUploading,year_of_entry,setYearOfEntry,selected_student, setSelectedStudent,setShowDeletingPopup, deleting}) => {
+const UploadImages = ({setDoneUploading,year_of_entry,setYearOfEntry,selected_student, setSelectedStudent,setShowDeletingPopup, geting_images_loader, deleting}) => {
   const {theme_bg, photos, selected_clas} = useDataContext()
 
   const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
   const [ready_photo, setReadyPhotos] = useState(photos);
-  const [responseData, setResponseData] = useState([]);
   const [openYear, setOpenYear] = useState(false)
   const [search, setSearch] = useState('')
 
@@ -37,7 +36,6 @@ const UploadImages = ({setDoneUploading,year_of_entry,setYearOfEntry,selected_st
     const selected = Array.from(e.target.files || []);
     setFiles(selected);
     setProgress(0);
-    setResponseData([]);
     e.target.files = null
   };
 
@@ -70,6 +68,8 @@ const handleUpload = async () => {
     setDoneUploading(prev=>!prev)
     setProgress(0);
   } catch (error) {
+    console.log(error);
+    
     alert('Upload failed.');
   }
 };
@@ -83,9 +83,11 @@ const handleUpload = async () => {
     const toggleStudent = (image) => {
     if (image === true) {
       let img = ready_photo.map((photo) => photo.image);
-      selected_student.length>0
-        ? setSelectedStudent([])
-        : setSelectedStudent(img);
+      if(selected_student.length>0){
+        setSelectedStudent([])
+      }else{
+        setSelectedStudent(img);
+      }
     } else {
       setSelectedStudent((prev) =>
         prev.includes(image) ? prev.filter((x) => x !== image) : [...prev, image],
@@ -133,7 +135,7 @@ const handleUpload = async () => {
       </div>
       <div className="pt-3">
         <div className='flex justify-between py-3 border-t print:hidden'>
-          <h2 className="text-sm md:text-xl font-bold text-gray-700">Photo Album</h2>
+          <h2 className="text-sm md:text-xl font-bold text-gray-700">Photo Album{geting_images_loader && <Ring size={30} stroke={2} bgOpacity={0} speed={2} color="#f3f3f3"/>}</h2>
           {/* YEAR OF ENTRY */}
           <div className="flex justify-between p-2 ">
             <div className="flex gap-1 pb-2 text-sm">
@@ -149,6 +151,7 @@ const handleUpload = async () => {
                   <div className='flex flex-col absolute z-10'>
                     {years_list.map(year=>(
                       <span 
+                      key={year}
                         style={{background:year_of_entry===year?theme_bg:'#e6e6e6',
                         fontWeight:year_of_entry===year?'bold':'',
                         color:`${year_of_entry===year?(brightness(theme_bg)<70?"white":'black'):'black'}`

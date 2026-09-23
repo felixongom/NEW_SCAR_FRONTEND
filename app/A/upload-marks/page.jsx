@@ -3,11 +3,9 @@
 import ALayout from "@/components/ALayout";
 import UploadMarks from "@/components/Avance/UploadMarks"
 import NavBar from "@/components/Avance/NavBar";
-import { usePathname, useRouter } from "next/navigation";
-import { useDataContext } from "@/context/DataProvider";
-import { useEffect } from "react";
+// import { usePathname, useRouter } from "next/navigation";
+// import { useEffect } from "react";
 export default function AoneClass() {
-  const {main_school_info} = useDataContext()
   //auth
   // const router = useRouter()
   // const pathname = usePathname(); 

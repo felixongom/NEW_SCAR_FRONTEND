@@ -24,7 +24,7 @@ function ColorThemeSetter() {
         {toggleTheme && (
             <div className="w-full flex flex-wrap gap-1">
               {
-                colors.map(color=>(<div onClick={()=>handleTheme(color)} style={{cursor:'pointer',width:25, height:25, borderRadius:'10%', color:`${color.text}`, backgroundColor:`${color}`}}></div>))
+                colors.map(color=>(<div key={color} onClick={()=>handleTheme(color)} style={{cursor:'pointer',width:25, height:25, borderRadius:'10%', color:`${color.text}`, backgroundColor:`${color}`}}></div>))
               }
             <input type="color" onChange={(e)=>handleTheme(e)} value={theme_bg} style={{width:25, height:25, borderRadius:'10%'}}/>
           </div>)}

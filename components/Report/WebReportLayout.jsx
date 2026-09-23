@@ -1,7 +1,5 @@
 "use client";
-import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
-import { useEffect } from "react";
 import {HeadedPaper} from "@/components/Headers/HeadedPaper";
 import OLevelGading from "@/components/Report/OLevelGrading";
 import { exam, roman_term } from "@/utils/reportList";
@@ -13,12 +11,12 @@ export default function WebReportLayout({children,student, extra_data, title}) {
   const {main_school_info, selected_clas,num_per_stream, set_time} = useDataContext()
   let clas = parseInt(selected_clas.split(' ')[1])
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])  
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])  
   
   // In your App.js
   let marks_key = set_time.exam=='AOI'?"AOI_TOTAL":set_time.exam=='EOC'?"EXAM_TOTAL":'TOTAL'
@@ -129,8 +127,8 @@ export default function WebReportLayout({children,student, extra_data, title}) {
             </section>
     
             {/* eacher's comment*/}
-              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Class Teacher's Comment:</div>
-              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Head Teacher's Comment:</div>
+              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Class Teacher&apos;s Comment:</div>
+              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Head Teacher&apos;s Comment:</div>
             
             {/* Grading System */}
             <section className='w-full gap-1'>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { paginate, roundOff, rowColor } from "@/utils/index";
+import { paginate} from "@/utils/index";
 import Link from "next/link";
 import { useDataContext } from "@/context/DataProvider";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
@@ -14,7 +14,7 @@ import { Title } from "./StudentUpdateComponent";
 import OLevelGading from "./Report/OLevelGrading";
 import { IoDocumentTextOutline } from "react-icons/io5";
 //
-export default function AResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, setShowPopUp, selected_student, setSelectedStudent }) {
+export default function AResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, selected_student, setSelectedStudent }) {
   //
   const { transformed_data, data_chunk, theme_bg, dispatch, set_time, selected_clas } = useDataContext();
   const [size, setResizingData] = useState({page:1, perpage:100})
@@ -47,9 +47,11 @@ export default function AResultTable({ table_heading, setShowDeletingPopup,setSh
   const toggleStudent = (id) => {
     if (id === true) {
       let ids = transformed_data.map((student) => student.id);
-      selected_student.length
-        ? setSelectedStudent([])
-        : setSelectedStudent(ids);
+      if(selected_student.length){
+        setSelectedStudent([])
+      }else{
+        setSelectedStudent(ids);
+      }
     } else {
       setSelectedStudent((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
@@ -71,7 +73,6 @@ export default function AResultTable({ table_heading, setShowDeletingPopup,setSh
   }, [sortby.changed]);
 
   const handlePrintOneReport = (student) => {
-    setShowPopUp((prev) => !prev);
     dispatch({ type: "DATA_CHUNK", payload: student });
   };
 //sorting record
@@ -89,7 +90,6 @@ const sortData = (header)=>{
   let colors = colorTin(theme_bg, 10);
   const table_header = {'STUDENT ID':'learner_id',"LEARNER'S NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM', 'CBN':'combination',  'PAPERS':'num_papers', 'SUBJECTS':'num_subjects', 'POINTS':'total_points','S_PSN':'PSN_IN_STREAM', 'PSN':'PSN'}
   let data = (transformed_data?.length ? transformed_data : data_chunk)
-// console.log(data_chunk);
 
   return (
     <div className="p-1 bg-gray-50 min-h-screen">
@@ -230,6 +230,7 @@ const sortData = (header)=>{
             {Object.keys(table_header).map((header, i)=>{
                 return(
                     <td 
+                    key={i}
                     onClick={()=>sortData(table_header[header])}
                     className=  {`font-semibold text-${i==0|i==1|i==2|i==4?'left':'center'} flex-2`}>
                         <div className={`flex gap-1 justify-${i==0|i==1|i==2?'left':'center'} w-full text-center cursor-pointer`}>

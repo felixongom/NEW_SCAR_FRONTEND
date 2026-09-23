@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 // 
 function SetTime() {
-  const {dispatch, set_time,selected_clas, theme_bg} = useDataContext()
+  const {dispatch, set_time, theme_bg} = useDataContext()
   const [openMergedExam, setOpenMergedExam] = useState(false)
   const [openYear, setOpenYear] = useState(false)
   //   
@@ -50,6 +50,7 @@ function SetTime() {
             <div className='flex flex-col absolute z-10  text-xs md:text-sm'>
               {year_list.map(year=>(
                 <span 
+                key={year}
                 style={{background:set_time.year===year?theme_bg:'#e6e6e6',
                 fontWeight:set_time.year===year?'bold':'',
                 color:`${set_time.year===year?(brightness(theme_bg)<70?"white":'black'):'black'}`

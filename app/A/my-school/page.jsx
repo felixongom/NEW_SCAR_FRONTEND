@@ -1,7 +1,7 @@
 "use client";
 import ALayout from "@/components/ALayout";
 import { colorTin } from "color-tin"
-import { usePathname, useRouter } from 'next/navigation'
+// import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/Avance/NavBar";
@@ -9,7 +9,7 @@ import axios from "axios";
 import { getToken } from "@/utils";
 import { base_api_path } from "@/utils/reportList";
 import { Ring } from "ldrs/react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 
 export default function AoneClass() {
@@ -60,7 +60,7 @@ export default function AoneClass() {
       // 
       try {
         setUpdating((prev) => !prev);
-        const updated_school = await axios.patch(`${base_api_path}school/edit-school`,
+         await axios.patch(`${base_api_path}school/edit-school`,
           school,
           { headers: { Authorization: `Bearer ${getToken('access_token')}` } },
         );        
@@ -72,9 +72,7 @@ export default function AoneClass() {
       }
 
   }
-  // 
-  let colors = colorTin(theme_bg, 10)
-    
+      
   // In your App.js
   return (
     <ALayout>

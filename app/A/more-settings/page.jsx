@@ -5,7 +5,7 @@ import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import AddGrades from "@/components/Avance/AddGrades";
 import { brightness } from "color-tin";
-import { usePathname, useRouter } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import { base_api_path } from "@/utils/reportList";
 import { colorTin } from "color-tin";

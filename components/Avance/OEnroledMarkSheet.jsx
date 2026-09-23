@@ -250,7 +250,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               }}
             >
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
-              <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%] cursor-pointer">LEARNER'S NAME</th>
+              <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%] cursor-pointer">LEARNER&apos;S NAME</th>
               <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
               {(toggle_show_hide_text?Object.keys(enroled[0]?.aoi_marks || {}):['AOI 1', 'AOI 2', 'AOI 3']).map((_, i)=>(
                 <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}</th> 
@@ -268,7 +268,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
           </thead>
           {class_list?.map((learner, i)=>{
             return(
-              <tr style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
+              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>

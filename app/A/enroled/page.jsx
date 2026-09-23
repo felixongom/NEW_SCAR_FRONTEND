@@ -7,7 +7,7 @@ import axios from "axios";
 import { useDataContext} from "@/context/DataProvider";
 import { countStudentsByStream, getToken } from "@/utils";
 import Loading from "./loading";
-import { usePathname, useRouter } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 import SetTime from "@/components/Avance/SetTime";
 import AResultTable from "@/components/AResultTable";
 import OResultTable from "@/components/OResultTable";
@@ -17,13 +17,12 @@ export default function AoneClass() {
   const [deleting, setDeleting] = useState(false)
    const [show_delete_popup, setShowDeletingPopup] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [showPopUp, setShowPopUp] = useState(false) 
   const [show_paycode_popup, setShowPaycodePopup] = useState(false) 
    const [is_uploading_paycode, setIsUploadingPayCode] = useState(false);
   
 
   const [selected_student, setSelectedStudent] = useState([]);
-  const {set_time,main_school_info, selected_clas, dispatch} = useDataContext()
+  const {set_time, selected_clas, dispatch} = useDataContext()
   
   // 
   let clas = selected_clas?selected_clas?.split(' ')[1]:'5'
@@ -121,7 +120,6 @@ export default function AoneClass() {
          <SetTime/>
          { parseInt(clas) <5 &&
           <OResultTable
-            setShowPopUp={setShowPopUp}
             setSelectedStudent={setSelectedStudent}
             selected_student={selected_student}
             setShowDeletingPopup={setShowDeletingPopup}
@@ -131,7 +129,6 @@ export default function AoneClass() {
 
         { parseInt(clas) >= 5 &&
          <AResultTable 
-            setShowPopUp={setShowPopUp}
             setSelectedStudent={setSelectedStudent}
             selected_student={selected_student}
             setShowDeletingPopup={setShowDeletingPopup}

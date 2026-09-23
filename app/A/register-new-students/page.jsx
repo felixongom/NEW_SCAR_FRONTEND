@@ -84,7 +84,7 @@ export default function AoneClass() {
         <NavBar heading="REGISTER LEARNERS"/>
         <div className="flex justify-center gap-2 bg-white border-t border-t-slate-300 py-5">
           {['From Form', 'Upload file'].map(item=>(
-            <button onClick={()=>setActiveForm(item)} className={`py-1 px-3 rounded-full border border-slate-900 shadow-sm text-sm transition-all duration-100 ${item===active_form?'bg-slate-700 font-semibold text-white':'white'}`}>{item}</button>
+            <button key={item} onClick={()=>setActiveForm(item)} className={`py-1 px-3 rounded-full border border-slate-900 shadow-sm text-sm transition-all duration-100 ${item===active_form?'bg-slate-700 font-semibold text-white':'white'}`}>{item}</button>
           ))}
         </div>
         <div className="w-full flex flex-col">
@@ -100,7 +100,8 @@ export default function AoneClass() {
                   {openYear && 
                   <div className='flex flex-col absolute z-10 border-b border-slate-100'>
                     {year_list.map(year=>(
-                      <span 
+                      <span
+                      key={year} 
                       style={{background:year_of_entry===year?theme_bg:'#e6e6e6',
                       fontWeight:year_of_entry===year?'bold':'',
                       color:`${year_of_entry===year?(brightness(theme_bg)<70?"white":'black'):'black'}`

@@ -14,7 +14,6 @@ import { getToken } from "@/utils";
 export default function ALayout({children}){
   const {dispatch, selected_clas, set_time, a_level_subject } = useDataContext()
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
     let clas = selected_clas?.split(' ')[1]
   
   useEffect(() => {
@@ -52,8 +51,6 @@ export default function ALayout({children}){
       } catch (err) {
           console.log(error);
           setError(err)
-        } finally {
-          setLoading(false);
         }
       };
       fetchData();

@@ -1,9 +1,8 @@
 
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import {DataProvider} from "@/context/DataProvider"
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 
 const geistSans = localFont({
@@ -17,12 +16,12 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Sscar: Secodary School Continuous Assessment report",
   description: "A mini application for analysing Uganda 'O' level compitent base carriculum student scores",
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+export default function RootLayout({children}) {
   return (
     <html lang="en">
       <body

@@ -26,7 +26,7 @@ export default function UploadMarks() {
     });
 
     try {
-      const res = await axios.post(`${base_api_path}upload-excel?sheet1=MARKS&sheet2=INFO`, formData, {
+      await axios.post(`${base_api_path}upload-excel?sheet1=MARKS&sheet2=INFO`, formData, {
         headers: {
           'Authorization': `Bearer ${getToken('access_token')}`
         },
@@ -42,6 +42,7 @@ export default function UploadMarks() {
 
       setMessage(`${selectedFiles.length} file${selectedFiles.length>1?'s':''} uploaded successfully!`);
     } catch (error) {
+      console.log(error);
       setMessage("Upload failed. Please try again.");
     } finally {
       setIsUploading(false);

@@ -51,6 +51,8 @@ export default function LoginAdmins() {
          router.push(`/home`)
          
       } catch (error) {
+         console.log(error);
+         
          setValue({...value, error:'incorrect cridentials'})
       }
       

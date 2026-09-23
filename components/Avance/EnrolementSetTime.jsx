@@ -48,6 +48,7 @@ function EnrolementSetTime() {
             <div className='flex flex-col absolute z-10'>
               {year_list.map(year=>(
                 <span 
+                key={year}
                 style={{background:set_enrolement_time.year===year?theme_bg:'#e6e6e6',
                 fontWeight:set_enrolement_time.year===year?'bold':'',
                 color:`${set_enrolement_time.year===year?(brightness(theme_bg)<70?"white":'black'):'black'}`

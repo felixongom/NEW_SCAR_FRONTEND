@@ -25,12 +25,12 @@ export default function Schools({}){
     // change school status
     async function changeSchoolStatus(id, status){
         setIsChanging(true)
-        let res
+        
         try {
             if(!editedSchool){
-                res =  await axios.patch(`${base_api_path}school/${id}/status/${!status}`)
+                await axios.patch(`${base_api_path}school/${id}/status/${!status}`)
             }else{
-                res =  await axios.patch(`${base_api_path}school/add-active-time`, {
+                await axios.patch(`${base_api_path}school/add-active-time`, {
                     ...editedSchool,
                     is_admin:true
                 })
@@ -52,7 +52,7 @@ export default function Schools({}){
             </div>
             <hr className="my-3" style={{height:2, background:'#fff'}} />
             <div className='flex w-full flex-row justify-between mb-3'>
-                <input onChange={(e) => {}} className='px-2 border focus:border-0 text-xs py-1' type="text" placeholder='Search school' />
+                <input className='px-2 border focus:border-0 text-xs py-1' type="text" placeholder='Search school' />
             </div>
             <div className="w-full h-full">
                 <table className="w-full border-collapse rounded-md  overflow-x-scroll shadow-md text-xs">

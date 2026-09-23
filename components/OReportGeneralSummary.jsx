@@ -60,7 +60,7 @@ export default function OReportGeneralSummary({title}) {
                     <th className="text-left w-[5%] pl-1">PSN</th>
                     <th className="text-left">SUBJECT</th>
                     {table_heading.map(grade=>(
-                        <th className="flex-1 w-[10%]">{grade}</th>
+                        <th key={grade} className="flex-1 w-[10%]">{grade}</th>
                     ))}
                 </tr>
                 {counted_grades.map((subject, i)=>{
@@ -71,7 +71,7 @@ export default function OReportGeneralSummary({title}) {
                             <td className="text-left">{a_subject_full_name[subject.subject]}</td>
                             {/*  */}
                             {table_heading.map(grade=>(
-                                <td className="flex-1 w-[10%] text-center">{subject[grade]}</td>
+                                <td key={grade} className="flex-1 w-[10%] text-center">{subject[grade]}</td>
                             ))}
                         </tr>
                     )

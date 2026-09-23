@@ -34,6 +34,7 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
                 console.log(result);
                 setUpdating((prev) => !prev);
             } catch (error) {
+                console.log(error);
                 setUpdating((prev) => !prev);
             }finally{
                 setUpdating(false);
@@ -65,7 +66,7 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
                     <input value={student_data.pay_code} onChange={(e)=>setSudentData({...student_data,pay_code:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Level ('A' OR 'O'))</label>
+                    <label className="text-xs pb-1 text-gray-400">Level (&apos;A&apos; OR &apos;O&apos;))</label>
                     <input value={student_data.level} onChange={(e)=>setSudentData({...student_data,level:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div onClick={updateStudent} className="w-full mx-auto mt-2 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
@@ -104,6 +105,7 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
                     toast.success(`Copying Completed!`)
                 }
             } catch (error) {
+                console.log(error);
                 setSaving((prev) => !prev);
                 toast.error(`Failed to copy`)
             }finally{
@@ -209,12 +211,12 @@ export function ExportPaycodeComponet({selected_student,isUploading,setIsUploadi
             },
           });
           if(res.data===true){
-
+            setMessage("Done Uploading!!!");
           }
-    
           setMessage(`${selectedFiles.length} file${selectedFiles.length>1?'s':''} uploaded successfully!`);
         } catch (error) {
-          setMessage("Upload failed. Please try again.");
+            console.log(error);
+            setMessage("Upload failed. Please try again.");
         } finally {
           setIsUploading(false);
           e.target.value = ""; // Reset file input so selecting the same file again triggers onChange
@@ -300,6 +302,7 @@ function DetailsCard({title, current_year, detail, setDetail}) {
                     <div className='flex flex-col absolute z-10'>
                         {years_list.map(year=>(
                             <span 
+                                key={year}
                                 style={{background:current_year===year?theme_bg:'#e6e6e6',
                                 fontWeight:current_year===year?'bold':'',
                                 color:`${current_year===year?(brightness(theme_bg)<70?"white":'black'):'black'}`
@@ -380,7 +383,7 @@ export function ChangeExanAllAoiEoc(){
         <div className="flex justify-center gap-1 bg-white">
         {[reserve_exam, 'AOI', 'EOC'].map(exam=>{
             return(
-            <button onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 py-1 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
+            <button key={exam} onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 py-1 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
         )})}
         </div>
         :null)   

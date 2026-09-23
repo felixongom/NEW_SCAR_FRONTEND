@@ -1,18 +1,15 @@
 'use client'
 
-import {countGradeOfAllSubjects, filterSubjects, getMySubjects, transformStudentData } from '@/utils/reshpe_data'
 import { useState } from 'react'
 import { useDataContext } from '@/context/DataProvider'
 import { useRouter } from 'next/navigation'
-import {countStudentsByStream, generateGradingRanges, getToken } from '@/utils'
+import {getToken } from '@/utils'
 import {brightness} from "color-tin"
-import _ from "lodash"
-import { subject_full_name,base_api_path } from '@/utils/reportList'
+import {base_api_path } from '@/utils/reportList'
 import axios from 'axios'
 
 export default function ExcelUploader({level, year_of_entry=0}) {
-  let { dispatch,main_school_info, selected_clas,theme_bg,dashhboard_on } = useDataContext()
-  const [file, setFile] = useState(null)
+  let { dispatch, selected_clas,theme_bg,dashhboard_on } = useDataContext()
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState(null)
@@ -21,8 +18,6 @@ export default function ExcelUploader({level, year_of_entry=0}) {
 
   const handleChange = async (e) => {
     const selectedFile = e.target.files[0]
-    setFile(selectedFile)
-
     if (!selectedFile) return
 
     setUploading(true)
@@ -66,6 +61,7 @@ export default function ExcelUploader({level, year_of_entry=0}) {
       }
       setUploading(false)
     } catch (error) {
+      console.log(error);
       setError('Failed to parse server response.')
     }
   }

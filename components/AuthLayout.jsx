@@ -21,9 +21,9 @@ function AuthLayout({children, router={}}) {
                 dispatch({ type: 'MAIN_SCHOOL_INFO', payload: res.data?.school })
                 dispatch({ type: 'TOKEN', payload: local_data?.token })
 
-                if(res.status===200)  Object.keys(router).length>0 && router.push(`/home`)
+                if(res.status===200) return Object.keys(router).length>0 && router.push(`/home`)
             } catch (error) {
-                // console.log(error); 
+                console.log(error); 
             } 
         }
         fetchAuthSchool() 

@@ -1,7 +1,7 @@
 "use client";
 import ALayout from "@/components/ALayout";
 import AEnroleStudents from "@/components/AEnroleStudent"
-import { usePathname, useRouter } from 'next/navigation'
+// import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/Avance/NavBar";
@@ -12,14 +12,13 @@ import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
 import { getToken, numbersArray } from "@/utils";
 import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import  {colorTin} from 'color-tin'
 import {StudentEnorolementComponent, StudentUpdateComponent} from "@/components/StudentUpdateComponent"
 import toast from "react-hot-toast";
 import { Ring } from "ldrs/react";
 
 export default function AoneClass() {
-  const {dispatch,main_school_info, theme_bg, set_enrolement_time,selected_clas } = useDataContext()
+  const {dispatch, theme_bg, set_enrolement_time,selected_clas } = useDataContext()
     let [subjects, setSubjects] = useState(null)
     const [openYear, setOpenYear] = useState(false)
     const [year_of_entry, setYearOfEntry] = useState(new Date().getFullYear())
@@ -116,6 +115,8 @@ export default function AoneClass() {
       );
       setEnrolling((prev) => !prev);
     } catch (error) {
+      console.log(error);
+      
     }
   }
   //deleting students from the database
@@ -127,7 +128,7 @@ export default function AoneClass() {
         {headers:{ Authorization: `Bearer ${getToken('access_token')}`}},
       );
       toast.success(`Deleted ${selected_Student.length} Student`)
-    } catch (error) {
+    } catch (_) {
       toast.error(`Deleting ${selected_Student.length} Student Faild`)
     }finally{
       setActivateDelete(false)
@@ -218,6 +219,7 @@ export default function AoneClass() {
               <div className='flex flex-col absolute z-10'>
                 {years_list.map(year=>(
                   <span 
+                  key={year}
                   style={{background:year_of_entry===year?theme_bg:'#e6e6e6',
                   fontWeight:year_of_entry===year?'bold':'',
                   color:`${year_of_entry===year?(brightness(theme_bg)<70?"white":'black'):'black'}`

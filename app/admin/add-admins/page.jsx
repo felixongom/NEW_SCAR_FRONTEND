@@ -10,8 +10,6 @@ export default function AddAdmins() {
    // 
    const searchParams = useSearchParams();
    const id = searchParams.get('id');
-   const username = searchParams.get('username');
-
    //
    const {theme_bg} = useDataContext()
    const [user, setUser] = useState({

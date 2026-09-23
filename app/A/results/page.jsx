@@ -11,7 +11,6 @@ import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
 import _ from 'lodash'
-import { usePathname, useRouter } from "next/navigation";
 import { getToken } from "@/utils";
 
 
@@ -21,10 +20,9 @@ export default function Results() {
   const [deleting, setDeleting] = useState(false)
   const [deleteTudent, setDeleteStudent] = useState(null)
   const [updateStudent, setUpdateStudent] = useState(null)
-  const [error, setError] = useState(null);
   const [selectedSubj,setselectedSubj] = useState({ids:'', subject:''})
-  const {set_time, dispatch,main_school_info, selected_clas, theme_bg, a_level_subject} = useDataContext()
-  let [subject, setSubjects] = useState(null)
+  const {set_time, dispatch, selected_clas, theme_bg, a_level_subject} = useDataContext()
+  // let [subject, setSubjects] = useState(null)
   // 
   let clas = selected_clas.split(' ')[1]
    //auth
@@ -46,7 +44,8 @@ export default function Results() {
         setResults(response.data);
 
       } catch (err) {
-        setError(err);
+        console.log(err);
+        
       } finally {
         setLoading(false);
       }
@@ -59,7 +58,7 @@ export default function Results() {
   useEffect(()=>{
     async function fetchSubjects() {
       const response = await axios.get(`${base_api_path}subjects`)
-      setSubjects(response.data,)
+      // setSubjects(response.data,)
     }
     fetchSubjects()
   },[])

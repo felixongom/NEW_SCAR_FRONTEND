@@ -9,8 +9,6 @@ export default function DownloadList({
   title = 'Download Files' 
 }) {
   const [downloadStates, setDownloadStates] = useState({})
-  const [isDownloadingAll, setIsDownloadingAll] = useState(false)
-
   // Extracts filename from path
   const getFileName = (path) => path.split(/[/\\]/).pop()
 
@@ -116,7 +114,7 @@ export default function DownloadList({
 
                   <button
                     onClick={() => handleDownload(filePath, index)}
-                    disabled={fileState.downloading || isDownloadingAll}
+                    disabled={fileState.downloading }
                     className="px-3 py-1 text-xs font-semibold text-white bg-slate-600 hover:bg-red-700 rounded-lg disabled:opacity-50 transition-colors shrink-0"
                   >
                     {fileState.downloading ? 'Downloading...' : 'Download'}

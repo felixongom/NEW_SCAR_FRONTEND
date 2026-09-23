@@ -1,7 +1,7 @@
 'use client'
 import ALayout from "@/components/ALayout";
 import PreviewStudPics from "@/components/PreviewStudPics"
-import { usePathname, useRouter } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/Avance/NavBar";
@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 
 export default function AoneClass() {
-  const {main_school_info, dispatch} = useDataContext()
+  const {dispatch} = useDataContext()
   const [selected_student, setSelectedStudent] = useState([])
   const [year_of_entry, setYearOfEntry] = useState(new Date().getFullYear())
   const [geting_images_loader, setGettingImagesLoader] = useState(false)
@@ -48,7 +48,7 @@ export default function AoneClass() {
       try {
         if(selected_student.length>0){
           setDeleting(true)
-          let res = await axios.delete(`${base_api_path}delete-photos`, {
+          await axios.delete(`${base_api_path}delete-photos`, {
           headers: {'Authorization':`Bearer ${getToken('access_token')}`
           },
           data: {image:selected_student          }
@@ -81,6 +81,7 @@ export default function AoneClass() {
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
         <NavBar heading={'PHOTO ALBUM'}/>
         <PreviewStudPics
+          geting_images_loader={geting_images_loader}
           setSelectedStudent={setSelectedStudent}
           selected_student={selected_student}
           setYearOfEntry={setYearOfEntry}

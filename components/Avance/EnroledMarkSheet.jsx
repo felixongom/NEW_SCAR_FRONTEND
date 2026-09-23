@@ -101,7 +101,9 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
     if (!api) return;
     const selectedNodes = api.getSelectedNodes();
     const selectedIds = selectedNodes.map(node => Object.values(node.data.marks_id));
-    selectedIds.length && setDeleteStudent(selectedIds.flat());
+    if(selectedIds.length){
+      setDeleteStudent(selectedIds.flat());
+    }
   };
 
   const onUpdateRows = () => {
@@ -117,7 +119,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
     });
     
     let edited = pairMarksWithIds(editedRows.map(row=>({marks:row.marks, marks_id:row.marks_id})));
-    setUpdateStudent(edited);
+    return setUpdateStudent(edited);
 
   };
 
@@ -231,7 +233,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%] cursor-pointer"
               onClick={()=>sortData('learner')}
-              >LEARNER'S NAME</th>
+              >LEARNER&apos;S NAME</th>
               <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
               
               {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
@@ -249,7 +251,9 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
           </thead>
           {class_list?.map((learner, i)=>{
             return(
-              <tr style={{
+              <tr 
+              key={i}
+              style={{
                 backgroundColor:i%2==1? colors.lighter_90:'white',
                 borderBottom:(class_list.length-1===i)?`2px solid ${theme_bg}`:''
                 }} className={`font-mono text-[15px]`}>

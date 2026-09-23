@@ -1,7 +1,5 @@
 "use client";
-import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
-import { useEffect} from "react";
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { MdOutlineSummarize, MdOutlineDocumentScanner } from "react-icons/md";
 
@@ -14,12 +12,12 @@ import Link from 'next/link';
 export default function MainWebReportLayout({children}) {
   const {main_school_info, theme_bg, dispatch,report_category} = useDataContext()
   //auth
-  const router = useRouter()
-  const pathname = usePathname(); 
-  useEffect(()=>{    
-    if(main_school_info) return router.push(pathname);
-    if(!main_school_info) return router.push('/');
-  },[])
+  // const router = useRouter()
+  // const pathname = usePathname(); 
+  // useEffect(()=>{    
+  //   if(main_school_info) return router.push(pathname);
+  //   if(!main_school_info) return router.push('/');
+  // },[])
 
 let colors = colorTin(theme_bg, 10);
   const main_category = [
