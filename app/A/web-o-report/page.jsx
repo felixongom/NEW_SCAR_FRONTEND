@@ -14,18 +14,22 @@ import { ChangeExanAllAoiEoc } from "@/components/StudentUpdateComponent";
 export default function AoneClass() {
   const {report_category,transformed_data,selected_clas, data_chunk, set_time, reserve_exam} = useDataContext()  
   const [title, setTile] = useState('')
+  const [extra_data, setExtraData] = useState(null)
   const [open_title, setOpenTitle] = useState(false)
   const clas = parseInt(selected_clas.split(' ')[1])
   // 
-  let extra_data = {}
-  let localStorageData = window.localStorage.getItem('importantData')
+  useEffect(() => {
+    let localStorageData = window.localStorage.getItem('importantData')
+    let extra_data = {}
+    if(localStorageData){
+      let local_data = JSON.parse(localStorageData) 
+      extra_data.begins = local_data?.begins
+      extra_data.ends = local_data?.ends
+      extra_data.put_position = local_data?.put_position
+    }
+    setExtraData(extra_data)
+}, []);
   
-  if(localStorageData){
-    let local_data = JSON.parse(localStorageData) 
-    extra_data.begins = local_data?.begins
-    extra_data.ends = local_data?.ends
-    extra_data.put_position = local_data?.put_position
-  }
 
   let exam_list = reserve_exam.split('&');
   
