@@ -42,6 +42,7 @@ export default function LoginAdmins() {
                      name, campus, box_no, district_city,reg_email,
                      is_admin:true
                   })
+                  console.log(res.data)
                   
                   
                } catch (error) {

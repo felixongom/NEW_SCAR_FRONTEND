@@ -9,9 +9,8 @@ import { BsCloudUpload } from "react-icons/bs";
 import { CiSettings, } from "react-icons/ci";
 
 
-
-
-let base_api_path = 'http://localhost:3001/api/'
+// let base_api_path = 'http://localhost:3001/api/'
+let base_api_path = 'https://sscar.to'+'/api/'  
 // full name for subject
 let a_subject_full_name ={
     MTC:'MATHEMATICS',
@@ -65,8 +64,7 @@ const nav_links = [
 const exam = {BOT:'BEGINNING OF TERM',  MOT:'MID OF TERM', EOT:'END OF TERM'}
 const roman_term = {1:'I', 2:'II', 3:'III'}
 
-export  {
-  base_api_path,
+export  {base_api_path,
   colors, 
   nav_links,
   exam,
