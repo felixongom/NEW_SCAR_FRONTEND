@@ -144,7 +144,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject)=>{
                           
                           return _subject[subject]?.subjects?.map((subj, i3)=>{                            
                           
@@ -191,7 +191,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
                         </tr>
-                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject, i2)=>{
+                        {sortOlevelSubjectOnReportCard(Object.keys(_subject))?.map((subject)=>{
                           let _aoi = _subject[subject]?.AOI_AVERAGE_20
                           let aoi = _aoi && _aoi!==0?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'
                           

@@ -128,7 +128,8 @@ export default function AoneClass() {
         {headers:{ Authorization: `Bearer ${getToken('access_token')}`}},
       );
       toast.success(`Deleted ${selected_Student.length} Student`)
-    } catch (_) {
+    } catch (error) {
+      console.log(error);
       toast.error(`Deleting ${selected_Student.length} Student Faild`)
     }finally{
       setActivateDelete(false)

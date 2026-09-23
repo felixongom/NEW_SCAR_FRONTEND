@@ -1,7 +1,5 @@
 "use client";
 import ALayout from "@/components/ALayout";
-import { colorTin } from "color-tin"
-// import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/Avance/NavBar";

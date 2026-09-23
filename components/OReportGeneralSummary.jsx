@@ -1,5 +1,5 @@
 import { useDataContext } from "@/context/DataProvider";
-import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
+import {a_subject_full_name, roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { countAverageGrades, getSubjectGradeCount, getUniqueSubjects, roundOff} from "@/utils";

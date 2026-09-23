@@ -10,7 +10,7 @@ import LogoutButton from '../LogoutButton';
 import Link from 'next/link';
 
 export default function MainWebReportLayout({children}) {
-  const {main_school_info, theme_bg, dispatch,report_category} = useDataContext()
+  const {theme_bg, dispatch,report_category} = useDataContext()
   //auth
   // const router = useRouter()
   // const pathname = usePathname(); 

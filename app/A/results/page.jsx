@@ -22,17 +22,8 @@ export default function Results() {
   const [updateStudent, setUpdateStudent] = useState(null)
   const [selectedSubj,setselectedSubj] = useState({ids:'', subject:''})
   const {set_time, dispatch, selected_clas, theme_bg, a_level_subject} = useDataContext()
-  // let [subject, setSubjects] = useState(null)
   // 
   let clas = selected_clas.split(' ')[1]
-   //auth
-  // const router = useRouter()
-  // const pathname = usePathname(); 
-  // useEffect(()=>{    
-  //   if(main_school_info) return router.push(pathname);
-  //   if(!main_school_info) return router.push('/');
-  // },[])
-  //
 
   useEffect(()=>{
      const fetchData = async () => { 
@@ -55,13 +46,13 @@ export default function Results() {
   },[clas, set_time.year, set_time.term,set_time.exam, selectedSubj?.ids, deleting])
   
   // fetch list of subject
-  useEffect(()=>{
-    async function fetchSubjects() {
-      const response = await axios.get(`${base_api_path}subjects`)
-      // setSubjects(response.data,)
-    }
-    fetchSubjects()
-  },[])
+  // useEffect(()=>{
+  //   async function fetchSubjects() {
+  //     const response = await axios.get(`${base_api_path}subjects`)
+  //     // setSubjects(response.data,)
+  //   }
+  //   fetchSubjects()
+  // },[])
 
   //
  
@@ -91,8 +82,7 @@ export default function Results() {
      }
    }
   //  
- const doUpdate = async (cases)=>{
-   
+  const doUpdate = async (cases)=>{
    if(cases==='councel'){
      setDeleteStudent(null)
      setUpdateStudent(null)

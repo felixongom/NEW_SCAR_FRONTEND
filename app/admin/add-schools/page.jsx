@@ -10,7 +10,6 @@ export default function LoginAdmins() {
   // 
    const searchParams = useSearchParams();
    const id = searchParams.get('id');
-   const username = searchParams.get('username');
    //
    const {theme_bg} = useDataContext()
    const [school, setSchool] = useState({

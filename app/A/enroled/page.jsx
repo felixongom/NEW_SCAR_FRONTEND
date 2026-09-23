@@ -66,7 +66,7 @@ export default function AoneClass() {
     if(!(set_time.exam=='AOI' || set_time.exam=='EOC')){
       fetchData();
     }
-  },[selected_clas, set_time.year, set_time.term, set_time.exam, deleting, is_uploading_paycode])
+  },[selected_clas, clas, set_time.year, set_time.term, set_time.exam, deleting, is_uploading_paycode])
   //
   
   const doDelete = async (cases)=>{

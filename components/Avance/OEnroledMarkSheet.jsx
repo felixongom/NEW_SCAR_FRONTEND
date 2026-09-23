@@ -119,7 +119,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
     const selectedAoiIds = selectedNodes.map(node => {
       return node.data?.aoi_id && Object.values(node.data?.aoi_id)
     });
-    selectedIds.length && setDeleteStudent([...selectedIds, ...selectedAoiIds].flat().filter(id=>id));
+    return selectedIds.length && setDeleteStudent([...selectedIds, ...selectedAoiIds].flat().filter(id=>id));
   };
 
   const onUpdateRows = () => {
