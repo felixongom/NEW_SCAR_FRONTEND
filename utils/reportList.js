@@ -9,8 +9,8 @@ import { BsCloudUpload } from "react-icons/bs";
 import { CiSettings, } from "react-icons/ci";
 
 
-let base_api_path = 'http://localhost:3001/api/'
-// let base_api_path = 'https://sscar.to'+'/api/'  
+// let base_api_path = 'http://localhost:3001/api/'
+let base_api_path = 'https://sscar.to'+'/api/'  
 // full name for subject
 let a_subject_full_name ={
     MTC:'MATHEMATICS',
