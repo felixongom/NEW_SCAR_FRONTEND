@@ -11,6 +11,8 @@ import { useEffect, useState } from "react"
 export default function Schools({}){
     const {theme_bg}=useDataContext()
     const [schools, setSchools] = useState([])
+    // const [unwanted_school, setUnwantedSchool] = useState([])
+    // const [is_deleting, setIsDeleting]= useState(false)
     const [is_changing, setIsChanging] = useState(false)
     const [editedSchool, setEditedSchool]= useState('')
     //
@@ -43,6 +45,7 @@ export default function Schools({}){
             setIsChanging(false)
         }
     }
+
 
     return(
         <div className="p-2 ">
@@ -92,7 +95,7 @@ export default function Schools({}){
                         
                         <td className="p-1 flex flex-row gap-2 justify-center items-center">
                             <button
-                                onClick={()=>{}}
+                               
                                 className="bg-red-500 text-white px-1 rounded-md transition text-xs">
                                 Delete
                             </button>

@@ -104,7 +104,7 @@ export default function ExcelUploader({level, year_of_entry=0}) {
             onClick={() => clickClass(clas)}
             className={`${clas==='DASHBOARD'?'w-full flex justify-center gap-2': 'w-[48%]'} font-semibold p-3 uppercase cursor-pointer mb-1 rounded text-center`}
           >
-            {clas} {loading && <Ring size={30} stroke={2} bgOpacity={0} speed={2} color={theme_bg}/>}
+            {clas} {(selected_clas === clas) && loading && <Ring size={30} stroke={2} bgOpacity={0} speed={2} color={'#fff'}/>}
           </button>
         ))}
       </div>
