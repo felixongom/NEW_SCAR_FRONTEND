@@ -71,6 +71,7 @@ export default function LoginAdmins() {
    }
   
   return (
+   <Suspense fallback={<div>Loading...</div>}>
     <div className={`reltive flex justify-center items-center h-screen bg-slate-300 flex-col `}>
         <Link href={'/admin/schools'} style={{ background:theme_bg, color:'#fff'}} className="text-left absolute top-2 left-2 text-xs rounded-full px-1"> Back</Link>
         <h3 className='font-semibold text-sm text-center' style={{color:theme_bg}}>Welcome to Sscar admins</h3> <br />
@@ -107,5 +108,6 @@ export default function LoginAdmins() {
             <button style={{background:theme_bg, color:'white'}} className='p-1 text-sm w-full rounded'>Add School</button>
         </form>
     </div>
+    </Suspense>
   )
 }

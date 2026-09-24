@@ -8,7 +8,7 @@ import { roundOff, sortAlevelSubjectOnReportCard, sortOlevelSubjectOnReportCard 
 import { a_subject_full_name, paper_code } from "@/utils/reportList";
 import OReportSummary from "../../../components/OReportSummary";
 import OReportGeneralSummary from "../../../components/OReportGeneralSummary";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChangeExanAllAoiEoc } from "@/components/StudentUpdateComponent";
 
 export default function AoneClass() {

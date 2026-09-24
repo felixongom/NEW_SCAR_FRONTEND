@@ -49,6 +49,7 @@ export default function AddAdmins() {
    }
   
   return (
+   <Suspense fallback={<div>Loading...</div>}>
     <div className={`flex justify-center items-center h-screen bg-slate-300 flex-col `}>
         <Link href={'/admin/admins'} style={{ background:theme_bg, color:'#fff'}} className="text-left absolute top-2 left-2 text-xs rounded-full px-1"> Back</Link>
         <h3 className='font-semibold text-sm text-center' style={{color:theme_bg}}>Welcome to Sscar admins</h3> <br />
@@ -78,7 +79,7 @@ export default function AddAdmins() {
                <button disabled={user.is_sending} style={{background:theme_bg, color:'white'}} className='p-1 text-sm w-full rounded mt-2'>{user.is_sending?'Update... ':'Update'}</button>
             }
         </form>
-      
     </div>
+    </Suspense>
   )
 }
