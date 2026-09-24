@@ -230,7 +230,7 @@ const handleUpload = async () => {
                 title={base_api_path.replace('/api', '')+'uploads/'+photo.image}
                 lazy
                 src={base_api_path.replace('/api', '')+'uploads/'+photo.image}
-                alt={photo.image}
+                alt={photo.image||''}
                 className="w-full h-full hover:scale-125 object-cover transition"
               />
               <button 

@@ -11,7 +11,7 @@ const LogoPreviewer = () => {
           <Image
             width={120} 
             height={120} 
-            src={logo || main_school_info?.logo}
+            src={logo || main_school_info?.logo || ''}
             alt="logo"
             style={{
             margin: '5px',
