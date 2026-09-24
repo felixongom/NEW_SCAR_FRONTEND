@@ -9,7 +9,7 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
     return (
         <div className="w-full py-1 bg-white relative">
             <div className="text-lg flex justify-between px-2 py-1 w-full">
-                <Image width={120} height={120} src={main_school_info.logo || ''} />
+                <Image width={120} height={120} src={main_school_info.logo ||''} />
                 <div className="flex justify-center flex-col">
                     <h1 className="text-center text-4xl font-bold -mt-3">{main_school_info['SCHOOL NAME']}</h1>
                     <span className="text-center text-[20px] -mt-2">{main_school_info['BOX NO']}, {main_school_info['DISTRICT/CITY']}</span>
