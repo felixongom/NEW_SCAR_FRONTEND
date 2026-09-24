@@ -16,7 +16,6 @@ export default function AoneClass() {
   const [title, setTile] = useState('')
   const [extra_data, setExtraData] = useState(null)
   const [open_title, setOpenTitle] = useState(false)
-  const clas = parseInt(selected_clas.split(' ')[1])
   // 
   useEffect(() => {
     let localStorageData = window.localStorage.getItem('importantData')
@@ -28,10 +27,12 @@ export default function AoneClass() {
       extra_data.put_position = local_data?.put_position
     }
     setExtraData(extra_data)
-}, []);
+  }, []);
   
-
-  let exam_list = reserve_exam.split('&');
+  
+  const clas = parseInt(selected_clas.split(' ')[1]);
+  let exam_list = reserve_exam?.split('&') || [];
+  let bot_mot_eot = set_time.exam?.split('&') || []
   // In your App.js
   
   if(report_category=='report cards'){
@@ -140,7 +141,7 @@ export default function AoneClass() {
                   <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px]`}>
                             <td style={{width:'25%'}} className='border border-black p-1'>SUBJECT</td>
-                            {reserve_exam.split('&')?.map((exm, exm_i)=>(
+                            {exam_list?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
                             <td className='border border-black text-center'>AVG(80)</td>
@@ -187,7 +188,7 @@ export default function AoneClass() {
                             <td style={{width:'25%'}} className='border border-black '>SUBJECT</td>
                             <td className='border border-black text-center '> AOI(3)</td>
                             <td className='border border-black text-center '> AOI(20)</td>
-                            {set_time.exam.split('&')?.map((exm, exm_i)=>(
+                            {bot_mot_eot?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
                             <td className='border border-black text-center'>AVG(80)</td>
@@ -214,7 +215,7 @@ export default function AoneClass() {
                                   }
                                 {/*  */}
                                 {
-                                  set_time.exam.split('&')?.map((exm, exm_i)=>( 
+                                  bot_mot_eot?.map((exm, exm_i)=>( 
                                     <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<10?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
                                   ))
                                 }
@@ -237,7 +238,7 @@ export default function AoneClass() {
                             <td style={{width:'25%'}} className='border border-black'>SUBJECT</td>
                             <td className='border border-black text-center '> AOI(3)</td>
                             <td className='border border-black text-center '> AOI(20)</td>
-                            {set_time.exam.split('&')?.map((exm, exm_i)=>(
+                            {bot_mot_eot?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
                             <td className='border border-black text-center'>AVG(80)</td>
@@ -264,7 +265,7 @@ export default function AoneClass() {
                                   }
                                   {/*  */}
                                   {
-                                    set_time.exam.split('&')?.map((exm, exm_i)=>( 
+                                    bot_mot_eot?.map((exm, exm_i)=>( 
                                       <td key={exm_i} className={`border border-black text-center text-[15px] py-${student?.num_subjects<19?'2':'1'}`}> {aoi!=='-'?roundOff(subj.EXAM_80[exm.trim()], 0):'-'} </td>
                                     ))
                                   }
@@ -300,7 +301,8 @@ export default function AoneClass() {
       </>
     );
     
-  }else if(report_category=='report summary'){
+  }
+  else if(report_category=='report summary'){
     return ( 
       <MainWebReportLayout>
        <div className="flex space-x-5 border-t border-slate-300 py-2 justify-start items-center print:hidden">
@@ -320,7 +322,8 @@ export default function AoneClass() {
         </div>}
       </MainWebReportLayout>
     );
-  }else{
+  }
+  else{
     return(
       <MainWebReportLayout>
         <div className="flex space-x-5 border-t border-slate-300 py-2 justify-start items-center print:hidden">

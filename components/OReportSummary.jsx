@@ -1,5 +1,5 @@
 import { useDataContext } from "@/context/DataProvider";
-import { roman_term } from "@/utils/reportList";
+import { exam, roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { useEffect, useState } from "react";

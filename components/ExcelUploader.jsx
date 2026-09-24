@@ -7,12 +7,14 @@ import {getToken } from '@/utils'
 import {brightness} from "color-tin"
 import {base_api_path } from '@/utils/reportList'
 import axios from 'axios'
+import {Ring} from "ldrs/react"
 
 export default function ExcelUploader({level, year_of_entry=0}) {
   let { dispatch, selected_clas,theme_bg,dashhboard_on } = useDataContext()
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState(null)
+  const [loading , setLoading]= useState(false)  
 
   const router = useRouter()
 
@@ -36,6 +38,7 @@ export default function ExcelUploader({level, year_of_entry=0}) {
         url = `${base_api_path}upload-excel?sheet1=${selected_clas}&sheet2=GRADINGS&sheet3=SCHOOL INFO&allow_all=${dashhboard_on}`
       }
       
+      setLoading(prev=>!prev)
       const res = await axios.post(url, formData,{
         //sent authorisation header
         headers:{'Authorization':`Bearer ${getToken('access_token')}`},
@@ -45,8 +48,8 @@ export default function ExcelUploader({level, year_of_entry=0}) {
           setProgress(percentComplete)
         }
       })
+      setLoading(prev=>!prev)
       //       
-      
       
       let result = res.data      
       if(selected_clas==='UNEB UCE'){
@@ -99,9 +102,9 @@ export default function ExcelUploader({level, year_of_entry=0}) {
               
             key={clas}
             onClick={() => clickClass(clas)}
-            className={`${clas==='DASHBOARD'?'w-full': 'w-[48%]'} font-semibold p-3 uppercase cursor-pointer mb-1 rounded text-center`}
+            className={`${clas==='DASHBOARD'?'w-full flex justify-center gap-2': 'w-[48%]'} font-semibold p-3 uppercase cursor-pointer mb-1 rounded text-center`}
           >
-            {clas}
+            {clas} {loading && <Ring size={30} stroke={2} bgOpacity={0} speed={2} color={theme_bg}/>}
           </button>
         ))}
       </div>

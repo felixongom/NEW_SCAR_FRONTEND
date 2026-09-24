@@ -1,5 +1,6 @@
 import { useDataContext } from "@/context/DataProvider";
 import { uploadLogo } from "@/utils";
+import Image from "next/image";
 
 const LogoPreviewer = () => {
   const {dispatch, token, school_info, logo, main_school_info} = useDataContext()
@@ -7,12 +8,12 @@ const LogoPreviewer = () => {
   return (
     <div className="p-1 mx-auto flex-col border-b-1 flex justify-center items-center">
       <div className="h-[120px] w-[120px] flex flex-wrap relative">
-          <Image 
+          <Image
+            width={120} 
+            height={120} 
             src={logo || main_school_info?.logo}
             alt="logo"
             style={{
-            width: '120px',
-            height: '120px',
             margin: '5px',
             border: '1px solid #ccc',
             borderRadius: '8px',

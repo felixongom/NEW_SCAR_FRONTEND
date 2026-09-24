@@ -12,6 +12,7 @@ import { MdOutlineLocalPrintshop } from 'react-icons/md';
 import { HeadedPaper } from './Headers/HeadedPaper';
 import { Title } from './StudentUpdateComponent';
 import { Ring } from 'ldrs/react';
+import Image from "next/image";
 
 const UploadImages = ({setDoneUploading,year_of_entry,setYearOfEntry,selected_student, setSelectedStudent,setShowDeletingPopup, geting_images_loader, deleting}) => {
   const {theme_bg, photos, selected_clas} = useDataContext()
@@ -224,6 +225,8 @@ const handleUpload = async () => {
           >
             <div className="w-full h-36 relative bg-gray-100 flex items-center justify-center">
               <Image
+                width={100}
+                heigh={120}
                 title={base_api_path.replace('/api', '')+'uploads/'+photo.image}
                 lazy
                 src={base_api_path.replace('/api', '')+'uploads/'+photo.image}

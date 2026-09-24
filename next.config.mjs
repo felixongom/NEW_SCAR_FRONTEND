@@ -2,7 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
       images: {
-        domains: ['https://stellar-signs.com'], // Add all domains from where you load images
+        domains: ['sscar.to'], // Add all domains from where you load images
       },
        webpack(config) {
         config.module.rules.push({

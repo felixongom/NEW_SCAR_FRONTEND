@@ -1,6 +1,7 @@
 import { useDataContext } from "@/context/DataProvider";
 import { base_api_path } from "@/utils/reportList";
 import { capitalize } from "@/utils/reshpe_data";
+import Image from "next/image";
 
 export function HeadedPaper({pics, learner_pic, subject_name}){
     const { main_school_info} = useDataContext(); 
@@ -20,7 +21,7 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
                     <p className="text-center text-sm -mt-1 font-normal">{main_school_info['LOCATION']}</p>
                     <i className="text-center text-sm font-semibold capitalize -mt-1">&quot; {capitalize(main_school_info['MOTO'])} &quot;</i>
                 </div>
-                {subject_name?<div className="text-6xl mt-3">{subject_name}</div>:learner_pic?<Image className="w-[100px] h-[120px]" src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
+                {subject_name?<div className="text-6xl mt-3">{subject_name}</div>:learner_pic?<Image width={100} height={120} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
                     pics?<Image width={120} height={120} src={pics} />:
                 <div/>}
             </div>

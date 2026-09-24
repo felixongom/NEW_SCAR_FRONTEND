@@ -92,7 +92,7 @@ export default function MoreSettings() {
     let selected_id = id ? id : 0;
     try {
       setSelecting((prev) => !prev);
-      let result = await axios.post(
+      await axios.post(
         `${base_api_path}school/select-grade/${selected_id}/${is_subsidiary}`,
         {},
         { headers: { Authorization: `Bearer ${getToken('access_token')}` } },

@@ -187,7 +187,7 @@ export default function AoneClass() {
         <hr />
         <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
           <h2 className="mt-2 font-semibold text-sm md:text-xl text-slate-800">Select Subject/Papers </h2>
-          {!subjects?<Ring size={15} stroke={5} bgOpacity={0} speed={2} color="#262626"/>:
+          {!subjects?<Ring size={30} stroke={3} bgOpacity={0} speed={2} color={theme_bg}/>:
           
         <div className="flex flex-wrap shadow-sm gap-3 mb-4 py-2 text-sm text-slate-600">
           <button

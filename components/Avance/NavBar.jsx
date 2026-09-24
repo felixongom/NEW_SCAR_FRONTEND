@@ -42,7 +42,7 @@ function NavBar({heading}) {
               >{'S'+c.split(' ')[1]}</span>
           ))
         }
-        <button class="text-gray-800 px-2 py-0.1 rounded-2xl font-medium backdrop-blur-md bg-white/10 border border-gray-300 transition-all duration-300 active:scale-95">
+        <button className="text-gray-800 px-2 py-0.1 rounded-2xl font-medium backdrop-blur-md bg-white/10 border border-gray-300 transition-all duration-300 active:scale-95">
           {main_school_info?.time_left}
         </button>
         <ColorThemeSetter/>
