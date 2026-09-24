@@ -5,9 +5,19 @@ import { base_api_path } from "@/utils/reportList";
 import axios from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState,Suspense } from "react";
 export default function LoginAdmins() {
-  // 
+  
+  return (
+   <Suspense fallback={<div>Loading...</div>}>
+      <SchoolForm/>
+   </Suspense>
+  )
+}
+
+// 
+const SchoolForm = ()=>{
+// 
    const searchParams = useSearchParams();
    const id = searchParams.get('id');
    //
@@ -69,10 +79,8 @@ export default function LoginAdmins() {
          })    
       }   
    }
-  
-  return (
-   <Suspense fallback={<div>Loading...</div>}>
-    <div className={`reltive flex justify-center items-center h-screen bg-slate-300 flex-col `}>
+   return(
+      <div className={`reltive flex justify-center items-center h-screen bg-slate-300 flex-col `}>
         <Link href={'/admin/schools'} style={{ background:theme_bg, color:'#fff'}} className="text-left absolute top-2 left-2 text-xs rounded-full px-1"> Back</Link>
         <h3 className='font-semibold text-sm text-center' style={{color:theme_bg}}>Welcome to Sscar admins</h3> <br />
         <form onSubmit={registerSchool} className='bg-white h-50 md:w-[50%] sm:w-[90%] md:py-5 py-2 rounded-md px-2'>
@@ -108,6 +116,5 @@ export default function LoginAdmins() {
             <button style={{background:theme_bg, color:'white'}} className='p-1 text-sm w-full rounded'>Add School</button>
         </form>
     </div>
-    </Suspense>
-  )
+   )
 }

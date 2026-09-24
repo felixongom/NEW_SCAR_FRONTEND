@@ -32,7 +32,6 @@ export default function AoneClass() {
   
 
   let exam_list = reserve_exam.split('&');
-  
   // In your App.js
   
   if(report_category=='report cards'){

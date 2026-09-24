@@ -11,20 +11,13 @@ import Link from 'next/link';
 
 export default function MainWebReportLayout({children}) {
   const {theme_bg, dispatch,report_category} = useDataContext()
-  //auth
-  // const router = useRouter()
-  // const pathname = usePathname(); 
-  // useEffect(()=>{    
-  //   if(main_school_info) return router.push(pathname);
-  //   if(!main_school_info) return router.push('/');
-  // },[])
 
-let colors = colorTin(theme_bg, 10);
+  let colors = colorTin(theme_bg, 10);
   const main_category = [
     {report_type:'report summary', icon:<MdOutlineSummarize style={{color:theme_bg}} className="text-3xl mt-1 text-gray-500"/>},
     {report_type:'general summary', icon:<MdOutlineDocumentScanner style={{color:theme_bg}} className="text-3xl mt-1 text-gray-500"/>}, 
     {report_type:'report cards', icon:<IoDocumentTextOutline style={{color:theme_bg}} className="text-3xl mt-1 text-gray-500"/>}, 
-]
+  ]
 
   // In your App.js
   return (

@@ -4,14 +4,26 @@ import { useDataContext } from "@/context/DataProvider";
 import { base_api_path } from "@/utils/reportList";
 import Link from "next/link";
 import axios from "axios"
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+
 export default function AddAdmins() {
+  return (
+   <Suspense fallback={<div>Loading...</div>}>
+    <AdminForms/>
+   </Suspense>
+  )
+}
+
+
+// 
+const AdminForms = ()=>{
    // 
    const searchParams = useSearchParams();
    const id = searchParams.get('id');
    //
    const {theme_bg} = useDataContext()
+     
    const [user, setUser] = useState({
       username:id?username:'', 
       email:'', 
@@ -47,10 +59,9 @@ export default function AddAdmins() {
          setUser({...user, is_sending:false})     
       }   
    }
-  
-  return (
-   <Suspense fallback={<div>Loading...</div>}>
-    <div className={`flex justify-center items-center h-screen bg-slate-300 flex-col `}>
+   
+   return(
+      <div className={`flex justify-center items-center h-screen bg-slate-300 flex-col `}>
         <Link href={'/admin/admins'} style={{ background:theme_bg, color:'#fff'}} className="text-left absolute top-2 left-2 text-xs rounded-full px-1"> Back</Link>
         <h3 className='font-semibold text-sm text-center' style={{color:theme_bg}}>Welcome to Sscar admins</h3> <br />
         <form onSubmit={(e)=>register(e)} className='bg-white h-50 md:w-[50%] sm:w-[90%] md:py-5 py-2 rounded-md px-2'>
@@ -80,6 +91,4 @@ export default function AddAdmins() {
             }
         </form>
     </div>
-    </Suspense>
-  )
-}
+)}
