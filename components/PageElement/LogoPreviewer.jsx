@@ -7,7 +7,7 @@ const LogoPreviewer = () => {
   return (
     <div className="p-1 mx-auto flex-col border-b-1 flex justify-center items-center">
       <div className="h-[120px] w-[120px] flex flex-wrap relative">
-          <img
+          <Image 
             src={logo || main_school_info?.logo}
             alt="logo"
             style={{

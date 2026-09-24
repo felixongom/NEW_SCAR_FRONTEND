@@ -223,7 +223,7 @@ const handleUpload = async () => {
             className="bg-white w-[130px] rounded shadow-md overflow-hidden hover:shadow-lg transition duration-300"
           >
             <div className="w-full h-36 relative bg-gray-100 flex items-center justify-center">
-              <img
+              <Image
                 title={base_api_path.replace('/api', '')+'uploads/'+photo.image}
                 lazy
                 src={base_api_path.replace('/api', '')+'uploads/'+photo.image}
