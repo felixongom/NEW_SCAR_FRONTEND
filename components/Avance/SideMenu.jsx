@@ -20,9 +20,7 @@ export default function SideMenu(){
           dispatch({type:'THEME', payload:theme})
          }
         },[])
-    //
-    console.log(main_school_info);
-    
+    //    
     return(
         <div className={`${!toggle_manu?'w-[220px]':'w-[0px]'} transition-all duration-100 ease-in-out shadow-sm h-[100vh] print:hidden border-r border-gray-300`} style={{zIndex:5}}>
             <div className={`${!toggle_manu?'w-[220px]':'w-[0px] overflow-x-hidden'} transition-all duration-100 h-[100vh] bg-white fixed left-0 `}>
@@ -50,22 +48,24 @@ export default function SideMenu(){
                         <MdChevronLeft className=' text-gray-900 text-xl font-semibold absolute' />
                     </span>
                 </li>
-                {nav_links.map((link, i)=>(
+                <div className="px-1">
+
+                    {nav_links.map((link, i)=>(
                         <li key={i} className={`list-none w-full py-3 px-1 cursor-pointer rounded-${pathname  === link.path? 'md': null}`}
-                            style={{
-                                // height:45,
-                                display:'flex',
-                                alignItems:'center',
-                                justifyContent:'left',
-                                borderBottom:'1px solid #ddd',
-                                background:`${pathname  === link.path? theme_bg: "#fff"}`,
-                                color:`${pathname  === link.path?(brightness(theme_bg)<60?"white":'#1a1a1a'):'#1a1a1a'}`,
-                                fontWeight:`${pathname  === link.path? "bold":'normal'}`,
-                            }} 
+                        style={{
+                            display:'flex',
+                            alignItems:'center',
+                            justifyContent:'left',
+                            borderBottom:'1px solid #ddd',
+                            background:`${pathname  === link.path? theme_bg: "#fff"}`,
+                            color:`${pathname  === link.path?(brightness(theme_bg)<60?"white":'#1a1a1a'):'#1a1a1a'}`,
+                            fontWeight:`${pathname  === link.path? "bold":'normal'}`,
+                        }} 
                         >
                         <Link href={link.path} className={`text-sm w-full flex`}> <span className="mr-1 text-xl">{link.icon}</span> {link.name}</Link>
-                        </li>
-                ))}
+                    </li>
+                    ))}
+                </div>
                 
             </div>
         </div>
