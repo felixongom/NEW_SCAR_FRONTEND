@@ -37,7 +37,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
         <div className="relative w-full min-h-screen break-inside-avoid print:w-full print:h-screen print:min-h-screen print:break-after-page print:p-0 border-[2px] border-gray-800">
           {/* Inner Container: Flex layout stretched to fill 100% of the parent container */}
           <div className="flex p-1 h-[200vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-slate-600">
-          <Image className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={'90%'} height={'90%'} src={main_school_info.logo} />
+          <Image className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={950} height={950} src={main_school_info.logo} />
             
             <HeadedPaper learner_pic={student.image} pics={'/person.png'}/>
             <section className='w-full'>
@@ -55,8 +55,10 @@ export default function WebReportLayout({children,student, extra_data, title}) {
                       <td className='border border-blue-300 px-1 text-center flex-2'>{set_time?.year}</td>
                       <td className='border border-blue-300 px-1 flex-1 w-[80px]'>TERM</td>
                       <td className='border border-blue-300 px-1 text-center flex-1 w-[150px]'>{roman_term[set_time?.term]}</td>
-                      <td className='border border-blue-300 px-5 flex-1 w-[80px]'>COMBN</td>
-                      <td className='border border-blue-300 px-3 text-center flex-1'>{student?.combination}</td>
+                      {clas>4 && <>
+                        <td className='border border-blue-300 px-5 flex-1 w-[80px]'>COMBN</td>
+                        <td className='border border-blue-300 px-3 text-center flex-1'>{student?.combination}</td>
+                      </>}
                   </tr>
                   <tr className='border border-blue-300 text-[15px]'>
                       <td className='border border-blue-300 px-1 py-2 flex-1'>SEX</td>
@@ -105,7 +107,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
 
             {/* Position in class and in stream */}
             <section className='flex flex-col gap-4 w-full'>
-              {extra_data.put_position?
+              {extra_data?.put_position?
                   <div className="flex justify-between w-full border-b-2 border-black text-[15px]">
                       <div>
                           Position in stream:{" "}
@@ -122,8 +124,8 @@ export default function WebReportLayout({children,student, extra_data, title}) {
               {/* Reporting and ending date for next term */}
               <div className='w-full text-[15px]'>
                   Next term Begins on:{" "}
-                  <span className="font-bold">{extra_data.begins?extra_data.begins:'__ / __ / ____'}</span> and ends on{" "}
-                  <span className="font-bold">{extra_data.ends?extra_data.ends:'__ / __ /____'}</span>
+                  <span className="font-bold">{extra_data?.begins?extra_data?.begins:'__ / __ / ____'}</span> and ends on{" "}
+                  <span className="font-bold">{extra_data?.ends?extra_data?.ends:'__ / __ /____'}</span>
               </div>
             </section>
     

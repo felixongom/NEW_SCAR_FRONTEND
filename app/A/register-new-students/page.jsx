@@ -76,6 +76,8 @@ export default function AoneClass() {
       }
 
     }
+
+    const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1'
     
   // In your App.js
   return (
@@ -89,7 +91,7 @@ export default function AoneClass() {
         </div>
         <div className="w-full flex flex-col">
                 <div className="flex gap-1 pb-2 text-sm">
-                <label className='font-bold '>Year of Entry:</label>
+                <label className='font-bold '>Year of Entry To Senior {entry_clas}:</label>
                 <div className="relative">
                   <div className='flex gap-3 font-bold' style={{color:theme_bg}}>
                     <span>{year_of_entry}</span>

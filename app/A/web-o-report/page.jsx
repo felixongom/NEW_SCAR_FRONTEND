@@ -44,7 +44,7 @@ export default function AoneClass() {
             <ChangeExanAllAoiEoc/>
           </div>
           {data_chunk.length<=0?
-            <div className="text-slate-500 text-3xl text-center">No card is available</div>
+            <div className="text-slate-500 text-3xl w-full text-center">No card is available</div>
             :data_chunk?.map((student, i)=>{
               let _subject = student?.subjects
               

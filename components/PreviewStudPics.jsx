@@ -95,7 +95,8 @@ const handleUpload = async () => {
       );
     }
   };
-  
+  // 
+  const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1' 
   
   let colors = colorTin(theme_bg, 10);
   const visible_photos = ready_photo.length===0?photos:ready_photo
@@ -140,7 +141,7 @@ const handleUpload = async () => {
           {/* YEAR OF ENTRY */}
           <div className="flex justify-between p-2 ">
             <div className="flex gap-1 pb-2 text-sm">
-              <label className='font-bold '>Year of Entry:</label>
+              <label className='font-bold '>Entry Year to Senior {entry_clas}:</label>
               <div className="relative">
                 <div className='flex gap-3 font-bold' style={{color:theme_bg}}>
                   <span>{year_of_entry}</span>

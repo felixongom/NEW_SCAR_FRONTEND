@@ -7,7 +7,7 @@ import ExportToExcel from '@/hooks/useExportMarks';
 import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
-import { HeadedPaper } from "../Headers/HeadedPaper";
+import { HeadedPaper, HorizontalDoubleLine } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
 import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import {colorTin} from 'color-tin'

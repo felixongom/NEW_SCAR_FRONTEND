@@ -220,7 +220,7 @@ export default function MoreSettings() {
               {isSubsidiary=='Principle' && <>
               <h2>Grade of Principle subjects</h2>
               {fetchedGrade?.principle?.map((data, i) => {
-                let grades = data.id ? data.grade : data;
+                let grades = data?.id ? data?.grade : data;
                 return (
                   <div
                     key={i}

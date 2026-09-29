@@ -139,6 +139,7 @@ export default function AoneClass() {
 
   // 
   let colors = colorTin(theme_bg, 10)
+   const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1'
 
  
   // In your App.js
@@ -186,7 +187,7 @@ export default function AoneClass() {
         <EnrolementSetTime/>
         <hr />
         <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
-          <h2 className="mt-2 font-semibold text-sm md:text-xl text-slate-800">Select Subject/Papers </h2>
+          <h2 className="mt-2 font-semibold text-sm md:text-l text-slate-800">Select Subject/Papers </h2>
           {!subjects?<Ring size={30} stroke={3} bgOpacity={0} speed={2} color={theme_bg}/>:
           
         <div className="flex flex-wrap shadow-sm gap-3 mb-4 py-2 text-sm text-slate-600">
@@ -208,7 +209,7 @@ export default function AoneClass() {
         </div>
         <div className="flex justify-between p-2 ">
           <div className="flex gap-1 pb-2 text-sm">
-            <label className='font-bold '>Year of Entry:</label>
+            <label className='font-bold '>Year of Entry to Senior {entry_clas}:</label>
             <div className="relative">
               <div className='flex gap-3 font-bold' style={{color:theme_bg}}>
                 <span>{year_of_entry}</span>

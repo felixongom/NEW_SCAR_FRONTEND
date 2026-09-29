@@ -38,7 +38,7 @@ export default function SideMenu(){
                     <div className="flex w-full, h-full gap-2 items-center">
                         <Image width={60} height={60} src={main_school_info?.logo ||''} alt="logo" className="object-contain" />
                         <Link href={''} className={`text-l flex-1 h-full w-full`}>
-                            <div className="border-b border-gray-100 font-semibold">{ main_school_info?.sscar_code}</div>
+                            <div className="border-b border-gray-100 font-semibold font-mono">{ main_school_info?.sscar_code}</div>
                             <div className="text-xs uppercase w-full pt-1 font-[500]">{ main_school_info?.['SCHOOL NAME']}</div>
                             <div className="text-xs lowercase w-full -pt-1 font-regular">{ main_school_info?.reg_email}</div>
                         </Link>

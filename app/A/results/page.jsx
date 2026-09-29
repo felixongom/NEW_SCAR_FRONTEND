@@ -45,17 +45,8 @@ export default function Results() {
     fetchData();
   },[clas, set_time.year, set_time.term,set_time.exam, selectedSubj?.ids, deleting])
   
-  // fetch list of subject
-  // useEffect(()=>{
-  //   async function fetchSubjects() {
-  //     const response = await axios.get(`${base_api_path}subjects`)
-  //     // setSubjects(response.data,)
-  //   }
-  //   fetchSubjects()
-  // },[])
+  // 
 
-  //
- 
   const handleSelect = (group)=>{
     setselectedSubj(group)
   }

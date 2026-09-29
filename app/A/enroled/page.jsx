@@ -25,7 +25,7 @@ export default function AoneClass() {
   const {set_time, selected_clas, dispatch} = useDataContext()
   
   // 
-  let clas = selected_clas?selected_clas?.split(' ')[1]:'5'
+  let clas = selected_clas?parseInt(selected_clas?.split(' ')[1]):5
   //auth
   // const router = useRouter()
   // const pathname = usePathname(); 
@@ -70,7 +70,7 @@ export default function AoneClass() {
   //
   
   const doDelete = async (cases)=>{
-    let payload = {ids:selected_student, set_time};
+    let payload = {ids:selected_student, set_time, clas};
     
     if(cases === 'enrollement'){
       try {

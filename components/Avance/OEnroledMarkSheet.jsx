@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import OExportToExcel from '@/hooks/useOExportMarks';
 import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
-import { HeadedPaper } from "../Headers/HeadedPaper";
+import { HeadedPaper, HorizontalDoubleLine } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
 import { a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
@@ -62,7 +62,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
 
   const columnDefs = useMemo(() =>[
       { headerCheckboxSelection: true, checkboxSelection: true, width: 40, cellStyle },
-      { field: "sequence", headerName: "NO", editable: false, width: 80, cellStyle },
+      { field: "sequence", headerName: "NO", editable: false, filter:false, sortable:false, width: 50, cellStyle },
       { field: "learner", headerName: "LEARNER", width:250, cellStyle },
       { field: "stream", headerName: "STREAM", width: 100, cellStyle:{ ...cellStyle, justifyContent: 'center' } },
       ...aoiColumns,
@@ -249,14 +249,14 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
                 borderBottom:`2px solid ${theme_bg}`
               }}
             >
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
-              <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[30%] cursor-pointer">LEARNER&apos;S NAME</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">NO.</th>
+              <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%] cursor-pointer">LEARNER&apos;S NAME</th>
               <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
               {(toggle_show_hide_text?Object.keys(enroled[0]?.aoi_marks || {}):['AOI 1', 'AOI 2', 'AOI 3']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}</th> 
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}(X/20)</th> 
               ))}
               {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC {i+1}</th> 
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC {i+1}(X/80)</th> 
               ))}
               {toggle_show_hide_text && 
               <>

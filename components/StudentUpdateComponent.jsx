@@ -27,11 +27,10 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
             // 
             try {
                 setUpdating(prev=>!prev)
-                let result = await axios.patch(`${base_api_path}edit-student/${student?.id}`,
+                await axios.patch(`${base_api_path}edit-student/${student?.id}`,
                     {...student_data},
                     { headers: { Authorization: `Bearer ${getToken('access_token')}` } },
                 );
-                console.log(result);
                 setUpdating((prev) => !prev);
             } catch (error) {
                 console.log(error);

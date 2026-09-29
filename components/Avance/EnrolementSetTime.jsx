@@ -9,15 +9,26 @@ function EnrolementSetTime() {
   const [openYear, setOpenYear] = useState(false)
   //   
   const handleChange = (val)=>{
-    let value = val    
+    let value = val
+    let previous_time = set_enrolement_time  
+    
     if(value<4){
-        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, term:parseInt(value)}})
+      dispatch({type:"SET_ENROLEMENT_TIME", payload:{...previous_time, term:parseInt(value)}})
     }else{
-      if(set_enrolement_time.exam.includes(value)){
-        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, exam:set_enrolement_time.exam.filter(item => item !== value)}})
+      // 
+      if(value.startsWith('A') && previous_time.exam.includes('A1')){
+        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...previous_time, exam:set_enrolement_time.exam.filter(item => item.startsWith('A'))}})
       }else{
-        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, exam:[...set_enrolement_time.exam,value]}})
+        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...previous_time, exam:set_enrolement_time.exam.filter(item => !item.startsWith('A'))}})
       }
+
+      // 
+      if(set_enrolement_time.exam.includes(value)){
+        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...previous_time, exam:set_enrolement_time.exam.filter(item => item !== value)}})
+      }else{
+        dispatch({type:"SET_ENROLEMENT_TIME", payload:{...previous_time, exam:[...previous_time.exam,value]}})
+      }
+      // 
     }
   }
   
@@ -31,7 +42,7 @@ function EnrolementSetTime() {
     dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, year:year}})
   }
 
-  let exam_list = parseInt(+selected_clas.split(" ").pop()) >4? ['BOT', 'MOT','EOT']:['BOT', 'MOT','EOT','EOC', 'A1', 'A2', 'A3', 'A4', 'A5']
+  let exam_list = parseInt(+selected_clas.split(" ").pop()) >4? ['BOT', 'MOT','EOT']:['BOT', 'MOT','EOT', 'A1', 'A2', 'A3', 'A4', 'A5']
   
   return (
      <form className="flex flex-1 bg-white p-1 py-3 mt-2 flex-wrap justify-around text-sm">
