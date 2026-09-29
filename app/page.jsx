@@ -72,7 +72,7 @@ export default function LoginAdmins() {
             <input value={value.sscar_code} onChange={(e)=>setValue({...value, sscar_code:e.target.value})} type="text"className="p-1 text-sm w-full" placeholder='Your school Sscar code' style={{outline:'none'}}/>
          </div>
          <div className='my-2 border px-2'>
-           <input value={value.password} onChange={(e)=>setValue({...value, password:e.target.value})} type="text" className="p-1 text-sm w-full" placeholder='Password' style={{outline:'none'}}/>
+           <input type='password' value={value.password} onChange={(e)=>setValue({...value, password:e.target.value})} className="p-1 text-sm w-full" placeholder='Password' style={{outline:'none'}}/>
          </div>
          <button disabled={value.is_loading} style={{background:theme_bg, color:'white'}} className='p-1 text-sm w-full rounded mt-2'>{value.is_loading?'Sending...':'Login'}</button>
       </form>
