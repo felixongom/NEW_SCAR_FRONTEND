@@ -243,7 +243,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
         </div>
         <table className="w-full">
           <thead>
-            <tr className={`font-mono text-[15px] font-bold w-full`}
+            <tr className={`font-mono text-[12px] font-bold w-full`}
               style={{
                 color:theme_bg,
                 borderBottom:`2px solid ${theme_bg}`
@@ -268,7 +268,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
           </thead>
           {class_list?.map((learner, i)=>{
             return(
-              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[15px]`}>
+              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[12px]`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
