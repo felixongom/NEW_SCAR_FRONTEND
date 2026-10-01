@@ -32,16 +32,18 @@ export default function OResultTable({ table_heading, setShowDeletingPopup,setSh
   };
   //
   const searchStudents = (search_term) => {
+    
     const filtered = _.filter(
       transformed_data,
       (item) =>
         item["STUDENT NAME"]
-          ?.toLowerCase()
-          .includes(search_term.toLowerCase()) ||
-        item["learner_id"]?.toLowerCase().includes(search_term) ||
-        item["STREAM"]?.toLowerCase() === search_term ||
-        item["combination"]?.toLowerCase().includes(search_term.toLowerCase()),
+      ?.toLowerCase()
+      .includes(search_term.toLowerCase()) ||
+      item["learner_id"]?.toLowerCase().includes(search_term) ||
+      item["STREAM"]?.toLowerCase() === search_term ||
+      item["combination"]?.toLowerCase().includes(search_term.toLowerCase()),
     );
+    console.log(filtered);
     dispatch({ type: "DATA_CHUNK", payload: filtered });
   };
   //
@@ -102,7 +104,7 @@ const getSingleLearner =(single_student)=>{
   let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":"AVERAGE_GRADE"//AVERAGE_GRADE
   let comment = set_time.exam=='AOI'?"AOI_AVERAGE_COMMENT":set_time.exam=='EOC'?"EXAM_AVERAGE_COMMENT":"AVERAGE_COMMENT"
   const table_header = {'STUDENT ID':'learner_id',"LEARNER NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM','SUBJ':'num_subjects', 'TOTAL':marks_key,  'AVG':average, 'GRD':grade_key,'COMMENT':comment,'ST_PSN':'PSN_IN_STREAM','PSN':'PSN'}
-  let data = (transformed_data?.length ? transformed_data : data_chunk)
+  let data = (data_chunk?.length ? data_chunk : transformed_data)
 
   return (
     <div className="p-1 bg-gray-50  print:bg-white min-h-screen">
@@ -227,7 +229,7 @@ const getSingleLearner =(single_student)=>{
         >
           <tr className="capitalize font-mono text-sm md:text-[15px]" >
             <td className=" text-left flex-1 px-1 font-semibold">#</td>
-            <td className="text-left px-2 print:hidden">
+            <td className="text-left print:hidden">
               <button
                 style={{
                   borderColor: selected_student.length ? theme_bg : "#999",
@@ -270,12 +272,11 @@ const getSingleLearner =(single_student)=>{
         <tbody className="bg-white">
           {!data_chunk || (data_chunk && data_chunk.length === 0) ? (
             <tr className="flex w-full justify-center">
-              <td className="w-full flex-1">No Student in {table_heading}</td>
+              <td className="w-full flex-1">No Student found</td>
             </tr>
           ) : (
             data?.map((student, index) => {
             
-              
               return(
               <tr
                 style={{

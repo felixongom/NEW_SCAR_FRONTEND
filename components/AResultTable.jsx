@@ -89,14 +89,14 @@ const sortData = (header)=>{
 
   let colors = colorTin(theme_bg, 10);
   const table_header = {'STUDENT ID':'learner_id',"LEARNER'S NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM', 'CBN':'combination',  'PAPERS':'num_papers', 'SUBJECTS':'num_subjects', 'POINTS':'total_points','S_PSN':'PSN_IN_STREAM', 'PSN':'PSN'}
-  let data = (transformed_data?.length ? transformed_data : data_chunk)
+  let data = (data_chunk?.length ? data_chunk : transformed_data)
 
   return (
     <div className="p-1 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-2 bg-white">
         <div className="p-1 print:hidden w-3/4">
           <div className="flex w-full flex-row justify-between">
-            <div>
+            <div className="mb-2">
               <p className="text-xs md:text-sm text-gray-600"> Pages</p>
               <Pages
                 handleParamChange={handleParamChange}

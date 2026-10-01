@@ -29,7 +29,7 @@ export default function OReportGeneralSummary({title}) {
     let uniqu_subject = getUniqueSubjects(transformed_data);
     let table_heading = ['A', 'B', 'C', 'D', 'E', 'MISS',	'TOTAL']
     let grades = clas<5?gradings?.o_level:gradings?.a_level 
-    table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'F', 'MISS', 'TOTAL']      
+    table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'P', 'MISS', 'TOTAL']      
 
   return (
     <div className="w-full pb-4 bg-white relative">
@@ -68,10 +68,10 @@ export default function OReportGeneralSummary({title}) {
                     return (
                         <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((counted_grades.length-1)==i)?'2px':'1px'} solid ${((counted_grades.length-1)==i)?theme_bg:colors.lighter_60}`}}>
                             <td className="text-left w-[5%] py-2 pl-1">{i+1}</td>
-                            <td className="text-left">{a_subject_full_name[subject.subject]}</td>
+                            <td className="text-left w-[25%]">{a_subject_full_name[subject.subject] || subject.subject}</td>
                             {/*  */}
                             {table_heading.map(grade=>(
-                                <td key={grade} className="flex-1 w-[10%] text-center">{subject[grade]}</td>
+                                <td key={grade} className="flex-1 w-[5%] text-center">{subject[grade]}</td>
                             ))}
                         </tr>
                     )

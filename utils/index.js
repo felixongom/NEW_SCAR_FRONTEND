@@ -169,10 +169,10 @@ const sortAlevelSubjectOnReportCard = (subjects)=>{
 const getSubjectGradeCount = (students, subjects, exam, clas) =>{
   let result = []
   const grades = {A: 0, B: 0, C: 0, D: 0, E: 0 }
-  let grade_weight = {A:7, B:6, C:5, D:4, E:3, F:2, MISS:1}
+  let grade_weight = {A:7, B:6, C:5, D:4, E:3, P:2, MISS:1}
   
   if(clas>4) {
-    grades.F = 0
+    grades.P = 0
   }
 
 
@@ -186,7 +186,7 @@ const getSubjectGradeCount = (students, subjects, exam, clas) =>{
       if (!subjectData) return;
 
       // TOTAL is null => MISS
-      if (subjectData.TOTAL === null) {
+      if (!subjectData.TOTAL) {
         gradeCount.MISS++;
         return;
       }
