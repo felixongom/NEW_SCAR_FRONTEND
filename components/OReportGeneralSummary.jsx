@@ -64,7 +64,7 @@ export default function OReportGeneralSummary({title}) {
                     ))}
                 </tr>
                 {counted_grades.map((subject, i)=>{
-                    
+                     
                     return (
                         <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((counted_grades.length-1)==i)?'2px':'1px'} solid ${((counted_grades.length-1)==i)?theme_bg:colors.lighter_60}`}}>
                             <td className="text-left w-[5%] py-2 pl-1">{i+1}</td>
