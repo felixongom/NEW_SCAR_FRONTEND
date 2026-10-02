@@ -230,8 +230,8 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
                 borderBottom:`2px solid ${theme_bg}`
               }}
             >
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">ID</th>
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%] cursor-pointer"
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 print:py-1">ID</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[20%] cursor-pointer"
               onClick={()=>sortData('learner')}
               >LEARNER&apos;S NAME</th>
               <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
@@ -256,7 +256,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
               style={{
                 backgroundColor:i%2==1? colors.lighter_90:'white',
                 borderBottom:(class_list.length-1===i)?`2px solid ${theme_bg}`:''
-                }} className={`font-mono text-[15px]`}>
+                }} className={`font-mono text-[15px] print:text-[12px]`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
@@ -268,7 +268,7 @@ const EnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.marks_string_05}</td>
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.grade_string}</td>
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ learner.grade_letter}</td>
-                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.comments}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.comment}</td>
                 </>
                 }
               </tr>
