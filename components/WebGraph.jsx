@@ -7,7 +7,7 @@ import { Bar } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
 
-const WebGraph = ({ data = [] }) => {
+const WebGraph = ({ data = [] , title_text=null}) => {
   const {selected_clas} = useDataContext();
   const clas = parseInt(selected_clas.split(' ')[1])
   let fbar = clas>4?[{
@@ -43,13 +43,34 @@ const WebGraph = ({ data = [] }) => {
       {
         label: "E",
         data: data.map(item => item.EPer ?? 0),
-        backgroundColor: "#ef4444",
+        backgroundColor: "#ef44a4",
       },
-      ...fbar,
+      // ...fbar,
       {
         label: "MISS",
         data: data.map(item => item.MISSPer ?? 0),
-        backgroundColor: "#6b7280",
+        backgroundColor: "#333",
+      }
+    ],
+  };
+  const subsidiary_chartData = {
+    labels: data.map(item => item.subject),
+
+    datasets: [
+      {
+        label: "P",
+        data: data.map(item => item.PPer ?? 0),
+        backgroundColor: "#22c55e",
+      },
+      {
+        label: "F",
+        data: data.map(item => item.FPer ?? 0),
+        backgroundColor: "#ef4444",
+      },
+      {
+        label: "MISS",
+        data: data.map(item => item.MISSPer ?? 0),
+        backgroundColor: "#333",
       }
     ],
   };
@@ -80,7 +101,7 @@ const WebGraph = ({ data = [] }) => {
       x: {
         title: {
           display: true,
-          text: "SUBJECTS",
+          text: clas<5?'SUBJECTS':title_text,
         },
       },
 
@@ -102,7 +123,7 @@ const WebGraph = ({ data = [] }) => {
 
   return (
     <div className="w-full h-[450px]">
-      <Bar data={chartData} options={options} />
+      <Bar data={title_text=="SUBSIDIARY SUBJECTS"?subsidiary_chartData:chartData} options={options} />
     </div>
   );
 };

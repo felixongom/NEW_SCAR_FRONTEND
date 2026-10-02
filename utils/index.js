@@ -169,10 +169,11 @@ const sortAlevelSubjectOnReportCard = (subjects)=>{
 const getSubjectGradeCount = (students, subjects, exam, clas) =>{
   let result = []
   const grades = {A: 0, B: 0, C: 0, D: 0, E: 0 }
-  let grade_weight = {A:7, B:6, C:5, D:4, E:3, P:2, MISS:1}
+  let grade_weight = {A:8, B:7, C:6, D:5, E:4, P:3, F:2, MISS:1}
   
   if(clas>4) {
     grades.P = 0
+    grades.F = 0
   }
 
 
@@ -203,7 +204,6 @@ const getSubjectGradeCount = (students, subjects, exam, clas) =>{
     gradeCount.TOTAL = Object.keys(grades).reduce((acc, current)=>acc + gradeCount[current],0) + gradeCount.MISS;
 
     // percentage
-
     gradeCount.subject = subject
 
     result = [...result, gradeCount];
@@ -221,7 +221,6 @@ const getSubjectGradeCount = (students, subjects, exam, clas) =>{
       
       const EXPECTED_WAIGHT = 100 *Object.values(weight||{}).reduce((acc, current)=>acc+current,0) +1
       const TOTAL_WEIGHT = _TOTAL_WEIGHT/EXPECTED_WAIGHT*100
-      // console.log(_TOTAL_WEIGHT, EXPECTED_WAIGHT);
 
       // 
       return {...one_subject, ...percentage, ...weight, TOTAL_WEIGHT}

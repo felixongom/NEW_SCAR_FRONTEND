@@ -28,8 +28,11 @@ export default function OReportGeneralSummary({title}) {
     let colors = colorTin(theme_bg, 10);
     let uniqu_subject = getUniqueSubjects(transformed_data);
     let table_heading = ['A', 'B', 'C', 'D', 'E', 'MISS',	'TOTAL']
+    let subsidiary_table_heading = ['P', 'F','MISS', 'TOTAL']
     let grades = clas<5?gradings?.o_level:gradings?.a_level 
-    table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'P', 'MISS', 'TOTAL']      
+    table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'MISS', 'TOTAL'] 
+    let principle_subject =   counted_grades.filter(subj=>!['ICT', 'SM', 'GP'].includes(subj.subject)) 
+    let subsidiary_subject =   counted_grades.filter(subj=>['ICT', 'SM', 'GP'].includes(subj.subject))     
 
   return (
     <div className="w-full pb-4 bg-white relative">
@@ -60,19 +63,44 @@ export default function OReportGeneralSummary({title}) {
                     <th className="text-left w-[5%] pl-1">PSN</th>
                     <th className="text-left">SUBJECT</th>
                     {table_heading.map(grade=>(
+                        <th key={grade} className="flex-1 w-[5%]">{grade}</th>
+                    ))}
+                </tr>
+                {principle_subject?.map((subject, i)=>{
+                     
+                    return (
+                        <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((principle_subject.length-1)==i)?'2px':'1px'} solid ${((principle_subject.length-1)==i)?theme_bg:colors.lighter_60}`}}>
+                            <td className="text-left w-[5%] py-2 pl-1">{i+1}</td>
+                            <td className="text-left w-[25%]">{clas>5 && subject.subject==='ICT' && 'SUBSIDIARY '}{a_subject_full_name[subject.subject] || subject.subject}</td>
+                            {/*  */}
+                            {table_heading.map(grade=>{
+                                return(
+                                    table_heading.includes(grade) && <td key={grade} className="flex-1 w-[3%] text-center">{subject[grade]}</td>
+                            )})}
+                        </tr>
+                    )
+                })}
+            </table>
+            {/* subsidiary */}
+            <table className="w-full mt-6">
+                <tr className="font-mono" style={{backgroundColor:theme_bg, color: brightness(theme_bg) < 65 ? "white" :theme_bg}}>
+                    <th className="text-left w-[5%] pl-1">PSN</th>
+                    <th className="text-left">SUBJECT</th>
+                    {subsidiary_table_heading.map(grade=>(
                         <th key={grade} className="flex-1 w-[10%]">{grade}</th>
                     ))}
                 </tr>
-                {counted_grades.map((subject, i)=>{
+                {subsidiary_subject?.map((subject, i)=>{
                      
                     return (
-                        <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((counted_grades.length-1)==i)?'2px':'1px'} solid ${((counted_grades.length-1)==i)?theme_bg:colors.lighter_60}`}}>
+                        <tr key={i} className="font-mono " style={{backgroundColor:i % 2 === 0 ? "white" : colors.lighter_80, borderBottom: `${((subsidiary_subject.length-1)==i)?'2px':'1px'} solid ${((subsidiary_subject.length-1)==i)?theme_bg:colors.lighter_60}`}}>
                             <td className="text-left w-[5%] py-2 pl-1">{i+1}</td>
-                            <td className="text-left w-[25%]">{a_subject_full_name[subject.subject] || subject.subject}</td>
+                            <td className="text-left w-[25%]">{clas>5 && subject.subject==='ICT' && 'SUBSIDIARY '}{a_subject_full_name[subject.subject] || subject.subject}</td>
                             {/*  */}
-                            {table_heading.map(grade=>(
-                                <td key={grade} className="flex-1 w-[5%] text-center">{subject[grade]}</td>
-                            ))}
+                            {subsidiary_table_heading.map(grade=>{
+                                return(
+                                    subsidiary_table_heading.includes(grade) && <td key={grade} className="flex-1 w-[3%] text-center">{subject[grade]}</td>
+                            )})}
                         </tr>
                     )
                 })}
@@ -102,8 +130,11 @@ export default function OReportGeneralSummary({title}) {
                 </div>
                 
             </div>
-            <WebGraph data={counted_grades}/>
-            <HorizontalDoubleLine/>
+            <WebGraph data={principle_subject} title_text="PRINCIPLE SUBJECTS"/>
+            <WebGraph data={subsidiary_subject} title_text="SUBSIDIARY SUBJECTS"/>
+            <div className="w-full hidden print:block">
+                <HorizontalDoubleLine/>
+            </div>
             <img
                 className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
                 width={"85%"}

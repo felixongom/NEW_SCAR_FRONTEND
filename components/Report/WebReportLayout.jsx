@@ -36,7 +36,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
         {/* Outer Container: Stretches to fill the exact printed page height/width */}
         <div className="relative w-full min-h-screen break-inside-avoid print:w-full print:h-screen print:min-h-screen print:break-after-page print:p-0 border-[2px] border-gray-800">
           {/* Inner Container: Flex layout stretched to fill 100% of the parent container */}
-          <div className="flex p-1 h-[200vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-slate-600">
+          <div className="flex p-1 h-[220vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-slate-600">
           <Image className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={950} height={950} src={main_school_info.logo} />
             
             <HeadedPaper learner_pic={student.image} pics={'/person.png'}/>
