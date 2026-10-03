@@ -7,7 +7,9 @@ export default function OLevelGading({font_size=null}){
     
     return (
         clas>4?
-         <table className='w-full'>
+        <div className="w-full">
+            <h5 className="font-semibold">PRNCIPLE SUBJECTS</h5>
+            <table className='w-full'>
             <tr className={`border border-gray-500 text-${font_size}`}>
                 <td className='border border-gray-500 px-1 text-left w-[18%] font-semibold'>SCORE RANGE</td>
                 {ranges?.map(range=>(
@@ -26,16 +28,23 @@ export default function OLevelGading({font_size=null}){
                     <td key={range} className='border border-gray-500 px-1 text-center'>{grades?.points[grades.grade[range]]}</td>
                 ))}
             </tr>
-            <tr className={`border border-gray-500 text-${font_size}`}>
-                <td className='border border-gray-500 px-1 text-left font-semibold'>SUBSIDIARY POINTS</td>
-                {ranges.map(range=>{
-                    let  grd = grades?.grade[range]
-                    let point = grd<'E'?1:0
-                    return(
-                    <td key={range} className='border border-gray-500 px-1 text-center'>{point}</td>
-                )})}
-            </tr>
-        </table> :
+            </table>
+            
+            <h5 className="font-semibold mt-2">SUBSIDIARY SUBJECTS</h5>
+            <table className="w-2/5 border">
+                <tr className={`border border-gray-500 text-${font_size}`}>
+                    <td className="text-left font-semibold border border-gray-500 p-1">SCORE RANGE</td>
+                    <td className="border border-gray-500 text-center">0.00 - 2.49</td>
+                    <td className="border border-gray-500 text-center">2.50 - 5.00</td>
+                </tr>
+                <tr className={`border border-gray-500 text-${font_size}`}>
+                    <td className="text-left font-semibold border border-gray-500 p-1">GRADE</td>
+                    <td className="border border-gray-500 text-center">F</td>
+                    <td className="border border-gray-500 text-center">P</td>
+                </tr>
+            </table>
+
+        </div> :
         <table className='w-full'>
             <tr className={`border border-gray-500 text-${font_size}`}>
                 <th className={`border border-gray-500 px-1 text-center ${!font_size?'py-2':''}`}>SCORE RANGE</th>

@@ -4,12 +4,16 @@ import AuthLayout from "@/components/AuthLayout";
 import { useDataContext } from "@/context/DataProvider";
 import { base_api_path } from "@/utils/reportList";
 import axios from "axios";
+import "ldrs/react/Ring.css"
+import { Ring } from "ldrs/react";
 import { useRouter, } from 'next/navigation'
 import { useEffect, useState } from "react";
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai'
 // 
 export default function LoginAdmins() {
   const {theme_bg,main_school_info, dispatch} = useDataContext()
   const [value, setValue] = useState({sscar_code:'', password:'', is_loading:false, error:''})
+  const [show_password, setShowPassword] = useState(false)
 
    const router = useRouter()
    useEffect(()=>{      
@@ -53,7 +57,7 @@ export default function LoginAdmins() {
       } catch (error) {
          console.log(error);
          
-         setValue({...value, error:'incorrect cridentials'})
+         setValue({...value, error:'Incorrect cridentials'})
       }
       
   }
@@ -65,16 +69,26 @@ export default function LoginAdmins() {
          <div className='my-2 px-2'>
             <h3 className='font-semibold text-sm text-center' style={{color:theme_bg}}>Login to your school account</h3>
          </div>
+         <h2 className="text-center text-2xl font-semibold text-rose-700 flex justify-center">SIGN IN</h2>
          <div className='my-2 px-2'>
             {value.error && <p className="text-xs py-1 px-2 text-red-600 w-full bg-red-200 border border-red-600">{value.error}</p>}
          </div>
-         <div className='my-2 border px-2'>
-            <input value={value.sscar_code} onChange={(e)=>setValue({...value, sscar_code:e.target.value})} type="text"className="p-1 text-sm w-full" placeholder='Your school Sscar code' style={{outline:'none'}}/>
+         <div className='my-6'>
+            <input value={value.sscar_code} onChange={(e)=>setValue({...value, sscar_code:e.target.value})} type="text"className="p-1 py-2 border focus:border-rose-700 rounded-md text-lg w-full" placeholder='Your school Sscar code' style={{outline:'none'}}/>
          </div>
-         <div className='my-2 border px-2'>
-           <input type='password' value={value.password} onChange={(e)=>setValue({...value, password:e.target.value})} className="p-1 text-sm w-full" placeholder='Password' style={{outline:'none'}}/>
+         <div className='my-6 relative'>
+            <input type={show_password?'text':'password'} value={value.password} onChange={(e)=>setValue({...value, password:e.target.value})} className="p-1 py-2 text-lg border focus:border-rose-700 rounded-md w-full" placeholder='Password' style={{outline:'none'}}/>
+            {show_password?<AiOutlineEyeInvisible onClick={()=>setShowPassword(prev=>!prev)} className="absolute right-2 text-xl top-4 cursor-pointer text-slate-500 hover:text-slate-800"/>
+            :<AiOutlineEye onClick={()=>setShowPassword(prev=>!prev)} className="absolute right-2 text-xl top-4 cursor-pointer text-slate-500 hover:text-slate-800"/>
+            }
+            
          </div>
-         <button disabled={value.is_loading} style={{background:theme_bg, color:'white'}} className='p-1 text-sm w-full rounded mt-2'>{value.is_loading?'Sending...':'Login'}</button>
+         <div className="w-full mx-auto mt-2 rounded-md flex justify-center bg-rose-900">
+            {value.is_loading? 
+            <Ring size={35} stroke={3} bgOpacity={0} speed={2} color={'white'}/>:
+            <button className="bg-transparent rounded-md w-full h-full text-white py-3 hover:bg-rose-800">Sign in</button>
+            }
+         </div>
       </form>
    </div>
    </AuthLayout>

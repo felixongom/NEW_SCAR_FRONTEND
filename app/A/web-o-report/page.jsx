@@ -333,7 +333,7 @@ export default function AoneClass() {
         {/*  */}
         <OReportGeneralSummary title={title}/>
         {open_title && <div className="w-full flex justify-center absolute top-10 left-0 print:hidden">
-          <div className="bg-white border-2 border-slate-300 rounded-md py-2 shadow-2xl w-2/4 top-10 m-auto flex justify-center flex-col p-2 relative">
+          <div className="bg-white border-2 border-slate-300 rounded-md py-2 shadow-2xl md:w-[98%] w-1/2 top-10 m-auto flex justify-center flex-col p-2 relative">
               <h4 className="text-center mx-auto text-teal-600 border-b-1 border-teal-600 py-2 text-2xl font-bold w-fit">CHANGE REPORT TITLE</h4>
               <div className="w-full py-4">
                 <input value={title} onChange={(e)=>setTile(e.target.value?.toLocaleUpperCase())} type="text" className="border border-gray-400 rounded px-4 py-2 focus:outline-none focus:border-blue-500 text-xl text-gray-800 w-full" />
