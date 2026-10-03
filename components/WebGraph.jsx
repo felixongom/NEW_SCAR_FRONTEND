@@ -33,7 +33,7 @@ const WebGraph = ({ data = [] , title_text=null}) => {
       {
         label: "C",
         data: data.map(item => item.CPer ?? 0),
-        backgroundColor: "#eab308",
+        backgroundColor: "#ff0066",
       },
       {
         label: "D",
@@ -43,7 +43,7 @@ const WebGraph = ({ data = [] , title_text=null}) => {
       {
         label: "E",
         data: data.map(item => item.EPer ?? 0),
-        backgroundColor: "#ef44a4",
+        backgroundColor: "#730099",
       },
       // ...fbar,
       {
