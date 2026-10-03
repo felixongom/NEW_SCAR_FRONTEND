@@ -43,7 +43,6 @@ export default function OResultTable({ table_heading, setShowDeletingPopup,setSh
       item["STREAM"]?.toLowerCase() === search_term ||
       item["combination"]?.toLowerCase().includes(search_term.toLowerCase()),
     );
-    console.log(filtered);
     dispatch({ type: "DATA_CHUNK", payload: filtered });
   };
   //

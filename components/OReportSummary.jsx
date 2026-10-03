@@ -21,10 +21,10 @@ export default function OReportSummary({title}) {
   const [_transformed_data, setTranformData] = useState(transformed_data);
   const [sortby, setSortBy] = useState({ changed: true });
   const [painted, setPainted] = useState(false);
-  const [set_flat_and_column, setFlatAndColumn] = useState(false);
   const [toggle_marks, setToggleMarks] = useState(true);
   const [toggle_avg, setToggleAvg] = useState(true);
   const [toggle_detail, setToggleDetail] = useState(true);
+  const [set_flat_and_column, setFlatAndColumn] = useState(false);
   const clas = parseInt(selected_clas.split(' ')[1])
 
   useEffect(() => {
@@ -54,7 +54,6 @@ export default function OReportSummary({title}) {
     let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":(clas>4?'total_points':'AVERAGE_GRADE')//AVERAGE_COMMENT
     let overal_average = set_time.exam=='AOI'?"AOI_AVERAGE":set_time.exam=='EOC'?'EXAM_AVERAGE':(clas>4?'total_points':'AVERAGE') //EXAM_AVERAGE_COMMENT
     // 
-    console.log(_transformed_data);
 
   return (
     <div className="w-full pb-4 bg-white">
@@ -417,8 +416,8 @@ export default function OReportSummary({title}) {
                                     >
                                     {subject}-{is_my_subject &&
                                     (toggle_marks//
-                                        ? student.subjects?.[subject]?.[marks_grade_key]||'-'
-                                        : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2) || '-')}
+                                        ? student.subjects?.[subject]?.[marks_grade_key]
+                                        : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2))}
                                         {marks_list && toggle_detail && '-('+actual_marks+')'}
                                     </td>
                                 );
