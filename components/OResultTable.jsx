@@ -15,7 +15,7 @@ import OLevelGading from "./Report/OLevelGrading";
 import { useRouter } from "next/navigation";
 import { ChangeExanAllAoiEoc, Title } from "./StudentUpdateComponent";
 //
-export default function OResultTable({ table_heading, setShowDeletingPopup,setShowPaycodePopup, selected_student, setSelectedStudent }) {
+export default function OResultTable({ setShowDeletingPopup,setShowPaycodePopup, selected_student, setSelectedStudent }) {
   //
   const { transformed_data,main_school_info, data_chunk, theme_bg, dispatch, set_time, selected_clas } = useDataContext();
   const [page_size, setResizingData] = useState({page:1, perpage:100})
