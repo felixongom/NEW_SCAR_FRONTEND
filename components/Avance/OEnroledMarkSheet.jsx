@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import OExportToExcel from '@/hooks/useOExportMarks';
 import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
-import { HeadedPaper, HorizontalDoubleLine } from "../Headers/HeadedPaper";
+import { HeadedPaper } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
 import { a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
