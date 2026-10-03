@@ -17,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Sscar: Secodary School Continuous Assessment report",
+  title: "Sscar: Secondary School Continuous Assessment report",
   description: "A mini application for analysing Uganda 'O' level compitent base carriculum student scores",
 };
 

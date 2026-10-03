@@ -10,11 +10,11 @@ ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
 const WebGraph = ({ data = [] , title_text=null}) => {
   const {selected_clas} = useDataContext();
   const clas = parseInt(selected_clas.split(' ')[1])
-  let fbar = clas>4?[{
-        label: "F",
-        data: data.map(item => item.FPer ?? 0),
-        backgroundColor: "#ff0000",
-      }]:[]
+  // let fbar = clas>4?[{
+  //       label: "F",
+  //       data: data.map(item => item.FPer ?? 0),
+  //       backgroundColor: "#ff0000",
+  //     }]:[]
 
   const chartData = {
     labels: data.map(item => item.subject),

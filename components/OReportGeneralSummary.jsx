@@ -7,6 +7,7 @@ import OLevelGading from "./Report/OLevelGrading";
 import WebGraph from '@/components/WebGraph'
 import { Title } from "./StudentUpdateComponent";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function OReportGeneralSummary({title}) {
   const {transformed_data,main_school_info,selected_clas,num_per_stream,theme_bg,set_time,gradings} = useDataContext();
@@ -109,10 +110,11 @@ export default function OReportGeneralSummary({title}) {
                 <div className="h-[7px] w-full border-0 mb-[3px]" style={{ backgroundColor: theme_bg }}/>
                 <div className="h-[1px] w-full border-0 border-white" style={{ backgroundColor: theme_bg }}/>
             </div>
-            <img
+            <Image
+                alt="logo"
                 className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
-                width={"85%"}
-                height={"85%"}
+                width={950}
+                height={950}
                 src={main_school_info?.logo}/>
         </div> 
         {/* page */}
@@ -135,10 +137,11 @@ export default function OReportGeneralSummary({title}) {
             <div className="w-full hidden print:block">
                 <HorizontalDoubleLine/>
             </div>
-            <img
+            <Image
+                alt="logo"
                 className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
-                width={"85%"}
-                height={"85%"}
+                width={950}
+                height={950}
                 src={main_school_info?.logo}/>
         </div> 
         {/* page */}
@@ -183,10 +186,11 @@ export default function OReportGeneralSummary({title}) {
             </div>)})}
             </div>
             <HorizontalDoubleLine/>
-            <img
+            <Image
+                alt="logo"
                 className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
-                width={"85%"}
-                height={"85%"}
+                width={90}
+                height={900}
                 src={main_school_info?.logo}/>
 
         </div> 
@@ -198,8 +202,8 @@ export default function OReportGeneralSummary({title}) {
             <Title text={`${selected_clas} ${exam[set_time.exam]} ${roman_term[set_time.term]} GRADINGS`}/>
             <OLevelGading />
             <HorizontalDoubleLine/>
-            <img className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
-                width={"85%"} height={"85%"} src={main_school_info?.logo}/>
+            <Image className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
+                width={950} height={950} src={main_school_info?.logo} alt="logo"/>
             </div>  
         </div>
     </div>

@@ -21,8 +21,8 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
                     <p className="text-center text-sm -mt-1 font-normal">{main_school_info['LOCATION']}</p>
                     <i className="text-center text-sm font-semibold capitalize -mt-1">&quot; {capitalize(main_school_info['MOTO'])} &quot;</i>
                 </div>
-                {subject_name?<div className="text-6xl mt-3">{subject_name}</div>:learner_pic?<Image width={100} height={120} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
-                    pics?<Image width={120} height={120} src={pics} />:
+                {subject_name?<div className="text-6xl mt-3">{subject_name}</div>:learner_pic?<Image alt="" width={100} height={120} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
+                    pics?<Image alt="" width={120} height={120} src={pics} />:
                 <div/>}
             </div>
             <div className="w-full pt-2">

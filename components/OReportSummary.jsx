@@ -7,6 +7,7 @@ import { getUniqueSubjects, roundOff, sortAlevelSubjectOnReportCard } from "@/ut
 import { RiArrowDownLine, RiBrush2Line } from "react-icons/ri";
 import OLevelGading from "./Report/OLevelGrading";
 import { Title } from "./StudentUpdateComponent";
+import Image from "next/image";
 
 export default function OReportSummary({title}) {
   const {
@@ -446,10 +447,10 @@ export default function OReportSummary({title}) {
             <Title text={`${selected_clas} ${exam[set_time.exam]} ${roman_term[set_time.term]} GRADINGS`}/>
             <OLevelGading />
             <HorizontalDoubleLine/>
-            <img
+            <Image
                 className="absolute hidden print:block left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15"
-                width={"95%"}
-                height={"95%"}
+                width={950}
+                height={950}
                 src={main_school_info?.logo}
             />
         </div>
