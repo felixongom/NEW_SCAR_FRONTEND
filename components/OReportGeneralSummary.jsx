@@ -32,7 +32,7 @@ export default function OReportGeneralSummary({title}) {
     let subsidiary_table_heading = ['P', 'F','MISS', 'TOTAL']
     let grades = clas<5?gradings?.o_level:gradings?.a_level 
     table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'MISS', 'TOTAL'] 
-    let principle_subject =   counted_grades.filter(subj=>!['ICT', 'SM', 'GP'].includes(subj.subject)) 
+    let principle_subject = clas>4? counted_grades.filter(subj=>!['ICT', 'SM', 'GP'].includes(subj.subject)):counted_grades
     let subsidiary_subject =   counted_grades.filter(subj=>['ICT', 'SM', 'GP'].includes(subj.subject))     
 
   return (
@@ -83,6 +83,7 @@ export default function OReportGeneralSummary({title}) {
                 })}
             </table>
             {/* subsidiary */}
+            {clas>4 && 
             <table className="w-full mt-6">
                 <tr className="font-mono" style={{backgroundColor:theme_bg, color: brightness(theme_bg) < 65 ? "white" :theme_bg}}>
                     <th className="text-left w-[5%] pl-1">PSN</th>
@@ -106,6 +107,7 @@ export default function OReportGeneralSummary({title}) {
                     )
                 })}
             </table>
+            }
             <div className="w-full absolute bottom-0">
                 <div className="h-[7px] w-full border-0 mb-[3px]" style={{ backgroundColor: theme_bg }}/>
                 <div className="h-[1px] w-full border-0 border-white" style={{ backgroundColor: theme_bg }}/>
