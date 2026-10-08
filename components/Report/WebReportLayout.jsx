@@ -37,18 +37,18 @@ export default function WebReportLayout({children,student, extra_data, title}) {
         <div className="relative w-full min-h-screen break-inside-avoid print:w-full print:h-screen print:min-h-screen print:break-after-page print:p-0 border-[3px] border-gray-800">
           {/* Inner Container: Flex layout stretched to fill 100% of the parent container */}
           <div className="flex p-1 h-[220vh] flex-4 flex-col justify-between items-center print:h-[calc(100%-0px)] border-[6px] border-slate-600">
-          <Image alt="logo" className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={950} height={950} src={main_school_info.logo} />
+            <Image alt="logo" className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 opacity-15" width={950} height={950} src={main_school_info.logo} />
             
             <HeadedPaper learner_pic={student.image} pics={'/person.png'}/>
             <section className='w-full'>
-              <h4 className="relative flex items-center justify-centxe text-blue-800 font-bold text-[16px]">
+              <h4 className="relative flex items-center justify-centxe text-blue-800 font-bold text-[16px] print:text-[13px]">
                 <Title text={title?title:(set_time.exam === 'EOC'? 'END OF CYCLE': exam[set_time?.exam.split('&').reverse()[0].trim()] || 'MID TERM') + ' REPORT'}/>
                 <span className="absolute right-2 text-red-600 text-xs">
                   {student.learner_id}
                 </span>
               </h4>
               <table className='w-full text-sm'>
-                  <tr className='border border-blue-300 text-[15px]'>
+                  <tr className='border border-blue-300 text-[15px] print:text-[13px]'>
                       <td className='border border-blue-300 px-1 py-2 flex-1'>NAME</td>
                       <td colSpan={3} className='border border-blue-300 px-1 flex-2 font-semibold'> {student['STUDENT NAME']}</td>
                       <td className='border border-blue-300 px-1 flex-1 w-[80px]'>YEAR</td>
@@ -60,7 +60,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
                         <td className='border border-blue-300 px-3 text-center flex-1'>{student?.combination}</td>
                       </>}
                   </tr>
-                  <tr className='border border-blue-300 text-[15px]'>
+                  <tr className='border border-blue-300 text-[15px] print:text-[13px]'>
                       <td className='border border-blue-300 px-1 py-2 flex-1'>SEX</td>
                       <td className='border border-blue-300 px-1 flex-2 text-center'> {student.SEX}</td>
                       <td className='border border-blue-300 px-1 flex-1'>CLASS</td>
@@ -77,14 +77,14 @@ export default function WebReportLayout({children,student, extra_data, title}) {
               {children}
               {clas<5 && 
                 <table className='w-full text-sm'>
-                  <tr className='border border-gray-500 text-[16px]'>
+                  <tr className='border border-gray-500 text-[16px] print:text-[13px]'>
                     <td rowSpan={2} className='border border-gray-500 px-1 text-center'>OVERALL ACHIEVEMENT</td>
                     <td colSpan={2} className='border border-gray-500 px-1 flex-2 text-center '> TOTAL SCORE({Object.keys(student.subjects)?.length*100})</td>
                     <td colSpan={2} className='border border-gray-500 px-1 flex-2 text-center '> AVERAGE SCORE(100)</td>
                     <td className='border border-gray-500 px-1 flex-1 text-center'>GRADE</td>
                     <td className='border border-gray-500 px-1 text-center flex-2'>DESCRIPTOR</td>
                   </tr>
-                  <tr className='border border-gray-500 text-[16px]'>
+                  <tr className='border border-gray-500 text-[16px] print:text-[13px]'>
                     <td colSpan={2} className='border border-gray-500 px-1 text-center italic'>{roundOff(student[marks_key],0)}</td>
                     <td colSpan={2} className='border border-gray-500 px-1 flex-2 text-center italic'> {roundOff(student[average_key], 1)} </td>
                     <td  className='border border-gray-500 px-1 flex-2 text-center italic'> {student[grade_key]} </td>
@@ -95,7 +95,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
             </section>
             {/* points */}
             {clas>4 && 
-            <div className="flex justify-between w-full border-b-2 border-slate-600 text-[15px]">
+            <div className="flex justify-between w-full border-b-2 border-slate-600 text-[15px] print:text-[13px]">
               <div>
                 Number of Points:{" "}
                 <span className="font-semibold">{student?.total_points}</span> out of{" "}
@@ -108,7 +108,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
             {/* Position in class and in stream */}
             <section className='flex flex-col gap-4 w-full'>
               {extra_data?.put_position?
-                  <div className="flex justify-between w-full border-b-2 border-black text-[15px]">
+                  <div className="flex justify-between w-full border-b-2 border-black text-[15px] print:text-[13px]">
                       <div>
                           Position in stream:{" "}
                           <span className="font-semibold">{student?.[stream_position_key]}</span> out of{" "}
@@ -122,7 +122,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
                   </div>
               :null}
               {/* Reporting and ending date for next term */}
-              <div className='w-full text-[15px]'>
+              <div className='w-full text-[15px] print:text-[13px]'>
                   Next term Begins on:{" "}
                   <span className="font-bold">{extra_data?.begins?extra_data?.begins:'__ / __ / ____'}</span> and ends on{" "}
                   <span className="font-bold">{extra_data?.ends?extra_data?.ends:'__ / __ /____'}</span>
@@ -130,8 +130,8 @@ export default function WebReportLayout({children,student, extra_data, title}) {
             </section>
     
             {/* eacher's comment*/}
-              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Class Teacher&apos;s Comment:</div>
-              <div className='w-full border-b border-dashed border-gray-700 text-[15px]'>Head Teacher&apos;s Comment:</div>
+              <div className='w-full border-b border-dashed border-gray-700 text-[15px] print:text-[13px]'>Class Teacher&apos;s Comment:</div>
+              <div className='w-full border-b border-dashed border-gray-700 text-[15px] print:text-[13px]'>Head Teacher&apos;s Comment:</div>
             
             {/* Grading System */}
             <section className='w-full gap-1'>

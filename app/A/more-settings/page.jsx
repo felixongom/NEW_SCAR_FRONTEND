@@ -133,7 +133,7 @@ export default function MoreSettings() {
             style={{ border: "1px solid gray", height: 17, width: 17 }}
           >
             {importantDate?.put_position == true && (
-              <div style={{ height: 10, width: 10, background: theme_bg }} />
+              <button style={{ height: 10, width: 10, background: theme_bg }} />
             )}
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function MoreSettings() {
                           : "white",
                     }}
                   >
-                    {Object.keys(grades).map((g) => (
+                    {Object.keys(grades ||{}).map((g) => (
                       <span
                         key={g}
                         className="flex gap-1 py-1 px-2 rounded"
@@ -276,7 +276,7 @@ export default function MoreSettings() {
                             : "white",
                       }}
                     >
-                      {Object.keys(grades).map((g) => (
+                      {Object.keys(grades || {}).map((g) => (
                         <span
                           key={g}
                           className="flex gap-1 py-1 px-2 rounded"
