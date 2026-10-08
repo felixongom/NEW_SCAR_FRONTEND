@@ -37,8 +37,6 @@ export default function OReportGeneralSummary({title}) {
     let subsidiary_subject =   counted_grades.filter(subj=>['ICT', 'SM', 'GP'].includes(subj.subject))     
   
 
-    console.log( transformed_data );
-
     return (
     <div className="w-full pb-4 bg-white relative">
         {/* page */}

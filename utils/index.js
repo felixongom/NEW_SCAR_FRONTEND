@@ -160,7 +160,6 @@ const sortAlevelSubjectOnReportCard = (subjects)=>{
   // 
   const other_subjects = subjects.filter(subject =>!subsidiary.includes(subject));
   const sorted_other_subjects = other_subjects.sort((a, b) => a.localeCompare(b));
-
   return [...sorted_other_subjects, ...ict, ...sm, ...gp];
 }
 
