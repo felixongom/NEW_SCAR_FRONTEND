@@ -19,11 +19,12 @@ export default function OReportGeneralSummary({title}) {
     useEffect(()=>{
         const _counted_grades = getSubjectGradeCount(transformed_data, uniqu_subject, exam, clas)
         setCountedGrade(_counted_grades)
+        
         if(clas<5) {
             const _all_class_sammury = countAverageGrades(transformed_data, exam);
             setAllClassSummary(_all_class_sammury)
         }
-    }, [exam])  
+    }, [exam, set_time.exam])  
     // 
 
     let colors = colorTin(theme_bg, 10);
@@ -34,8 +35,11 @@ export default function OReportGeneralSummary({title}) {
     table_heading = clas<5?table_heading: ['A', 'B', 'C', 'D', 'E', 'MISS', 'TOTAL'] 
     let principle_subject = clas>4? counted_grades.filter(subj=>!['ICT', 'SM', 'GP'].includes(subj.subject)):counted_grades
     let subsidiary_subject =   counted_grades.filter(subj=>['ICT', 'SM', 'GP'].includes(subj.subject))     
+  
 
-  return (
+    console.log( transformed_data );
+
+    return (
     <div className="w-full pb-4 bg-white relative">
         {/* page */}
         <div className="w-full relative min-h-screen break-inside-avoid print:w-screen print:h-screen print:min-h-screen print:break-after-page print:p-0">

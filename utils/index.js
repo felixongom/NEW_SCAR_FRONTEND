@@ -193,7 +193,7 @@ const getSubjectGradeCount = (students, subjects, exam, clas) =>{
       }
 
       // Count the grade
-      const grade = subjectData?.[exam=='AOI'?"AOI_AVERAGE_GRADE":exam=='EOC'?"EXAM_AVERAGE_GRADE":"GRADE"]//AVERAGE_GRADE;
+      const grade = subjectData?.[exam=='AOI'?"AOI_AVERAGE_GRADE":(exam=='EOC')?"EXAM_AVERAGE_GRADE":"GRADE"]//AVERAGE_GRADE;
 
       if (Object.keys(grades).includes(grade)) {
         gradeCount[grade]++;
