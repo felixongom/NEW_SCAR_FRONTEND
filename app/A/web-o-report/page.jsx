@@ -61,7 +61,7 @@ export default function AoneClass() {
 
                   <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px] print:text-[13px]`}>
-                            <td style={{width:'22%'}} className='border border-black p-1 pl-2'>SUBJECT</td>
+                            <td style={{width:'22%'}} className='border border-black p-1 pl-1'>SUBJECT</td>
                             <td className='border border-black text-center p-1'>PAPER</td>
                             {exam_list?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
@@ -82,19 +82,19 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                    <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_subjects<9?'2':'1'}`}>{subject==='ICT' && 'SABSIDIARY '} {a_subject_full_name[subject]}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_papers<10?'2':'1'}`}>{subject==='ICT' && 'SABSIDIARY '} {a_subject_full_name[subject]}</td>
                                   </>
 
                                   }
-                                  <td className={`border border-black p-1 text-center text-[15px] print:text-[13px] py-${student?.num_subjects<9?'2':'1'}`}>{paper_code[name_array[0]]}/{name_array[1]}</td>
+                                  <td className={`border border-black p-1 text-center text-[15px] print:text-[13px] py-${student?.num_papers<10?'2':'1'}`}>{paper_code[name_array[0]]}/{name_array[1]}</td>
                                 {/*  */}
                                 {
                                   Object.keys(subj.EXAM_05)?.map((exm, exm_i)=>( 
-                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_subjects<=9?'2':'1'}`}> {roundOff(subj.EXAM_05[exm.trim()], 2)||'-'} </td>
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_papers<10?'2':'1'}`}> {roundOff(subj.EXAM_05[exm.trim()], 2)||'-'} </td>
                                   ))
                                 }
-                                {exam_list.length>1 && <td className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_subjects<=9?'2':'1'}`}> {roundOff(subj.EXAM_AVERAGE_05, 2)||'-'} </td>}
-                                <td className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_subjects<=9?'2':'1'}`}> {roundOff(subj.EXAM_PAPER_AVERAGE_GRADE, 2)||'-'} </td>
+                                {exam_list.length>1 && <td className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_papers<10?'2':'1'}`}> {roundOff(subj.EXAM_AVERAGE_05, 2)||'-'} </td>}
+                                <td className={`border border-black text-center text-[15px] print:text-[13px] px-1 py-${student?.num_papers<10?'2':'1'}`}> {roundOff(subj.EXAM_PAPER_AVERAGE_GRADE, 2)||'-'} </td>
                                 {/*  */}
                                 {i3===0 &&
                                   <>
@@ -113,7 +113,7 @@ export default function AoneClass() {
                   :set_time.exam==='AOI'?
                     <table className='w-full'>
                         <tr className='border border-black font-bold text-[15px] print:text-[13px]'>
-                            <td style={{width:'27%'}} className='border border-black p-1 pl-2'>SUBJECT</td>
+                            <td style={{width:'27%'}} className='border border-black p-1 pl-1'>SUBJECT</td>
                             <td className='border border-black text-center '> AOI(x/3)</td>
                             <td className='border border-black text-center '> AOI(x/20)</td>
                             <td className='border border-black flex-1 text-center'>AOI(x/100)</td>
@@ -126,7 +126,7 @@ export default function AoneClass() {
                         
                           return(
                             <tr key={i2} className='border border-black  text-[15px] print:text-[13px]'>
-                              <td style={{width:'27%'}} className={`border border-black py-${student?.num_subjects<=9?'2':'1'}`}>{a_subject_full_name[subject]}</td>
+                              <td style={{width:'27%'}} className={`border border-black py-${student?.num_papers<10?'2':'1'}`}>{a_subject_full_name[subject]}</td>
                               <td className='border border-black text-center'> {aoi!=='-'? roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                               <td className='border border-black text-center'> {aoi} </td>
                               <td className='border border-black flex-1 text-center font-semibold'>{aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*100,0):'-'}</td>
@@ -140,7 +140,7 @@ export default function AoneClass() {
                   set_time.exam==='EOC'?
                   <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px] print:text-[13px]`}>
-                            <td style={{width:'28%'}} className='border border-black p-1 pl-2'>SUBJECT</td>
+                            <td style={{width:'28%'}} className='border border-black p-1 pl-1'>SUBJECT</td>
                             {exam_list?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
@@ -158,14 +158,14 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                    <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'28%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_subjects<9?'2':'1'}`}>{a_subject_full_name[subject]}</td>
+                                    <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'28%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_papers<9?'2':'1'}`}>{a_subject_full_name[subject]}</td>
                                   </>
 
                                   }
                                 {/*  */}
                                 {
                                   Object.keys(subj.EXAM_80)?.map((exm, exm_i)=>( 
-                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_subjects<=9?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_papers<10?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
                                   ))
                                 }
                                 {/*  */}
@@ -185,7 +185,7 @@ export default function AoneClass() {
                   set_time.exam.includes('&')?
                   <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px] print:text-[13px] p-1`}>
-                            <td style={{width:'27%'}} className='border border-black pl-2'>SUBJECT</td>
+                            <td style={{width:'27%'}} className='border border-black pl-1'>SUBJECT</td>
                             <td className='border border-black text-center '> AOI(3)</td>
                             <td className='border border-black text-center '> AOI(20)</td>
                             {bot_mot_eot?.map((exm, exm_i)=>(
@@ -207,7 +207,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                   <>
-                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'27%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_subjects<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
+                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'27%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_papers<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] print:text-[13px]'> {aoi && aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] print:text-[13px] font-semibold'> {aoi && aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'} </td>
                                     </>
@@ -216,7 +216,7 @@ export default function AoneClass() {
                                 {/*  */}
                                 {
                                   bot_mot_eot?.map((exm, exm_i)=>( 
-                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_subjects<=9?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
+                                    <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_papers<10?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
                                   ))
                                 }
                                 {/*  */}
@@ -235,7 +235,7 @@ export default function AoneClass() {
                     </table>:
                     <table className='w-full'>
                         <tr className={`border border-black font-bold text-[15px] print:text-[13px] p-1`}>
-                            <td style={{width:'27%'}} className='border border-black pl-2'>SUBJECT</td>
+                            <td style={{width:'27%'}} className='border border-black pl-1'>SUBJECT</td>
                             <td className='border border-black text-center '> AOI(3)</td>
                             <td className='border border-black text-center '> AOI(20)</td>
                             {bot_mot_eot?.map((exm, exm_i)=>(
@@ -257,7 +257,7 @@ export default function AoneClass() {
                                   {
                                     i3===0 &&
                                     <>
-                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'27%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_subjects<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
+                                      <td rowSpan={_subject[subject]?.subjects?.length} style={{width:'27%'}} className={`border border-black p-1 text-[15px] print:text-[13px] py-${student?.num_papers<9?'3':'1'}`}>{a_subject_full_name[subject]}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] print:text-[13px]'> {aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20/20*3,1):'-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className='border border-black text-center text-[15px] print:text-[13px] font-semibold'> {aoi!=='-'?roundOff(_subject[subject]?.AOI_AVERAGE_20, 0):'-'} </td>
                                     </>
@@ -266,7 +266,7 @@ export default function AoneClass() {
                                   {/*  */}
                                   {
                                     bot_mot_eot?.map((exm, exm_i)=>( 
-                                      <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_subjects<19?'2':'1'}`}> {aoi!=='-'?roundOff(subj.EXAM_80[exm.trim()], 0):'-'} </td>
+                                      <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_papers<19?'2':'1'}`}> {aoi!=='-'?roundOff(subj.EXAM_80[exm.trim()], 0):'-'} </td>
                                     ))
                                   }
                                   {/*  */}

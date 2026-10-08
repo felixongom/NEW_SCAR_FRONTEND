@@ -104,6 +104,7 @@ const getSingleLearner =(single_student)=>{
   let comment = set_time.exam=='AOI'?"AOI_AVERAGE_COMMENT":set_time.exam=='EOC'?"EXAM_AVERAGE_COMMENT":"AVERAGE_COMMENT"
   const table_header = {'STUDENT ID':'learner_id',"LEARNER NAME":'STUDENT NAME', 'SEX':'SEX','STREAM':'STREAM','SUBJ':'num_subjects', 'TOTAL':marks_key,  'AVG':average, 'GRD':grade_key,'COMMENT':comment,'ST_PSN':'PSN_IN_STREAM','PSN':'PSN'}
   let data = (data_chunk?.length ? data_chunk : transformed_data)
+  
 
   return (
     <div className="p-1 bg-gray-50  print:bg-white min-h-screen">
