@@ -135,7 +135,8 @@ export default function OReportGeneralSummary({title}) {
                 
             </div>
             <WebGraph data={principle_subject} title_text="PRINCIPLE SUBJECTS"/>
-            <WebGraph data={subsidiary_subject} title_text="SUBSIDIARY SUBJECTS"/>
+            {clas>4 && <WebGraph data={subsidiary_subject} title_text="SUBSIDIARY SUBJECTS"/>}
+            
             <div className="w-full hidden print:block">
                 <HorizontalDoubleLine/>
             </div>
