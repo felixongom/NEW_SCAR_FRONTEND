@@ -3,7 +3,7 @@ import { exam, roman_term } from "@/utils/reportList";
 import { colorTin, brightness } from "color-tin";
 import {HeadedPaper, HorizontalDoubleLine} from "./Headers/HeadedPaper";
 import { useEffect, useState } from "react";
-import { getUniqueSubjects, roundOff, sortAlevelSubjectOnReportCard } from "@/utils";
+import { getUniqueSubjects, roundOff, sortAlevelSubjectOnReportCard, sortOlevelSubjectOnReportCard } from "@/utils";
 import { RiArrowDownLine, RiBrush2Line } from "react-icons/ri";
 import OLevelGading from "./Report/OLevelGrading";
 import { Title } from "./StudentUpdateComponent";
@@ -50,7 +50,8 @@ export default function OReportSummary({title}) {
   };
 
     let colors = colorTin(theme_bg, 10);
-    let uniqu_subject = sortAlevelSubjectOnReportCard(getUniqueSubjects(transformed_data));
+
+    let uniqu_subject = clas>4?sortAlevelSubjectOnReportCard(getUniqueSubjects(transformed_data)):sortOlevelSubjectOnReportCard(getUniqueSubjects(transformed_data));
     let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":(clas>4?'total_points':'AVERAGE_GRADE')//AVERAGE_COMMENT
     let overal_average = set_time.exam=='AOI'?"AOI_AVERAGE":set_time.exam=='EOC'?'EXAM_AVERAGE':(clas>4?'total_points':'AVERAGE') //EXAM_AVERAGE_COMMENT
     // 
@@ -263,7 +264,7 @@ export default function OReportSummary({title}) {
                                     (toggle_marks//
                                         ? student.subjects?.[subject]?.[marks_grade_key]||'-'
                                         : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2) || '-')}
-                                        {marks_list && toggle_detail && '-('+actual_marks+')'}
+                                        {marks_list && toggle_detail && (clas<5 && student.subjects?.[subject]?.[marks_grade_key] && '-('+actual_marks+')')}
                                     </td>
                                 );
                                 })}
