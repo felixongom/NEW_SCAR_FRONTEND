@@ -158,7 +158,7 @@ export default function OReportSummary({title}) {
                         </td>
                         <td
                             onClick={() => sortData("STUDENT NAME")}
-                            className={`p-1 transition-all duration-200 ease-in-out w-[15%]`}
+                            className={`p-1 transition-all duration-200 ease-in-out w-[5%]`}
                         >
                             <div className={`flex gap-1 cursor-pointer`}>
                             <span className="">LEARNER&apos;S NAME</span>
