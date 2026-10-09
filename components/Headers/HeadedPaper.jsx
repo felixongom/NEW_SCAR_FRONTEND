@@ -9,7 +9,7 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
     return (
         <div className="w-full py-1 bg-white relative">
             <div className="text-lg flex justify-between px-1 pb-1 w-full">
-                <Image width={100} height={100} src={main_school_info.logo ||''} />
+                <Image width={120} height={120} src={main_school_info.logo ||''} />
                 <div className="flex justify-center flex-col">
                     <h1 className="text-center text-3xl font-bold -mt-3">{main_school_info['SCHOOL NAME']}</h1>
                     <span className="text-center text-[18px] -mt-2">{main_school_info['BOX NO']}, {main_school_info['DISTRICT/CITY']}</span>
@@ -21,8 +21,8 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
                     <p className="text-center text-sm -mt-1 font-normal">{main_school_info['LOCATION']}</p>
                     <i className="text-center text-sm font-semibold capitalize -mt-1">&quot; {capitalize(main_school_info['MOTO'])} &quot;</i>
                 </div>
-                {subject_name?<div className="text-6xl mt-2">{subject_name}</div>:learner_pic?<Image alt="" width={100} height={100} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
-                    pics?<Image alt="" width={100} height={100} src={pics} />:
+                {subject_name?<div className="text-6xl mt-2">{subject_name}</div>:learner_pic?<Image alt="" width={100} height={120} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
+                    pics?<Image alt="" width={120} height={120} src={pics} />:
                 <div/>}
             </div>
             <div className="w-full pt-2">
