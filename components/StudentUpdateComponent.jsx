@@ -49,23 +49,23 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
                 <button className="bg-gray-300 hover:bg-red-400 font-semibold px-1 py-1 w-8 h-8 rounded absolute top-1 right-1"  onClick={()=>setShowStudentPopup(null)}>x</button>
                 <Title text={'EDIT - ' + student['STUDENT NAME']}/>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Full Name</label>
+                    <label className="text-xs pb-1 text-slate-600">Full Name</label>
                     <input value={student_data.name} onChange={(e)=>setSudentData({...student_data,name:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Sex</label>
+                    <label className="text-xs pb-1 text-slate-600">Sex</label>
                     <input value={student_data.sex} onChange={(e)=>setSudentData({...student_data,sex:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Stream</label>
+                    <label className="text-xs pb-1 text-slate-600">Stream</label>
                     <input value={student_data.stream} onChange={(e)=>setSudentData({...student_data,stream:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs"  />
                 </div>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Pay Code</label>
+                    <label className="text-xs pb-1 text-slate-600">Pay Code</label>
                     <input value={student_data.pay_code} onChange={(e)=>setSudentData({...student_data,pay_code:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div className="w-full flex py-1 flex-col">
-                    <label className="text-xs pb-1 text-gray-400">Level (&apos;A&apos; OR &apos;O&apos;))</label>
+                    <label className="text-xs pb-1 text-slate-600">Level (&apos;A&apos; OR &apos;O&apos;))</label>
                     <input value={student_data.level} onChange={(e)=>setSudentData({...student_data,level:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs" />
                 </div>
                 <div onClick={updateStudent} className="w-full mx-auto mt-2 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
@@ -234,7 +234,7 @@ export function ExportPaycodeComponet({selected_student,isUploading,setIsUploadi
                      selected_student={selected_student}
                     />
                 </div>
-                <form className="flex justify-center items-center mt-5 w-full flex-col border-1 rounded m-auto border-t border-gray-400">
+                <form className="flex justify-center items-center mt-5 w-full flex-col border-1 rounded m-auto border-t border-slate-600">
                     <h3 className="text-center w-1/2 font-bold mx-auto pt-5" style={{color:theme_bg}}>UPLOAD PAY CODE</h3>
                     <div className="w-1/2 m-auto">
                         <input
@@ -247,7 +247,7 @@ export function ExportPaycodeComponet({selected_student,isUploading,setIsUploadi
                     <div className="px-2 py-5 w-1/2 flex justify-center flex-col items-center">
                         {/* indicators */}
                         {isUploading && (
-                            <p className="text-xs text-slate-500 mb-2">Uploading Pay code...</p>
+                            <p className="text-xs text-slate-600 mb-2">Uploading Pay code...</p>
                         )}
 
                         {progress > 0 && (

@@ -76,48 +76,48 @@ export default function AoneClass() {
     <ALayout>
       <div className="flex-1 pl-1">
         <NavBar heading="EDIT SCHOOL"/>
-        <div className="pt-2 border-t border-gray-400 bg-white p-2 flex justify-center items-center flex-col">
+        <div className="pt-2 border-t border-slate-600 bg-white p-2 flex justify-center items-center flex-col">
           <form className="md:w-3/4 w-full shadow p-2">
             <h3 className="font-semibold text-center text-teal-700 mb-2"> EDIT - {main_school_info?.['SCHOOL NAME']} </h3>
             
             <div className="w-full flex py-2 flex-col">
-              <label className="text-xs font-semibold pb-1 text-gray-400">Name</label>
+              <label className="text-xs font-semibold pb-1 text-slate-600">Name Name</label>
               <input value={school.name} onChange={(e)=>setSchool({...school, name:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
             </div>
-            <div className="flex justify-between w-full gap-2">
+            <div className="flex justify-between w-full gap-2 md:flex-col">
               <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Motto</label>
+                <label className="text-xs font-semibold pb-1 text-slate-600">Motto</label>
                 <input value={school.moto}  onChange={(e)=>setSchool({...school,moto:e.target.value})}  className=" text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
-              <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Campus Name</label>
+              <div className="w-full flex py-2 flex-col md:flex-col">
+                <label className="text-xs font-semibold pb-1 text-slate-600">Campus Name</label>
                 <input value={school.campus}  onChange={(e)=>setSchool({...school, campus:e.target.value})}  className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
             </div>
             {/*  */}
-            <div className="flex justify-between w-full gap-2">
+            <div className="flex justify-between w-full gap-2 md:flex-col">
               <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Box No.</label>
+                <label className="text-xs font-semibold pb-1 text-slate-600">Box No.</label>
                 <input value={school.box_no} onChange={(e)=>setSchool({...school, box_no:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
-              <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">District/City</label>
+              <div className="w-full flex py-2 flex-col ">
+                <label className="text-xs font-semibold pb-1 text-slate-600">District/City</label>
                 <input value={school.district} onChange={(e)=>setSchool({...school, district:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
             </div>
             {/*  */}
-            <div className="flex justify-between w-full gap-2">
+            <div className="flex justify-between w-full gap-2 md:flex-col">
               <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Email</label>
+                <label className="text-xs font-semibold pb-1 text-slate-600">Email</label>
                 <input value={school.email} onChange={(e)=>setSchool({...school, email:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
               <div className="w-full flex py-2 flex-col">
-                <label className="text-xs font-semibold pb-1 text-gray-400">Phone</label>
+                <label className="text-xs font-semibold pb-1 text-slate-600">Phone</label>
                 <input value={school.phone} onChange={(e)=>setSchool({...school, phone:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" />
               </div>
             </div>
             <div className="w-full flex py-2 flex-col">
-              <label className="text-xs font-semibold pb-1 text-gray-400">Location</label>
+              <label className="text-xs font-semibold pb-1 text-slate-600">Location</label>
               <textarea rows={3} value={school.location} onChange={(e)=>setSchool({...school, location:e.target.value})} className="text-gray-700 py-2 px-1 border border-gray-300 focus:border-red-500 focus:outline-none" >
               </textarea>
             </div>

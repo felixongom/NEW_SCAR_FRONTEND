@@ -60,7 +60,7 @@ export default function AoneClass() {
           { headers: { Authorization: `Bearer ${getToken('access_token')}` } },
         );
         
-        setSudentData({name:'',stream:'',sex:'MALE', pay_code:null})
+        setSudentData({student_data, name:'', pay_code:null})
         setReistering((prev) => !prev);
         // 
         if(response.data){ 
