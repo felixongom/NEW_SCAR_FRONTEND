@@ -9,8 +9,8 @@ import { BsCloudUpload } from "react-icons/bs";
 import { CiSettings, } from "react-icons/ci";
 
 
-// let base_api_path = 'http://localhost:3001/api/'
-let base_api_path = 'https://sscar.to'+'/api/'  
+let base_api_path = 'http://localhost:3001/api/'
+// let base_api_path = 'https://sscar.to'+'/api/'  
 // full name for subject
 let a_subject_full_name ={
     MTC:'MATHEMATICS',
@@ -45,8 +45,9 @@ let paper_code = {
 }
 // 
 
-let colors = ['#1a3300','#0d0d0d','#99004d','#b32400','#00802b','#b35900',
-  '#800080','#990000','#007a99', '#999900','#4c0080','#008080']
+let colors = ['#1a1b1e','#99004d','#b32400','#00802b','#b35900',
+  '#800080','#990000','#007a99', '#999900','#4c0080','#008080', '#b38600',
+'#000066','#32163F']
 
 // links in the nave bar
 const nav_links = [
@@ -63,12 +64,14 @@ const nav_links = [
 ]
 // 
 const exam = {BOT:'BEGINNING OF TERM',  MOT:'MID OF TERM', EOT:'END OF TERM'}
+const exam_by_id = {1:'BEGINNING OF TERM',  2:'MID OF TERM', 3:'END OF TERM'}
 const roman_term = {1:'I', 2:'II', 3:'III'}
 
 export  {base_api_path,
   colors, 
   nav_links,
   exam,
+  exam_by_id,
   roman_term,
   paper_code,
   a_subject_full_name

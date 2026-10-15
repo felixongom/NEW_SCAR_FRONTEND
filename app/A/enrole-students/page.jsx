@@ -26,7 +26,6 @@ export default function AoneClass() {
     const [selected_Student, setSelectedStudent] = useState([])
     const [set_student_loading, setStudentLoading] = useState(false)
     const [enroling, setEnrolling] = useState(false)
-    // const [deleting, setDeleting] = useState(false)
     const [deleting, setDeleting] = useState(false)
     const [activate_delete, setActivateDelete] = useState(false)
     const [show_student_popup, setShowStudentPopup] = useState(null);
@@ -110,13 +109,15 @@ export default function AoneClass() {
       }      
       // 
       setEnrolling((prev) => !prev);
-      await axios.post( `${base_api_path}enrole-students`,enrolemant_data,
+      let res = await axios.post( `${base_api_path}enrole-students`,enrolemant_data,
         {headers:{ Authorization: `Bearer ${getToken('access_token')}`}},
-      );
+      );      
+      toast.success(`DONE`)
       setEnrolling((prev) => !prev);
+      setSelectedStudent([])
+      dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, paper_id:[]}})
     } catch (error) {
       console.log(error);
-      
     }
   }
   //deleting students from the database

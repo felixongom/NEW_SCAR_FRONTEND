@@ -59,20 +59,21 @@ export default function AoneClass() {
           {...student_data, year_of_entry, clas:selected_clas},
           { headers: { Authorization: `Bearer ${getToken('access_token')}` } },
         );
-        
-        setSudentData({student_data, name:'', pay_code:null})
+                
+        setSudentData({...student_data, name:'', pay_code:null})
         setReistering((prev) => !prev);
         // 
         if(response.data){ 
-          toast.success(`${student_data.name.toUpperCase()} Registered`)
+          toast.success(`${student_data.name.toUpperCase()} REGISTERED`)
         }else{
-          toast.error(`${student_data.name.toUpperCase()} Not Registered`)
+          toast.error(`${student_data.name.toUpperCase()} NOT REGISTERED`)
         }
       } catch (error) {
         setReistering((prev) => !prev);
         if(error){
           toast.error(`${student_data.name.toUpperCase()} Not Registered`)
         }
+        
       }
 
     }

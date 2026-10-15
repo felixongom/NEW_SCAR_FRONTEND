@@ -1,6 +1,4 @@
 import _ from 'lodash'
-import { subject_full_name } from './reportList'
-import { isRegistered } from '.'
 
 function transformStudentData(dataArray) {
   const knownSubjects = ['ICT', 'ENG', 'ENT', 'PHY', 'CHE', 'BIO', 'MTC', 'HIS', 'GEO', 'CRE', 'LIT', 'AGR', 'KIS', 'FA', 'PE'] // extend this list

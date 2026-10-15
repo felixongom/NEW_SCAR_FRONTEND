@@ -13,7 +13,7 @@ import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
 import { roundOff } from "@/utils";
 
-const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subject_name }) => {
+const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSelectWhatToExport, subject_name }) => {
   const gridApiRef = useRef(null);              // stores the grid API
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const { theme_bg,set_time, selected_clas } = useDataContext();
@@ -158,6 +158,11 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
               theme_bg={theme_bg} 
               />
             <button
+              onClick={()=>setSelectWhatToExport(prev=>!prev)}
+              className="px-2 py-1 bg-blue-600 text-white rounded hidden"
+              style={{backgroundColor:theme_bg}}
+              >EXPORT</button>
+            <button
               className="bg-red-700 ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
               onClick={onDeleteRow}
             >
@@ -222,6 +227,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
       </div>
       
       :
+
       <div>
         <div className="w-full hidden print:block print:-mt-2">
           <HeadedPaper subject_name={subject_name}/>
@@ -229,7 +235,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
         </div>
         <div
         className="border-b flex gap-4 p-2 py-3 text-white"
-        style={{ backgroundColor: theme_bg }}>
+          style={{ backgroundColor: theme_bg }}>
           <h2 className="text-sm font-bold">
             Class Size{" "}
             <span
@@ -243,45 +249,87 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, subjec
         </div>
         <table className="w-full">
           <thead>
-            <tr className={`font-mono text-[12px] font-bold w-full`}
+            <tr className={`font-mono md:text-sm font-bold w-full`}
               style={{
                 color:theme_bg,
                 borderBottom:`2px solid ${theme_bg}`
               }}
             >
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 ">NO.</th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[4%] py-2 print:hidden">
+                <div className="w-full h-full flex justify-center items-center">
+                  <button
+                  style={{
+                    borderColor: true ? theme_bg : "#999",
+                    }}
+                    // onClick={() => toggleStudent(true)}
+                    className={`flex h-4 w-4  items-center justify-center border transition bg-white
+                    ${true ? "border-green-600" : "border-gray-500"}`}
+                    >
+                     {true ? (
+                      <span
+                      className="h-2 w-2 rounded-sm"
+                      style={{ backgroundColor: theme_bg }}
+                    />
+                    ) : null}
+                </button>
+                </div>
+              </th>
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 print:py-1">NO.</th>
               <th onClick={()=>sortData('learner')} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left w-[25%] cursor-pointer">LEARNER&apos;S NAME</th>
-              <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[8%] text-center cursor-pointer">STREAM</th>
+              <th onClick={()=>sortData('stream')} style={{border:`1px solid ${theme_bg}`}} className="w-[5%] text-center cursor-pointer">STREAM</th>
               {(toggle_show_hide_text?Object.keys(enroled[0]?.aoi_marks || {}):['AOI 1', 'AOI 2', 'AOI 3']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}(X/20)</th> 
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}(x/20)</th> 
               ))}
+              {toggle_show_hide_text &&  <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI(x/20)</th> }
               {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC {i+1}(X/80)</th> 
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC(x/80)</th> 
               ))}
               {toggle_show_hide_text && 
               <>
-                <th onClick={()=>sortData('marks_plas_aoi')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center cursor-pointer">TOTAL</th>
-                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">COMMENT</th>
+                <th onClick={()=>sortData('marks_plas_aoi')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[5%] text-center cursor-pointer">TOTAL</th>
+                <th onClick={()=>sortData('grade_letter')} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[5%] text-center cursor-pointer">GRADE</th>
+                <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[15%] text-center print:hidden">COMMENT</th>
               </>
               }
             </tr>
           </thead>
           {class_list?.map((learner, i)=>{
             return(
-              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono text-[12px]`}>
-                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 text-center">{i+1}</td>
+              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono md:text-sm ${learner.grade_letter>'C'?'text-red-600':learner.grade_letter<'B'?'text-[#009900]':''}`}>
+                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:hidden">
+                  <div className="w-full h-full flex justify-center items-center">
+                    <button
+                    style={{
+                      borderColor: true ? theme_bg : "#999",
+                      }}
+                      // onClick={() => toggleStudent(true)}
+                      className={`flex h-4 w-4  items-center justify-center border transition bg-white
+                      ${true ? "border-green-600" : "border-gray-500"}`}
+                      >
+                      {true ? (
+                        <span
+                        className="h-2 w-2 rounded-sm"
+                        style={{ backgroundColor: theme_bg }}
+                      />
+                      ) : null}
+                  </button>
+                </div>
+                </td>
+                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:py-1 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
-                <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{learner.stream}</td>
+                <td style={{border:`1px solid ${theme_bg}`}} className="text-center">{learner.stream}</td>
                 {(toggle_show_hide_text?Object.values(learner?.aoi_marks || {}):['-','-','-']).map((aoi, i)=>(
-                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && (aoi || '-')}</td> 
+                  <td key={i} style={{border:`1px solid ${theme_bg}`}} className="text-center w-[10%]">{toggle_show_hide_text && (aoi || '-')}</td> 
                 ))}
+                {toggle_show_hide_text &&  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{(learner.average_aoi || '-')}</td>  }
                 {(toggle_show_hide_text?Object.values(learner?.marks || {}):['-','-','-']).map((marks, i)=>(
                   <td key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[10%]">{toggle_show_hide_text && (marks || '-')}</td> 
                 ))}
                 {toggle_show_hide_text && 
                 <>
-                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">{ roundOff(learner.marks_plas_aoi, 0)}</td>
-                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic">{learner.marks_comment}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">{ roundOff(learner.marks_plas_aoi, 0)}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic text-center">{learner.grade_letter}</td>
+                  <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic print:hidden">{learner.marks_comment}</td>
                 </>
                 
                 }

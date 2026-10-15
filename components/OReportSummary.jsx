@@ -98,7 +98,7 @@ export default function OReportSummary({title}) {
                     onClick={() => setToggleAvg((prev) => !prev)}
                     className={`bg-${toggle_avg ? "gray-800" : "white"} px-2 hover:px-3 transition-all duration-200 ease-in-out py-1 text-${toggle_avg ? "white" : "gray-800"} border border-gray-400 text-xs capitalize shadow-md`}
                     >
-                    {!toggle_marks ? 'Show ' : 'Hide '}{clas>4?'Points':'Overall'}
+                    {!toggle_avg ? 'Show ' : 'Hide '}{clas>4?'Points':'Overall'}
                 </button>
                 <button
                     onClick={() => setToggleMarks((prev) => !prev)}
@@ -158,7 +158,7 @@ export default function OReportSummary({title}) {
                         </td>
                         <td
                             onClick={() => sortData("STUDENT NAME")}
-                            className={`p-1 transition-all duration-200 ease-in-out w-[5%]`}
+                            className={`p-1 transition-all duration-200 ease-in-out w-[18%]`}
                         >
                             <div className={`flex gap-1 cursor-pointer`}>
                             <span className="">LEARNER&apos;S NAME</span>
@@ -225,7 +225,7 @@ export default function OReportSummary({title}) {
                                         color: clas<5? o_level_painting:a_level_painting
                                     }}
                                     key={index}
-                                    className={`font-mono text-xs md:text-[13px] print:md:text-[13px] border-t hover:bg-gray-200 transition duration-800`}
+                                    className={`font-mono text-xs md:text-[14px] print:text-[13px] border-t hover:bg-gray-200 transition duration-800`}
                                 >
                                 <td className="p-1 py-2 print:py-1  flex-1 capitalize">
                                 {index + 1}

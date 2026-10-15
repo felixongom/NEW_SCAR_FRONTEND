@@ -1,5 +1,5 @@
 "use client";
-import { a_subject_full_name, base_api_path } from "@/utils/reportList"; 
+import { a_subject_full_name, base_api_path, exam_by_id } from "@/utils/reportList"; 
 import EnroledMarkSheet from "@/components/Avance/EnroledMarkSheet"
 import OEnroledMarkSheet from "@/components/Avance/OEnroledMarkSheet"
 import ALayout from "@/components/ALayout";
@@ -20,6 +20,7 @@ export default function Results() {
   const [deleting, setDeleting] = useState(false)
   const [deleteTudent, setDeleteStudent] = useState(null)
   const [updateStudent, setUpdateStudent] = useState(null)
+    const[select_what_to_export, setSelectWhatToExport] = useState(false)
   const [selectedSubj,setselectedSubj] = useState({ids:'', subject:''})
   const {set_time, dispatch, selected_clas, theme_bg, a_level_subject} = useDataContext()
   // 
@@ -93,6 +94,10 @@ export default function Results() {
    }
   
   const enroled = _.orderBy(results, ['stream', 'learner'], ['asc', 'asc'])  
+  const one_student = enroled[0]
+  console.log(one_student);
+  
+  
   
   return (
     <> 
@@ -111,6 +116,7 @@ export default function Results() {
         </>
       
     }
+    
   
     <ALayout>
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
@@ -132,6 +138,9 @@ export default function Results() {
            className="p-1 px-2 rounded cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</div>
           ))}
           </div>
+
+         
+
           <div className="px-2">
           {results && (clas>4? 
           <EnroledMarkSheet 
@@ -139,6 +148,7 @@ export default function Results() {
           dispatch={dispatch}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
+          setSelectWhatToExport={setSelectWhatToExport}
           subject_name ={selectedSubj?.subject}
           />: 
           <OEnroledMarkSheet 
@@ -147,9 +157,87 @@ export default function Results() {
           subject_name ={selectedSubj?.subject}
           setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
+          setSelectWhatToExport={setSelectWhatToExport}
           />)} 
          </div>
       </div>
+      {select_what_to_export && 
+      <div className="w-full h-full overflow-hidden z-10 fixed">
+        <div className="w-full h-full fixed overflow-hidden bg-slate-800 opacity-80"/>
+        <div className="w-full flex mt-1 justify-center overflow-hidden">
+          <div className="bg-gray-100 overflow-hidden rounded-lg opacity-100 w-[90%] md:w-[50%] relative">
+            <h1 className="py-1 w-full text-white p-1 md:px-4" style={{background:theme_bg}}>SELLECT EXAM AND EXPORT</h1>
+            <button onClick={()=>setSelectWhatToExport(prev=>!prev)} className="h-[25px] w-[25px] rounded-sm bg-slate-400 hover:bg-red-500 text-white absolute top-1 right-1">x</button>
+            <div className="p-2 md:p-4">
+              <div  className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                <button
+                  style={{
+                    borderColor: true ? theme_bg : "#999",
+                    }}
+                    // onClick={() => toggleStudent(true)}
+                    className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
+                    ${true ? "border-green-600" : "border-gray-500"}`}
+                    >
+                     {true ? (
+                      <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: theme_bg }}
+                    />
+                    ) : null}
+                </button>
+                  ALL
+              </div>
+              {Object.keys({...one_student?.aoi_id} || {}).map((marks_id, i)=>{
+                return(
+                  <div key={'aoi'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                    <button
+                      style={{
+                        borderColor: true ? theme_bg : "#999",
+                      }}
+                        // onClick={() => toggleStudent(true)}
+                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
+                            ${true ? "border-green-600" : "border-gray-500"}`}
+                      >
+                      {true ? (
+                        <span
+                          className="h-2 w-2 rounded-full"
+                          style={{ backgroundColor: theme_bg }}
+                        />
+                      ) : null}
+                      </button>
+                        AOI {i+1}
+                  </div>
+                )
+              })}
+              {Object.keys({...one_student?.marks_id} || {}).map((marks_id, i)=>{
+                return(
+                  <div key={'exam'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                    <button
+                      style={{
+                        borderColor: true ? theme_bg : "#999",
+                      }}
+                        // onClick={() => toggleStudent(true)}
+                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
+                            ${true ? "border-green-600" : "border-gray-500"}`}
+                      >
+                      {true ? (
+                        <span
+                          className="h-2 w-2 rounded-full"
+                          style={{ backgroundColor: theme_bg }}
+                        />
+                      ) : null}
+                      </button>
+                    {exam_by_id[marks_id.split('_')[1]] || 'Exam '+ marks_id.split('_')[1]}
+                  </div>
+                )
+              })}
+            <button className="w-full py-2 rounded-md text-white mt-3" style={{background:theme_bg}}>EXPORT TO EXCEL</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>}
     </ALayout>
     </>
   );

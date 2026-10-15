@@ -51,7 +51,7 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
             <h2 className="text-sm font-bold">
               Class Size <span 
               style={{backgroundColor:colors.lighter_40}}
-              className="mt-1 text-xs py-1 px-2 rounded-lg text-white font-thin">{students?.length} </span>
+              className="mt-1 text-xs py-1 px-2 rounded-lg text-white">{students?.length} </span>
             </h2>
             <input onChange={(e) => searchStudents(e.target.value)} className='px-2 py-1 focus:border-0 text-xs border-collapse text-gray-700 border border-gray-300 focus:border-gray-500 focus:outline-none' type="text" placeholder='Search student . . . ' />
             <button className="px-2 py-0 text-xs text-center" style={{backgroundColor:colors.lighter_30}}>{selected_student?.length} selected</button>
