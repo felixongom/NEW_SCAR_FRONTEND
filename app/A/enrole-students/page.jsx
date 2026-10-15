@@ -109,7 +109,7 @@ export default function AoneClass() {
       }      
       // 
       setEnrolling((prev) => !prev);
-      let res = await axios.post( `${base_api_path}enrole-students`,enrolemant_data,
+      await axios.post( `${base_api_path}enrole-students`,enrolemant_data,
         {headers:{ Authorization: `Bearer ${getToken('access_token')}`}},
       );      
       toast.success(`DONE`)
