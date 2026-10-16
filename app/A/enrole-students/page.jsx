@@ -101,6 +101,9 @@ export default function AoneClass() {
   }
   // function to enrole student
   const enroleStudent = async ()=>{
+    if(!selected_Student.length) return
+    if(!set_enrolement_time.exam.length) return toast.error(`FAILED, NO EXAM SELECTED`,{style: {border: '1px solid #e60000', background:'#ffe6e6', color:'#e60000'}})
+    if(!set_enrolement_time.paper_id.length) return toast.error(`FAILED, NO PAPER SELECTED`,{style: {border: '1px solid #e60000', background:'#ffe6e6', color:'#e60000'}})
     try {
       let enrolemant_data = {
         ...set_enrolement_time, 
