@@ -11,7 +11,7 @@ import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
 import _ from 'lodash'
-import { getToken } from "@/utils";
+import { getToken, removeSubjectsForAorOLevel } from "@/utils";
 
 
 export default function Results() {
@@ -48,6 +48,7 @@ export default function Results() {
   },[clas, set_time.year, set_time.term,set_time.exam, selectedSubj?.ids, deleting])
   
   // 
+
 
   const handleSelect = (group)=>{
     setselectedSubj(group)
@@ -96,10 +97,9 @@ export default function Results() {
   
   const enroled = _.orderBy(results, ['stream', 'learner'], ['asc', 'asc'])  
   const one_student = enroled[0]
-  console.log(one_student);
-  
-  
-  
+  // console.log(one_student);
+  let list_of_subjects = removeSubjectsForAorOLevel(a_level_subject?.subject_group ||[], parseInt(clas))
+
   return (
     <> 
     {
@@ -118,7 +118,6 @@ export default function Results() {
       
     }
     
-  
     <ALayout>
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
          <NavBar heading={'RESULTS'}/>
@@ -127,7 +126,7 @@ export default function Results() {
          <h2 className="mt-3 font-bold print:hidden">Select A subject</h2>
          <div className="flex flex-wrap bg-white shadow-sm gap-3 my-4 p-3 print:hidden">
 
-          {a_level_subject && a_level_subject?.subject_group?.map((group, i)=>(
+          {list_of_subjects?.map((group, i)=>(
            <div
            key={i}
            style={{

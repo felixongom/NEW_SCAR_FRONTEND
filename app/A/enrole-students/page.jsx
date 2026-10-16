@@ -10,7 +10,7 @@ import { base_api_path } from "@/utils/reportList";
 import axios from "axios";
 import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
-import { getToken, numbersArray } from "@/utils";
+import { getToken, numbersArray, removeSubjectsForAorOLevel } from "@/utils";
 import { IoIosArrowDown } from "react-icons/io";
 import  {colorTin} from 'color-tin'
 import {StudentEnorolementComponent, StudentUpdateComponent} from "@/components/StudentUpdateComponent"
@@ -68,7 +68,6 @@ export default function AoneClass() {
         const response = await axios.get(`${base_api_path}students/entry-year/${year_of_entry}/${level}`, {
           headers:{'Authorization':`Bearer ${getToken('access_token')}`}
         }); // Example API
-        console.log(response.data)
         setStudents(response.data)
         setStudentLoading(false)
         setShowStudentPopup(false)
@@ -145,6 +144,7 @@ export default function AoneClass() {
   // 
   let colors = colorTin(theme_bg, 10)
    const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1'
+  let list_of_subjects = removeSubjectsForAorOLevel(subjects?.swapped_subjects || {}, entry_clas)  
 
  
   // In your App.js
@@ -193,14 +193,14 @@ export default function AoneClass() {
         <hr />
         <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
           <h2 className="mt-2 font-semibold text-sm md:text-l text-slate-800">Select Subject/Papers </h2>
-          {!subjects?<Ring size={30} stroke={3} bgOpacity={0} speed={2} color={theme_bg}/>:
+          {!subjects?<Ring size={30} stroke={2} bgOpacity={0} speed={2} color={theme_bg}/>:
           
         <div className="flex flex-wrap shadow-sm gap-3 mb-4 py-2 text-sm text-slate-600">
           <button
             onClick={()=>dispatch({type:"SET_ENROLEMENT_TIME", payload:{...set_enrolement_time, paper_id:[]}})}
             className="bg-red-700 hover:bg-red-600 text-white p-0 px-2 rounded cursor-pointer text-thin text-sm md:text-sm">Reset
           </button>
-          {subjects && Object.keys(subjects?.swapped_subjects)?.map((paper, i)=>(
+          {subjects && Object.keys(list_of_subjects)?.map((paper, i)=>(
             <button
               key={i}
               style={{

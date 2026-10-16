@@ -279,6 +279,21 @@ const countAverageGrades = (students, exam) => {
 
   return result;
 };
+//
+
+const removeSubjectsForAorOLevel = (subjects, clas) => {
+  let subjects_to_remove = clas<5?['GP','SM','ECO', 'DIV']:['PE', 'KIS', 'CRE','ENG']
+
+  if(Array.isArray(subjects)){
+    return _.orderBy(_.filter(subjects, item =>
+      !_.includes(subjects_to_remove, item.subject)
+    ), ['subject'],['asc']);
+  }else{
+    return _.omitBy(subjects, (value, key) =>
+        _.includes(subjects_to_remove, key.replace(/\s+\d+$/, ""))
+      );
+  }
+};
 // 
  export {
   countStudentsByStream, 
@@ -295,6 +310,7 @@ const countAverageGrades = (students, exam) => {
   countAverageGrades,
   // 
   sortOlevelSubjectOnReportCard,
-  sortAlevelSubjectOnReportCard
+  sortAlevelSubjectOnReportCard,
+  removeSubjectsForAorOLevel
 }
 
