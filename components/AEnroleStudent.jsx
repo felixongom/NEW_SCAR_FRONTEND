@@ -47,14 +47,14 @@ export default function AEnroleStudents({students,setShowStudentPopup, set_stude
         {set_student_loading && <Loading/>}
         <div className="overflow-hidden bg-white shadow-lg">
           {/* Header */}
-          <div className="border-b flex gap-4 p-2 py-3 text-white" style={{backgroundColor:theme_bg}}>
+          <div className="border-b flex items-center gap-4 p-2 py-2 text-white" style={{backgroundColor:theme_bg}}>
             <h2 className="text-sm font-bold">
               Class Size <span 
               style={{backgroundColor:colors.lighter_40}}
               className="mt-1 text-xs py-1 px-2 rounded-lg text-white">{students?.length} </span>
             </h2>
             <input onChange={(e) => searchStudents(e.target.value)} className='px-2 py-1 focus:border-0 text-xs border-collapse text-gray-700 border border-gray-300 focus:border-gray-500 focus:outline-none' type="text" placeholder='Search student . . . ' />
-            <button className="px-2 py-0 text-xs text-center" style={{backgroundColor:colors.lighter_30}}>{selected_student?.length} selected</button>
+            <button className="px-2 py-1 text-xs text-center" style={{backgroundColor:colors.lighter_30}}>{selected_student?.length} selected</button>
           </div>
 
           {/* Desktop Table */}
