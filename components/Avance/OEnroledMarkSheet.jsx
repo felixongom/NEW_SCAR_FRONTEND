@@ -13,8 +13,8 @@ import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
 import { roundOff } from "@/utils";
 
-const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSelectWhatToExport, subject_name }) => {
-  const gridApiRef = useRef(null);              // stores the grid API
+const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name }) => {
+  const gridApiRef = useRef(null);// stores the grid API
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const { theme_bg,set_time, selected_clas } = useDataContext();
   const[sheet, setSheet] = useState(true)
@@ -163,10 +163,16 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
               onClick={()=>setSelectWhatToExport(prev=>!prev)}
               className="px-2 py-1 bg-blue-600 text-white rounded hidden"
               style={{backgroundColor:theme_bg}}
-              >EXPORT</button>
+              >EXPORT</button> 
             <button
               className="bg-red-700 ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
               onClick={onDeleteRow}
+            >
+              Delete Selected
+            </button>
+            <button
+              className="bg-red-700 hidden ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
+              onClick={()=>setSelectWhatToDelete(prev=>!prev)}
             >
               Delete Selected
             </button>

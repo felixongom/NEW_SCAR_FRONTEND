@@ -11,11 +11,12 @@ import toast from "react-hot-toast";
 import ExportPaycode from '@/hooks/useExportPaycode'
 
 export function StudentUpdateComponent({student,setShowStudentPopup,updating,setUpdating}) {
-    const {theme_bg} = useDataContext()
+    const {theme_bg, selected_clas} = useDataContext()
     const [student_data, setSudentData]=useState({
         name:student['STUDENT NAME'],
         sex:student['SEX'], 
         stream:student['STREAM'],
+        year_of_entry:student.year_of_entry,
         pay_code:student.pay_code,
         level:student.level,
     })
@@ -40,6 +41,8 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
             }
         }
     }
+
+    const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1'
     
     return(
         <>
@@ -59,6 +62,10 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
                 <div className="w-full flex py-1 flex-col">
                     <label className="text-xs pb-1 text-slate-600">Stream</label>
                     <input value={student_data.stream} onChange={(e)=>setSudentData({...student_data,stream:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs"  />
+                </div>
+                <div className="w-full flex py-1 flex-col">
+                    <label className="text-xs pb-1 text-slate-600">Year of Entry to Senior {entry_clas}</label>
+                    <input value={student_data.year_of_entry} onChange={(e)=>setSudentData({...student_data,year_of_entry:e.target.value})} className="text py-2 px-1 border border-gray-300 focus:border-blue-500 focus:outline-none text-xs"  />
                 </div>
                 <div className="w-full flex py-1 flex-col">
                     <label className="text-xs pb-1 text-slate-600">Pay Code</label>

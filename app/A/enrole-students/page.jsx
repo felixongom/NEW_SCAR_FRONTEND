@@ -68,6 +68,7 @@ export default function AoneClass() {
         const response = await axios.get(`${base_api_path}students/entry-year/${year_of_entry}/${level}`, {
           headers:{'Authorization':`Bearer ${getToken('access_token')}`}
         }); // Example API
+        console.log(response.data)
         setStudents(response.data)
         setStudentLoading(false)
         setShowStudentPopup(false)
