@@ -19,6 +19,8 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
   const { theme_bg,set_time, selected_clas } = useDataContext();
   const[sheet, setSheet] = useState(true)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
+  const[toggle_show_hide_header, setToggleShowHideHeader] = useState(false)
+  
   const [sort_column, setSortColumn]= useState({})
   const cellStyle = { display: 'flex', alignItems: 'center' };
 
@@ -178,7 +180,17 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
           </>
 
         )}
-        <div className="flex items-center gap-2 top-2 right-1 absolute">
+        <div className="flex items-center gap-2 top-2 right-1 absolute text-sm">
+          <button
+            style={{
+              borderColor: theme_bg,
+              borderWidth:1,
+              color: theme_bg,
+            }}
+            onClick={() => setToggleShowHideHeader(prev=>!prev)}
+            className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
+            <span className="font-xs">{!toggle_show_hide_header?'SHOW':'HIDE'} HEADER</span>
+          </button>
           <button
             style={{
               borderColor: theme_bg,
@@ -187,7 +199,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
             }}
             onClick={() => setToggleShowHideText(prev=>!prev)}
             className={`flex gap-1 px-1 rounded transition text-xs md:text-sm ${sheet && 'hidden'}`}> 
-            <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'}</span>
+            <span className="font-xs">{!toggle_show_hide_text?'SHOW':'HIDE'} MARKS</span>
           </button>
           <button
             style={{
@@ -229,12 +241,12 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
       :
 
       <div>
-        <div className="w-full hidden print:block print:-mt-2">
+        <div className={`w-full ${toggle_show_hide_header && 'hidden'} print:block`}>
           <HeadedPaper subject_name={subject_name}/>
           <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${a_subject_full_name[subject_name]||subject_name}`}/>
         </div>
         <div
-        className="border-b flex gap-4 p-2 py-3 text-white"
+        className="border-b flex gap-4 p-2 py-3 text-white print:hidden"
           style={{ backgroundColor: theme_bg }}>
           <h2 className="text-sm font-bold">
             Class Size{" "}
