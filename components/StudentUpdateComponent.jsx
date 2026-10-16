@@ -136,47 +136,50 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
         <>
         <div className="absolute w-full h-full bg-black opacity-70 z-10"/>
         <div className="absolute pt-1 shadow-lg w-full h-full z-10 overflow-hidden">
-            <div className="relative shadow-lg bg-white rounded p-3 overflow-scroll lg:w-3/4 w-[98vw]  h-[98vh] m-auto flex flex-col gap-2">
-                <button className="bg-gray-300 hover:bg-red-400 font-semibold px-1 py-1 w-8 h-8 rounded absolute top-1 right-1"  onClick={()=>setShowEnrolemetPopup(prev=>!prev)}>x</button>
-                <Title text={'COPPY ENROLEMENT FROM PREVIOUS '}/>
-                <h4 className="text-teal-700 font-semibold text-center">SELECT A SUBJECT/PAPER</h4>
-                <div className="flex flex-wrap gap-1 border-b border-gray-300 toggleTheme w-full pb-1">
-                    <button
-                        onClick={()=>setSelectedSubject([])}
-                        className="px-2 rounded-sm text-sm text-white bg-rose-700 hover:bg-rose-500">Reset
-                    </button>
-                    {subjects && Object.keys(subjects)?.map((subject, i)=>{
-                        const paper_id = parseInt(subjects[subject])
-                        return(
-                            <button 
-                            key={i}
-                            className={`px-2 rounded-sm text-sm text-gray-800 bg-gray-300`}
-                            onClick={()=>SelectSubject(paper_id)} 
-                            style={{
-                                backgroundColor:selected_subject.includes(paper_id)?theme_bg:null,
-                                color:selected_subject.includes(paper_id)?'#fff':null,
-                                fontWeight:selected_subject.includes(paper_id)?'bold':null,
-                            }}
-                             >{subject}</button>
-                        )
-                    })}
-                </div>
-                {saving && <div>
-                    <h4 className="text-center m-auto text-red-800 py-1 px-5 rounded-full bg-gray-100 w-fit">Pleas wait, this can take sometimes...</h4>
-                    </div>}
-                {/*  */}
-                <div className="flex justify-center gap-1 md:gap-3 lg:gap-5 w-full flex-wrap">
-                    <DetailsCard title={'FROM'} current_year={from.year} detail={from} setDetail={setFrom}/>
-                    <DetailsCard title={'TO'} current_year={to.year} detail={to} setDetail={setTo}/>
-                </div>
-                <div onClick={saveEnrolement} className="w-1/2 mx-auto mt-2 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
-                {saving? 
-                    <Ring size={30} stroke={5} bgOpacity={0} speed={2} color="white"/>:
-                    <button className="bg-transparent w-full h-full text-white py-2">Save</button>
-                }
-              </div>
+            <div className="relative shadow-lg bg-white rounded-md overflow-hidden lg:w-3/4 w-[98vw]  h-[98vh] m-auto flex flex-col gap-2">
+                <div className="absolute top-0 p-2 w-full text-white" style={{background:theme_bg}}>COPPY ENROLEMENT FROM PREVIOUS </div>
+                    <button className="bg-gray-300 hover:bg-red-400 font-semibold px-1 py-1 w-8 h-8 rounded absolute top-1 right-1"  onClick={()=>setShowEnrolemetPopup(prev=>!prev)}>x</button>
+                    <br />
+                    <div className="px-2 mt-5">
+                        <h4 className="text-teal-700 font-semibold text-center mb-3">SELECT A SUBJECT/PAPER</h4>
+                        <div className="flex flex-wrap px-1 gap-2 border-b border-gray-300 toggleTheme w-full pb-2">
+                        <button
+                            onClick={()=>setSelectedSubject([])}
+                            className="px-2 rounded-sm text-sm text-white bg-rose-700 hover:bg-rose-500">Reset
+                        </button>
+                        {subjects && Object.keys(subjects)?.map((subject, i)=>{
+                            const paper_id = parseInt(subjects[subject])
+                            return(
+                                <button 
+                                key={i}
+                                className={`px-2 rounded-sm text-sm text-gray-800 bg-gray-100`}
+                                onClick={()=>SelectSubject(paper_id)} 
+                                style={{
+                                    backgroundColor:selected_subject.includes(paper_id)?theme_bg:null,
+                                    color:selected_subject.includes(paper_id)?'#fff':null,
+                                    fontWeight:selected_subject.includes(paper_id)?'bold':null,
+                                }}
+                                >{subject}</button>
+                            )
+                        })}
+                    </div>
+                    {saving && <div>
+                        <h4 className="text-center m-auto text-red-800 py-1 px-5 rounded-full bg-gray-100 w-fit">Pleas wait, this can take sometimes...</h4>
+                        </div>}
+                    {/*  */}
+                    <div className="flex justify-evenly mt-3 gap-1 md:gap-3 lg:gap-5 w-full flex-wrap">
+                        <DetailsCard title={'FROM'} current_year={from.year} detail={from} setDetail={setFrom}/>
+                        <DetailsCard title={'TO'} current_year={to.year} detail={to} setDetail={setTo}/>
+                    </div>
+                    <div onClick={saveEnrolement} className="w-1/2 mx-auto mt-3 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
+                        {saving? 
+                            <Ring size={30} stroke={5} bgOpacity={0} speed={2} color="white"/>:
+                            <button className="bg-transparent w-full h-full text-white py-2">Save</button>
+                        }
+                    </div>
             </div>
         </div>
+    </div>
     </>
     )
 }

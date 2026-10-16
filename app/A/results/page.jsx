@@ -139,7 +139,6 @@ export default function Results() {
           ))}
           </div>
 
-         
 
           <div className="px-2">
           {results && (clas>4? 
