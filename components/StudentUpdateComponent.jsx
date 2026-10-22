@@ -305,7 +305,7 @@ function DetailsCard({title,subjects, current_year, detail, setDetail, SelectSub
     let classes = [1, 2, 3, 4, 5, 6]    
 
     return(
-        <div className="shadow w-full md:w-1/2 p-2 flex justify-center flex-col">
+        <div className="shadow w-full md:w-2/5 p-2 flex justify-center flex-col">
             <h5 style={{color:theme_bg}} className="pb-1 border-b-2 border-teal-600 font-bold text-center">{title}</h5>
             {/* subjects */}
             <div className="px-2 mt-5">
@@ -326,8 +326,7 @@ function DetailsCard({title,subjects, current_year, detail, setDetail, SelectSub
                                     backgroundColor:selected_subject.includes(paper_id)?theme_bg:null,
                                     color:selected_subject.includes(paper_id)?'#fff':null,
                                     fontWeight:selected_subject.includes(paper_id)?'bold':null,
-                                }}
-                                >{subject}</button>
+                                }}>{subject}</button>
                             )
                         })}
                     </div>
@@ -393,7 +392,7 @@ function DetailsCard({title,subjects, current_year, detail, setDetail, SelectSub
                     ))}
             </div>
             {/*  */}
-            <div className="flex gap-1 py-5 border-t border-gray-300">
+            <div className="flex flex-wrap gap-1 py-5 border-t border-gray-300">
                 <label className='relative'>Exam:</label>
                 {exam_list.map(exam=>(
                 <button onClick={()=>setDetail({...detail, exam})} 
