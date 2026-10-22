@@ -14,14 +14,14 @@ export function HeadedPaper({pics, learner_pic, subject_name}){
                     <h1 className="text-center text-3xl font-bold -mt-3">{main_school_info['SCHOOL NAME']}</h1>
                     <span className="text-center text-[18px] -mt-2">{main_school_info['BOX NO']}, {main_school_info['DISTRICT/CITY']}</span>
                     {main_school_info['CAMPUS'] && <i className="text-center text-sm font-semibold italic capitalize -mt-2">{capitalize(main_school_info['CAMPUS'])} Campus</i>}
-                    <p className="text-center font-semibold text-[14px] -mt-2">
+                    <p className="text-center font-semibold text-[12px] -mt-2">
                         Email:<i className="text-center font-normal">{main_school_info['EMAIL']}</i> |
                         Tel:<i className="text-center font-normal">{main_school_info['PHONE']}</i>
                     </p>
-                    <p className="text-center text-[14px] -mt-2 font-normal">{main_school_info['LOCATION']}</p>
-                    <i className="text-center text-[14px] font-semibold capitalize -mt-2">&quot;{capitalize(main_school_info['MOTO'])}&quot;</i>
+                    <p className="text-center text-[12px] -mt-2 font-normal">{main_school_info['LOCATION']}</p>
+                    <i className="text-center text-[13px] font-semibold capitalize -mt-2">&quot;{capitalize(main_school_info['MOTO'])}&quot;</i>
                 </div>
-                {subject_name?<div className="text-5xl mt-2">{subject_name}</div>:learner_pic?<Image alt="" width={100} height={100} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
+                {subject_name?<div className="text-5xl mt-2">{subject_name}</div>:learner_pic?<Image alt="" width={80} height={100} src={base_api_path.replace('/api', '')+'uploads/'+learner_pic} />:
                     pics?<Image alt="" width={100} height={100} src={pics} />:
                 <div/>}
             </div>

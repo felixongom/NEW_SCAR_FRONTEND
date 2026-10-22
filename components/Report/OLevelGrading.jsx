@@ -8,7 +8,7 @@ export default function OLevelGading({font_size=null}){
     return (
         clas>4?
         <div className="w-full">
-            <h5 className="font-semibold">PRNCIPLE SUBJECTS</h5>
+            <h5 className="font-semibold text-sm">PRNCIPLE SUBJECTS</h5>
             <table className='w-full'>
             <tr className={`border border-gray-500 text-${font_size}`}>
                 <td className='border border-gray-500 px-1 text-left w-[18%] font-semibold'>SCORE RANGE</td>

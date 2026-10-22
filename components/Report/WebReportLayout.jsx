@@ -134,7 +134,7 @@ export default function WebReportLayout({children,student, extra_data, title}) {
               <div className='w-full border-b border-dashed border-gray-700 text-[15px] print:text-[13px]'>Head Teacher&apos;s Comment:</div>
             
             {/* Grading System */}
-            <section className='w-full gap-1'>
+            <section className='w-full gap-1 text-sm'>
               {clas<5 && <b>GRADING SCALE</b>}
               <OLevelGading font_size="sm"/>
               {clas<5? 
