@@ -34,6 +34,7 @@ export default function AoneClass() {
   let exam_list = reserve_exam?.split('&') || [];
   let bot_mot_eot = set_time.exam?.split('&') || []
   // In your App.js
+  console.log(transformed_data)
   
   if(report_category=='report cards'){
     return ( 
@@ -241,7 +242,7 @@ export default function AoneClass() {
                             {bot_mot_eot?.map((exm, exm_i)=>(
                               <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
                             ))}
-                            <td className='border border-black text-center'>AVG(80)</td>
+                            {/* <td className='border border-black text-center'>AVG(80)</td> */}
                             <td className='border border-black text-center'>TOTAL(100)</td>
                             <td className='border border-black text-center'>GRADE</td>
                             <td style={{width:'20%'}} className='border border-black text-center'>ACHIEVEMENT LEVEL</td>
@@ -266,14 +267,14 @@ export default function AoneClass() {
                                   {/*  */}
                                   {
                                     bot_mot_eot?.map((exm, exm_i)=>( 
-                                      <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_papers<19?'2':'1'}`}> {aoi!=='-'?roundOff(subj.EXAM_80[exm.trim()], 0):'-'} </td>
+                                      <td key={exm_i} className={`border border-black text-center text-[15px] print:text-[13px] py-${student?.num_papers<19?'2':'1'}`}> {roundOff(subj.EXAM_80[exm.trim()], 0)||'-'} </td>
                                     ))
                                   }
                                   {/*  */}
                                   {
                                     i3===0 &&
                                     <>
-                                      <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black flex-1 text-center font-semibold'>{roundOff(_subject[subject]?.EXAM_AVERAGE_80,0)||'-'}</td>
+                                      {/* <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black flex-1 text-center font-semibold'>{roundOff(_subject[subject]?.EXAM_AVERAGE_80,0)||'-'}</td> */}
                                       <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black flex-1 text-center font-semibold'>{roundOff(_subject[subject]?.TOTAL,0)||'-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length}  className='border border-black text-center'>{_subject[subject]?.GRADE || '-'}</td>
                                       <td rowSpan={_subject[subject]?.subjects?.length} className={`border border-black italic text-${_subject[subject]?.COMMENT?'left':'center'}`}>{_subject[subject]?.COMMENT || '-'}</td>
