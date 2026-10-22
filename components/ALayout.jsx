@@ -10,9 +10,10 @@ import axios from "axios";
 import { base_api_path } from "@/utils/reportList";
 import AuthLayout from "./AuthLayout";
 import { getToken } from "@/utils";
+import ScrollToTop from "react-scroll-to-top";
 //  Register AG Grid community modules
 export default function ALayout({children}){
-  const {dispatch, selected_clas, set_time, a_level_subject } = useDataContext()
+  const {dispatch, selected_clas, set_time,theme_bg, a_level_subject } = useDataContext()
     const [error, setError] = useState(null);
     let clas = selected_clas?.split(' ')[1]
   
@@ -62,6 +63,10 @@ return(
         <SideMenu />
         { children }
       </div>
+      <ScrollToTop  
+      color='white' 
+      style={{height:30, width:30,padding:5, background:theme_bg, display:'flex', alignItems:'center', justifyContent:'center'}} smooth 
+      />
   </AuthLayout>
 )
 }

@@ -8,6 +8,7 @@ import { TfiPrinter, TfiArrowLeft } from "react-icons/tfi";
 import ColorThemeSetter from '../ColorThemeSetter';
 import LogoutButton from '../LogoutButton';
 import Link from 'next/link';
+import ScrollToTop from "react-scroll-to-top";
 
 export default function MainWebReportLayout({children}) {
   const {theme_bg, dispatch,report_category} = useDataContext()
@@ -70,6 +71,10 @@ export default function MainWebReportLayout({children}) {
         </div>
       </div>
       {children}
+      <ScrollToTop  
+        color='white' 
+        style={{height:30, width:30,padding:5, background:theme_bg, display:'flex', alignItems:'center', justifyContent:'center'}} smooth 
+        />
     </div>
   );
 }

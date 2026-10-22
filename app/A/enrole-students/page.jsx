@@ -191,7 +191,7 @@ export default function AoneClass() {
         <NavBar heading="ENROLE STUDENTS"/>
         <EnrolementSetTime/>
         <hr />
-        <div className="ag-theme-quartz flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
+        <div className="flex-1 bg-white p-2" style={{ height: 'auto', width: "100%" }}>
           <h2 className="mt-2 font-semibold text-sm md:text-l text-slate-800">Select Subject/Papers </h2>
           {!subjects?<Ring size={30} stroke={2} bgOpacity={0} speed={2} color={theme_bg}/>:
           

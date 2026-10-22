@@ -89,21 +89,22 @@ export function StudentUpdateComponent({student,setShowStudentPopup,updating,set
 // Coppying enrolment from previous exam
 export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
     const {theme_bg} = useDataContext()
-    const [selected_subject, setSelectedSubject] = useState([])
+    const [selected_from_subject, setSelectedFromSubject] = useState([])
+    const [selected_to_subject, setSelectedToSubject] = useState([])
     const [from, setFrom] = useState({year:new Date().getFullYear(),clas:1, term:1, exam:'BOT'})
     const [to, setTo] = useState({year:new Date().getFullYear(), clas:1, term:1, exam:'BOT'})
-    const [saving, setSaving] = useState(false)
-    
+    const [saving, setSaving] = useState(false)    
+
     // 
     const saveEnrolement = async()=>{
-        if(!(saving || selected_subject.length===0)){
+        if(!(saving || selected_from_subject.length===0)){
             // 
             try {
                 setSaving(prev=>!prev)
                 let result = await axios.post(`${base_api_path}copy-exam-enrolement`,
                     {
-                        from:{...from, paper_id:selected_subject}, 
-                        to:{...to, paper_id:selected_subject},},
+                        from:{...from, paper_id:selected_from_subject}, 
+                        to:{...to, paper_id:selected_to_subject},},
                     { headers: { Authorization: `Bearer ${getToken('access_token')}` } },
                 );
                 setSaving((prev) => !prev);
@@ -121,55 +122,65 @@ export function StudentEnorolementComponent({subjects,setShowEnrolemetPopup}) {
     }
 
     // 
-    function SelectSubject(subject_id){
+    function SelectSubject(subject_id, title){
     
-        let exist = selected_subject.includes(subject_id)
-        if(!exist){
-            setSelectedSubject([...selected_subject, subject_id])
+        if(title==='TO'){
+            let exist = selected_to_subject.includes(subject_id)
+            if(!exist){
+                setSelectedToSubject([...selected_to_subject, subject_id])
+            }else{
+                let remove = selected_to_subject.filter(subj=>subj!==subject_id)
+                setSelectedToSubject(remove)
+            }
+
         }else{
-            let remove = selected_subject.filter(subj=>subj!==subject_id)
-            setSelectedSubject(remove)
+            let exist = selected_from_subject.includes(subject_id)
+            if(!exist){
+                setSelectedFromSubject([...selected_from_subject, subject_id])
+            }else{
+                let remove = selected_from_subject.filter(subj=>subj!==subject_id)
+                setSelectedFromSubject(remove)
+            }
         }
+        
     }
     
     return(
         <>
         <div className="absolute w-full h-full bg-black opacity-70 z-10"/>
-        <div className="absolute pt-1 shadow-lg w-full h-full z-10 overflow-hidden">
-            <div className="relative shadow-lg bg-white rounded-md overflow-hidden lg:w-3/4 w-[98vw]  h-[98vh] m-auto flex flex-col gap-2">
-                <div className="absolute top-0 p-2 w-full text-white" style={{background:theme_bg}}>COPPY ENROLEMENT FROM PREVIOUS </div>
+        <div className="absolute pt-1 shadow-lg w-full h-full z-10">
+            <div className="relative shadow-lg bg-white rounded-md overflow-hidden lg:w-3/4 w-[98vw]  h-[98vh] m-auto flex flex-col gap-2 pb-2">
+                <div className="absolute top-0 p-2 w-full text-white pb-2" style={{background:theme_bg}}>COPPY ENROLEMENT FROM PREVIOUS </div>
                     <button className="bg-gray-300 hover:bg-red-400 font-semibold px-1 py-1 w-8 h-8 rounded absolute top-1 right-1"  onClick={()=>setShowEnrolemetPopup(prev=>!prev)}>x</button>
                     <br />
-                    <div className="px-2 mt-5">
-                        <h4 className="text-teal-700 font-semibold text-center mb-3">SELECT A SUBJECT/PAPER</h4>
-                        <div className="flex flex-wrap px-1 gap-2 border-b border-gray-300 toggleTheme w-full pb-2">
-                        <button
-                            onClick={()=>setSelectedSubject([])}
-                            className="px-2 rounded-sm text-sm text-white bg-rose-700 hover:bg-rose-500">Reset
-                        </button>
-                        {subjects && Object.keys(subjects)?.map((subject, i)=>{
-                            const paper_id = parseInt(subjects[subject])
-                            return(
-                                <button 
-                                key={i}
-                                className={`px-2 rounded-sm text-sm text-gray-800 bg-gray-100`}
-                                onClick={()=>SelectSubject(paper_id)} 
-                                style={{
-                                    backgroundColor:selected_subject.includes(paper_id)?theme_bg:null,
-                                    color:selected_subject.includes(paper_id)?'#fff':null,
-                                    fontWeight:selected_subject.includes(paper_id)?'bold':null,
-                                }}
-                                >{subject}</button>
-                            )
-                        })}
-                    </div>
-                    {saving && <div>
-                        <h4 className="text-center m-auto text-red-800 py-1 px-5 rounded-full bg-gray-100 w-fit">Pleas wait, this can take sometimes...</h4>
+                    <div className="px-2 mt-5 overflow-y-scroll">
+                        {saving && <div>
+                            <h4 className="text-center m-auto text-red-800 py-1 px-5 rounded-full bg-gray-100 w-fit">Pleas wait, this can take sometimes...</h4>
                         </div>}
                     {/*  */}
-                    <div className="flex justify-evenly mt-3 gap-1 md:gap-3 lg:gap-5 w-full flex-wrap">
-                        <DetailsCard title={'FROM'} current_year={from.year} detail={from} setDetail={setFrom}/>
-                        <DetailsCard title={'TO'} current_year={to.year} detail={to} setDetail={setTo}/>
+                    <div className="flex spacex-4 space-y-4 justify-evenly mt-3 gap-1 md:gap-3 lg:gap-5 w-full flex-wrap">
+                        <DetailsCard 
+                            title={'FROM'} 
+                            subjects={subjects}
+                            current_year={from.year} 
+                            detail={from} 
+                            setDetail={setFrom}
+                            SelectSubject={SelectSubject}
+                            selected_subject={selected_from_subject}
+                            setSelectedSubject={setSelectedFromSubject}
+                            />
+                            {/*  */}
+        
+                        <DetailsCard 
+                            title={'TO'} 
+                            subjects={subjects}
+                            current_year={to.year} 
+                            detail={to} 
+                            setDetail={setTo}
+                            SelectSubject={SelectSubject}
+                            selected_subject={selected_to_subject}
+                            setSelectedSubject={setSelectedToSubject}
+                        />
                     </div>
                     <div onClick={saveEnrolement} className="w-1/2 mx-auto mt-3 rounded flex justify-center" style={{backgroundColor:theme_bg}}>
                         {saving? 
@@ -286,16 +297,42 @@ export function ExportPaycodeComponet({selected_student,isUploading,setIsUploadi
 }
 
 // enrolemnt details card
-function DetailsCard({title, current_year, detail, setDetail}) {
+function DetailsCard({title,subjects, current_year, detail, setDetail, SelectSubject, selected_subject, setSelectedSubject}) {
     const {theme_bg} = useDataContext()
     let years_list = numbersArray(10, current_year-5).reverse() //[2025,2026,2027,2028,2029,2030 ]
     const [open_year, setOpenYear] = useState(false)
     let exam_list = detail.clas >4? ['BOT', 'MOT','EOT']:['BOT', 'MOT','EOT','EOC', 'A1', 'A2', 'A3', 'A4', 'A5']
-    let classes = [1, 2, 3, 4, 5, 6]
+    let classes = [1, 2, 3, 4, 5, 6]    
 
     return(
-        <div className="shadow p-2 flex justify-center flex-col">
+        <div className="shadow w-full md:w-1/2 p-2 flex justify-center flex-col">
             <h5 style={{color:theme_bg}} className="pb-1 border-b-2 border-teal-600 font-bold text-center">{title}</h5>
+            {/* subjects */}
+            <div className="px-2 mt-5">
+                <h4 className="text-teal-700 font-semibold text-center mb-3">SELECT A PAPER</h4>
+                <div className="flex flex-wrap px-1 gap-2 border-b border-gray-300 toggleTheme w-full pb-2">
+                <button
+                    onClick={()=>setSelectedSubject([])}
+                    className="px-2 rounded-sm text-sm text-white bg-rose-700 hover:bg-rose-500">Reset
+                </button>
+                {subjects && Object.keys(subjects)?.map((subject, i)=>{
+                    const paper_id = parseInt(subjects[subject])
+                        return(
+                            <button 
+                                key={i}
+                                className={`px-2 rounded-sm text-sm text-gray-800 bg-gray-100`}
+                                onClick={()=>SelectSubject(paper_id, title)} 
+                                style={{
+                                    backgroundColor:selected_subject.includes(paper_id)?theme_bg:null,
+                                    color:selected_subject.includes(paper_id)?'#fff':null,
+                                    fontWeight:selected_subject.includes(paper_id)?'bold':null,
+                                }}
+                                >{subject}</button>
+                            )
+                        })}
+                    </div>
+                </div>
+            {/* end subjects */}
             {/* year */}
             <div className="w-full h-full pt-5">
                 <div className="flex gap-1 pb-5 text-sm">
@@ -308,19 +345,19 @@ function DetailsCard({title, current_year, detail, setDetail}) {
                             </span>
                         </div>
                         {open_year && 
-                    <div className='flex flex-col absolute z-10'>
-                        {years_list.map(year=>(
-                            <span 
-                                key={year}
-                                style={{background:current_year===year?theme_bg:'#e6e6e6',
-                                fontWeight:current_year===year?'bold':'',
-                                color:`${current_year===year?(brightness(theme_bg)<70?"white":'black'):'black'}`
-                                }}
-                                onClick={()=>setDetail({...detail, year:year})} 
-                                  className='border border-blue-500" bg-white px-2 py-1 cursor-pointer text-sm'>{year}</span>
-                        ))}
-                    </div>}
-                </div>
+                        <div className='flex flex-col absolute z-10'>
+                            {years_list.map(year=>(
+                                <span 
+                                    key={year}
+                                    style={{background:current_year===year?theme_bg:'#e6e6e6',
+                                    fontWeight:current_year===year?'bold':'',
+                                    color:`${current_year===year?(brightness(theme_bg)<70?"white":'black'):'black'}`
+                                    }}
+                                    onClick={()=>setDetail({...detail, year:year})} 
+                                    className='border border-blue-500" bg-white px-2 py-1 cursor-pointer text-sm'>{year}</span>
+                            ))}
+                        </div>}
+                    </div>
                 </div>  
             </div>
             {/* CLASS */}
@@ -380,7 +417,7 @@ export function Title({text=''}){
     const {theme_bg} = useDataContext()
     let colors = colorTin(theme_bg, 10)
     return(
-        <h3 style={{backgroundColor:colors.lighter_90, color:theme_bg, border:`1px solid ${theme_bg}`}} className="text-sm m-auto rounded-lg px-4 py-2 my-2 text-center font-bold w-fit">{text}</h3>
+        <h3 style={{backgroundColor:colors.lighter_90, color:theme_bg, border:`1px solid ${theme_bg}`}} className="text-sm m-auto rounded-lg px-4 py-2 my-1 text-center font-bold w-fit">{text}</h3>
     )
 }
     // title
