@@ -36,7 +36,7 @@ export default function OReportSummary({title}) {
       [Object.values(sortby)],
     );
     setTranformData(sorted);
-    // console.log(transformed_data[0])
+    console.log(transformed_data[0])
   }, [sortby.changed]);
 
   //sorting record
@@ -276,10 +276,13 @@ export default function OReportSummary({title}) {
                                         }).join(',')
                                     }
                                     // 
-                                    if(aoi_list?.length){
+                                    if(aoi_list[0]===undefined){
+                                        actual_aoi_marks =  ''
+                                        
+                                    }else if(aoi_list?.length){
                                         actual_aoi_marks =  aoi_list?.map(value=>value && value!=0?value:'-').join(',')
                                     }   
-                                    // console.log(aoi_list, actual_aoi_marks);                              
+                                    
                                     // 
                                     if(eoc_list?.length){
                                         actual_subject_marks =  eoc_list?.map(value=>value?value:'-').join(',')
@@ -447,7 +450,10 @@ export default function OReportSummary({title}) {
                                         }).join(',')
                                     }
                                     // 
-                                    if(aoi_list.length){
+                                    if(aoi_list[0]===undefined){
+                                        actual_aoi_marks =  ''
+                                        
+                                    }else if(aoi_list.length){
                                         actual_aoi_marks =  aoi_list?.map(value=>value && value!=0?value:'-').join(',')
                                         
                                     }   
