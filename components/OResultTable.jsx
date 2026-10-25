@@ -354,13 +354,14 @@ const getSingleLearner =(single_student)=>{
                 </td>
 
                 <td className="flex flex-row gap-2 flex-1 justify-center print:hidden">
-                  <button
+                  <Link
+                    href={'/A/web-o-report'}
                     style={{ backgroundColor: `${theme_bg}` }}
                     onClick={() => getSingleLearner([student])}
                     className="bg-gray-800 text-white p-1 rounded-md hover:bg-gray-900 transition text-xs md:text-sm"
                   >
                     <MdOutlineLocalPrintshop />
-                  </button>
+                  </Link>
                 </td>
               </tr>
             )})

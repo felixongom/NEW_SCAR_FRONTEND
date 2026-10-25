@@ -34,7 +34,6 @@ export default function AoneClass() {
   let exam_list = reserve_exam?.split('&') || [];
   let bot_mot_eot = set_time.exam?.split('&') || []
   // In your App.js
-  console.log(transformed_data)
   
   if(report_category=='report cards'){
     return ( 
@@ -240,7 +239,7 @@ export default function AoneClass() {
                             <td className='border border-black text-center '> AOI(3)</td>
                             <td className='border border-black text-center '> AOI(20)</td>
                             {bot_mot_eot?.map((exm, exm_i)=>(
-                              <td key={exm_i} className='border border-black flex-1 text-center'>{exm}</td>
+                              <td key={exm_i} className='border border-black flex-1 text-center'>{exm}(x/80)</td>
                             ))}
                             {/* <td className='border border-black text-center'>AVG(80)</td> */}
                             <td className='border border-black text-center'>TOTAL(100)</td>

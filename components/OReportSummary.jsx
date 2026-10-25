@@ -39,6 +39,7 @@ export default function OReportSummary({title}) {
 
   //sorting record
   const sortData = (header) => {
+    
     if (sortby[header] === undefined) {
       setSortBy({ [header]: "asc", changed: !sortby.changed });
     } else if (sortby[header] === "asc") {
@@ -52,7 +53,7 @@ export default function OReportSummary({title}) {
     let colors = colorTin(theme_bg, 10);
 
     let uniqu_subject = clas>4?sortAlevelSubjectOnReportCard(getUniqueSubjects(transformed_data)):sortOlevelSubjectOnReportCard(getUniqueSubjects(transformed_data));
-    let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":(clas>4?'total_points':'AVERAGE_GRADE')//AVERAGE_COMMENT
+    let grade_key = set_time.exam=='AOI'?"AOI_AVERAGE_GRADE":set_time.exam=='EOC'?"EXAM_AVERAGE_GRADE":(clas>4?'total_points':'AVERAGE_GRADE')//AVERAGE
     let overal_average = set_time.exam=='AOI'?"AOI_AVERAGE":set_time.exam=='EOC'?'EXAM_AVERAGE':(clas>4?'total_points':'AVERAGE') //EXAM_AVERAGE_COMMENT
     // 
 
@@ -98,7 +99,7 @@ export default function OReportSummary({title}) {
                     onClick={() => setToggleAvg((prev) => !prev)}
                     className={`bg-${toggle_avg ? "gray-800" : "white"} px-2 hover:px-3 transition-all duration-200 ease-in-out py-1 text-${toggle_avg ? "white" : "gray-800"} border border-gray-400 text-xs capitalize shadow-md`}
                     >
-                    {!toggle_avg ? 'Show ' : 'Hide '}{clas>4?'Points':'Overall'}
+                    {toggle_avg ? 'Show ' : 'Hide '}{clas>4?'Points':'Overall'}
                 </button>
                 <button
                     onClick={() => setToggleMarks((prev) => !prev)}
@@ -247,9 +248,9 @@ export default function OReportSummary({title}) {
                                     const marks_score_key = set_time.exam==='AOI'?'AOI_AVERAGE_20':set_time.exam==='EOC'?'EXAM_AVERAGE_80':'TOTAL'                                  
                                     // 
                                     const marks_list = student.subjects?.[subject]?.subjects;
-                                    let actual_marks = ''
+                                    let overall_actual_marks = ''
                                     if(marks_list){
-                                        actual_marks = student.subjects?.[subject]?.subjects?.map(mark=>{
+                                        overall_actual_marks = student.subjects?.[subject]?.subjects?.map(mark=>{
                                            return Object.values(mark?.[toggle_marks?'EXAM_GRADE':'EXAM_05'] || {})?.map(val =>!val?'-':roundOff(val, 2))
                                         }).join(',')
                                     }
@@ -264,7 +265,7 @@ export default function OReportSummary({title}) {
                                     (toggle_marks//
                                         ? student.subjects?.[subject]?.[marks_grade_key]||'-'
                                         : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2) || '-')}
-                                        {marks_list && toggle_detail && (clas<5 && student.subjects?.[subject]?.[marks_grade_key] && '-('+actual_marks+')')}
+                                        {marks_list && toggle_detail && (clas<5 && student.subjects?.[subject]?.[marks_grade_key] && '-('+overall_actual_marks+')')}
                                     </td>
                                 );
                                 })}
@@ -274,7 +275,7 @@ export default function OReportSummary({title}) {
                                 toggle_avg
                                     ? "-"
                                     : toggle_marks
-                                    ? student[grade_key] || '-'
+                                    ? roundOff(student[grade_key], 1) || '-'
                                     : roundOff(student[overal_average], clas>4?0:1)||'-'}
                                 </td>
                             </tr>
@@ -321,16 +322,16 @@ export default function OReportSummary({title}) {
                             >
                             STREAM
                         </td>
-                        <td
+                        {clas >4 && <td
                             className="p-1 text-left transition-all duration-200 ease-in-out"
                             onClick={() => sortData("combination")}
                             >
-                            COMB
-                        </td>
+                            COMBN
+                        </td>}
+                        
                         <td 
                             colSpan={5}
                             className="p-1 text-center transition-all duration-200 ease-in-out"
-                            
                             >
                             SCORES
                         </td>
@@ -363,8 +364,10 @@ export default function OReportSummary({title}) {
                            [... _transformed_data
 
                            ]?.map((student, index) => {
-                            let o_level_painting = !painted? "black": student[grade_key] === "A" ? "#01ad01" : student[grade_key] >= "E" ? "#be0202":'black'
-                            let a_level_painting = !painted?'black':student.total_points>14 ?'#01ad01':student.total_points<6 ?'#be0202':'black'
+                               
+                               let o_level_painting = !painted? "black":  student[grade_key] === "A" ? "#01ad01" : student[grade_key] >= "E" ? "#be0202":'black'
+                               let a_level_painting = !painted?'black':student.total_points>14 ?'#01ad01':student.total_points<6 ?'#be0202':'black'
+                               
                             
                                 return (
                                 <tr
@@ -389,11 +392,8 @@ export default function OReportSummary({title}) {
                                 >
                                 {student["STREAM"]}
                                 </td>
-                                <td
-                                className={`p-1 text-left flex-1`}
-                                >
-                                {student["combination"]}
-                                </td>
+                                {clas>4 && <td className={`p-1 text-left flex-1`}>{student["combination"]}</td>}
+                                
 
                                 {sortAlevelSubjectOnReportCard(Object.keys(student.subjects||{})).map((subject, i) => {
                                     let is_my_subject = Object.keys(student.subjects||{}).includes(subject)  
@@ -402,12 +402,29 @@ export default function OReportSummary({title}) {
                                                                     
                                     // 
                                     const marks_list = student.subjects?.[subject]?.subjects;
-                                    let actual_marks = ''
+                                    const aoi_list = Object.values(student.subjects?.[subject]?.[toggle_marks?'AOI_GRADE':'AOI_20'] || {});
+                                    const eoc_list = clas>4?[]: student.subjects?.[subject].subjects.map(paper=>paper[toggle_marks?'EXAM_GRADE':'EXAM_80'])?.flatMap(Object.values || {});
+                                    
+                                    let overall_actual_marks = ''
+                                    let actual_aoi_marks = ''
+                                    let actual_subject_marks = ''
+                                    
                                     if(marks_list){
-                                        actual_marks = student.subjects?.[subject]?.subjects?.map(mark=>{
-                                           return Object.values(mark?.[toggle_marks?'EXAM_GRADE':'EXAM_05'] || {})?.map(val =>!val?'-':roundOff(val, 2))
+                                        overall_actual_marks = student.subjects?.[subject]?.subjects?.map(mark=>{
+                                            return Object.values(mark?.[toggle_marks?'EXAM_GRADE':'EXAM_05'] || {})?.map(val =>!val?'-':roundOff(val, 2))
                                         }).join(',')
                                     }
+                                    // 
+                                    if(aoi_list.length){
+                                        actual_aoi_marks =  aoi_list?.map(value=>value?value:'-').join(',')
+                                        
+                                    }                                    
+                                    // 
+                                    if(eoc_list.length){
+                                        actual_subject_marks =  eoc_list?.map(value=>value?value:'-').join(',')
+                                    }                                    
+    
+                                    let detail_mark_chain = actual_aoi_marks + (actual_aoi_marks?',':'') + (actual_aoi_marks.length?actual_subject_marks:overall_actual_marks)
                                     
                                     
                                 return (
@@ -418,8 +435,8 @@ export default function OReportSummary({title}) {
                                     {subject}-{is_my_subject &&
                                     (toggle_marks//
                                         ? student.subjects?.[subject]?.[marks_grade_key]
-                                        : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2))}
-                                        {marks_list && toggle_detail && '-('+actual_marks+')'}
+                                        :roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2))}
+                                        {marks_list && toggle_detail && '-(' + detail_mark_chain +')'}
                                     </td>
                                 );
                                 })}
@@ -429,7 +446,7 @@ export default function OReportSummary({title}) {
                                 toggle_avg
                                     ? "-"
                                     : toggle_marks
-                                    ? student[grade_key] || '-'
+                                    ? student[grade_key]  || '-'
                                     : roundOff(student[overal_average], clas>4?0:1)||'-'}
                                 </td>
                             </tr>

@@ -74,6 +74,7 @@ export default function AResultTable({ table_heading, setShowDeletingPopup,setSh
 
   const handlePrintOneReport = (student) => {
     dispatch({ type: "DATA_CHUNK", payload: student });
+
   };
 //sorting record
 const sortData = (header)=>{    
@@ -179,7 +180,7 @@ const sortData = (header)=>{
           Class Size{" "}
           <span
             style={{ backgroundColor: colors.lighter_40 }}
-            className="mt-1 text-xs py-1 px-2 rounded text-white font-thin"
+            className="mt-1 text-xs py-1 px-2 rounded text-white"
           >
             {transformed_data?.length}{" "}
           </span>
@@ -236,7 +237,7 @@ const sortData = (header)=>{
                         <div className={`flex gap-1 justify-${i==0|i==1|i==2?'left':'center'} w-full text-center cursor-pointer`}>
                             <span>{header} {Object.keys(sortby).includes(header)}</span>
                             {Object.keys(sortby).includes(table_header[header]) && 
-                            <RiArrowDownLine className={`mt-1 ${sortby[header]==='asc'?'rotate-0':sortby[header]==='desc'?'rotate-180':null} transition print:hidden font-thin`}/>}
+                            <RiArrowDownLine className={`mt-1 ${sortby[header]==='asc'?'rotate-0':sortby[header]==='desc'?'rotate-180':null} transition print:hidden`}/>}
                         </div>
                     </td>
                 )
@@ -327,13 +328,14 @@ const sortData = (header)=>{
                   {student["pay_code"] || "-"}
                 </td>
                 <td className="flex flex-row gap-2 flex-1 justify-center print:hidden">
-                  <button
+                  <Link
+                    href={'/A/web-o-report'}
                     style={{ backgroundColor: `${theme_bg}` }}
                     onClick={() => handlePrintOneReport([student])}
                     className="bg-gray-800 text-white p-1 rounded-md hover:bg-gray-900 transition text-xs md:text-sm"
                   >
                     <MdOutlineLocalPrintshop />
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))
