@@ -21,6 +21,7 @@ export default function OReportSummary({title}) {
   const [_transformed_data, setTranformData] = useState(transformed_data);
   const [sortby, setSortBy] = useState({ changed: true });
   const [painted, setPainted] = useState(false);
+  const [show_aoi_detail, setShowAoiDetail] = useState(false);
   const [toggle_marks, setToggleMarks] = useState(true);
   const [toggle_avg, setToggleAvg] = useState(true);
   const [toggle_detail, setToggleDetail] = useState(true);
@@ -35,6 +36,7 @@ export default function OReportSummary({title}) {
       [Object.values(sortby)],
     );
     setTranformData(sorted);
+    // console.log(transformed_data[0])
   }, [sortby.changed]);
 
   //sorting record
@@ -74,6 +76,18 @@ export default function OReportSummary({title}) {
                         >
                         <RiBrush2Line style={{ fontSize: 20 }} />{" "}
                         <span className="font-xs">Paint</span>
+                    </button>
+                    <button
+                        style={{
+                        borderColor: colors.lighter_80,
+                        backgroundColor: show_aoi_detail? theme_bg: '#fff',
+                        borderWidth:1,
+                        color:show_aoi_detail?'#fff': theme_bg,
+                        }}
+                        onClick={() => setShowAoiDetail((prev) => !prev)}
+                        className={`flex gap-1 px-3 rounded transition text-xs md:text-sm ${clas>4 && 'hidden'}`}
+                        >
+                        {!show_aoi_detail?'Detail':'Limted'} AOI
                     </button>
                     <button
                         style={{
@@ -244,16 +258,34 @@ export default function OReportSummary({title}) {
 
                                 {uniqu_subject.map((subject, i) => {
                                     let is_my_subject = Object.keys(student.subjects||{}).includes(subject)  
-                                    const marks_grade_key = set_time.exam==='AOI'?'AOI_AVERAGE_GRADE':set_time.exam==='EOC'?'EXAM_AVERAGE_GRADE':'GRADE'                                  
-                                    const marks_score_key = set_time.exam==='AOI'?'AOI_AVERAGE_20':set_time.exam==='EOC'?'EXAM_AVERAGE_80':'TOTAL'                                  
+                                    const marks_grade_key = 'GRADE'                                  
+                                    const marks_score_key = 'TOTAL' 
+                                                                    
                                     // 
                                     const marks_list = student.subjects?.[subject]?.subjects;
+                                    const aoi_list = !show_aoi_detail&& clas<5?[roundOff(student.subjects?.[subject]?.[toggle_marks?'AOI_AVERAGE_GRADE':'AOI_AVERAGE_20'],0)]: Object.values(student.subjects?.[subject]?.[toggle_marks?'AOI_GRADE':'AOI_20'] || {});
+                                    const eoc_list = clas>4?[]: student.subjects?.[subject]?.subjects.map(paper=>paper[toggle_marks?'EXAM_GRADE':'EXAM_80'])?.flatMap(Object.values || {});
+                                    
                                     let overall_actual_marks = ''
+                                    let actual_aoi_marks = ''
+                                    let actual_subject_marks = ''
+                                    
                                     if(marks_list){
                                         overall_actual_marks = student.subjects?.[subject]?.subjects?.map(mark=>{
-                                           return Object.values(mark?.[toggle_marks?'EXAM_GRADE':'EXAM_05'] || {})?.map(val =>!val?'-':roundOff(val, 2))
+                                            return Object.values(mark?.[toggle_marks?'EXAM_GRADE':'EXAM_05'] || {})?.map(val =>!val?'-':roundOff(val, 2))
                                         }).join(',')
                                     }
+                                    // 
+                                    if(aoi_list?.length){
+                                        actual_aoi_marks =  aoi_list?.map(value=>value && value!=0?value:'-').join(',')
+                                    }   
+                                    // console.log(aoi_list, actual_aoi_marks);                              
+                                    // 
+                                    if(eoc_list?.length){
+                                        actual_subject_marks =  eoc_list?.map(value=>value?value:'-').join(',')
+                                    }                                    
+    
+                                    let detail_mark_chain = actual_aoi_marks + (actual_aoi_marks?',':'') + (actual_aoi_marks.length?actual_subject_marks:overall_actual_marks)
                                     
                                     
                                 return (
@@ -263,9 +295,9 @@ export default function OReportSummary({title}) {
                                     >
                                     {is_my_subject &&
                                     (toggle_marks//
-                                        ? student.subjects?.[subject]?.[marks_grade_key]||'-'
-                                        : roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2) || '-')}
-                                        {marks_list && toggle_detail && (clas<5 && student.subjects?.[subject]?.[marks_grade_key] && '-('+overall_actual_marks+')')}
+                                        ? student.subjects?.[subject]?.[marks_grade_key]
+                                        :roundOff(student.subjects?.[subject]?.[marks_score_key], clas<5?0:2))}
+                                        {marks_list && toggle_detail && '(' + detail_mark_chain +')'}
                                     </td>
                                 );
                                 })}
@@ -402,7 +434,7 @@ export default function OReportSummary({title}) {
                                                                     
                                     // 
                                     const marks_list = student.subjects?.[subject]?.subjects;
-                                    const aoi_list = Object.values(student.subjects?.[subject]?.[toggle_marks?'AOI_GRADE':'AOI_20'] || {});
+                                    const aoi_list = !show_aoi_detail&& clas<5?[roundOff(student.subjects?.[subject]?.[toggle_marks?'AOI_AVERAGE_GRADE':'AOI_AVERAGE_20'],0)]: Object.values(student.subjects?.[subject]?.[toggle_marks?'AOI_GRADE':'AOI_20'] || {});
                                     const eoc_list = clas>4?[]: student.subjects?.[subject].subjects.map(paper=>paper[toggle_marks?'EXAM_GRADE':'EXAM_80'])?.flatMap(Object.values || {});
                                     
                                     let overall_actual_marks = ''
@@ -416,9 +448,10 @@ export default function OReportSummary({title}) {
                                     }
                                     // 
                                     if(aoi_list.length){
-                                        actual_aoi_marks =  aoi_list?.map(value=>value?value:'-').join(',')
+                                        actual_aoi_marks =  aoi_list?.map(value=>value && value!=0?value:'-').join(',')
                                         
-                                    }                                    
+                                    }   
+                                    // console.log(aoi_list, actual_aoi_marks);                              
                                     // 
                                     if(eoc_list.length){
                                         actual_subject_marks =  eoc_list?.map(value=>value?value:'-').join(',')

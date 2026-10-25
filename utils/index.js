@@ -289,7 +289,7 @@ const removeSubjectsForAorOLevel = (subjects, clas) => {
       !_.includes(subjects_to_remove, item.subject)
     ), ['subject'],['asc']);
   }else{
-    return _.omitBy(subjects, (value, key) =>
+    return _.omitBy(subjects, (_, key) =>
         _.includes(subjects_to_remove, key.replace(/\s+\d+$/, ""))
       );
   }

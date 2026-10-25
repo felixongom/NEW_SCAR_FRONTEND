@@ -63,10 +63,12 @@ return(
         <SideMenu />
         { children }
       </div>
-      <ScrollToTop  
-      color='white' 
-      style={{height:30, width:30,padding:5, background:theme_bg, display:'flex', alignItems:'center', justifyContent:'center'}} smooth 
-      />
+      <div className="print:hidden">
+        <ScrollToTop  
+        color='white' 
+        style={{height:30, width:30,padding:5, background:theme_bg, display:'flex', alignItems:'center', justifyContent:'center'}} smooth 
+        />
+      </div>
   </AuthLayout>
 )
 }
