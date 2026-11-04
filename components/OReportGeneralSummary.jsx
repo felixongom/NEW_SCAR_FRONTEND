@@ -24,7 +24,7 @@ export default function OReportGeneralSummary({title}) {
             const _all_class_sammury = countAverageGrades(transformed_data, exam);
             setAllClassSummary(_all_class_sammury)
         }
-    }, [exam, set_time.exam])  
+    }, [exam, set_time.exam, clas])  
     // 
 
     let colors = colorTin(theme_bg, 10);

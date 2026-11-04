@@ -4,7 +4,7 @@ import XLSX from "xlsx-js-style";
 import { a_subject_full_name } from "@/utils/reportList";
 import {brightness} from "color-tin"
 
-export default function OExportToExcel({ data = [], theme_bg }) {  
+export default function AExportToExcel({ data = [], theme_bg, selected_exam_category }) {  
   
   let header_fill_color = theme_bg.split('#')[1] 
   
@@ -18,9 +18,9 @@ export default function OExportToExcel({ data = [], theme_bg }) {
     }
 
     // Assume single subject export; get first paper as filename
-    const firstItem = data[0];
-    const paperKeys = Object.keys(firstItem.papers || {}); //paper key
-    const paperLabels = paperKeys.map((k) => firstItem.papers[k]);
+    const firstItem = data[0]
+    const paperKeys = selected_exam_category.map(paper=>'paper_'+paper.split('_')[1]); //paper key
+    const paperLabels = paperKeys.map((k) => firstItem.papers[k]+'(%)');
 
     // Determine subject name for filename
     const subjectName = paperLabels[0].split(" ")[0]; // e.g., 'PHY' from 'PHY 1'
@@ -34,7 +34,8 @@ export default function OExportToExcel({ data = [], theme_bg }) {
     data.forEach((item) => {
       const row = [];
       // join all marks_id values into comma-separated string
-      const marksIdStr = item.marks_id ? Object.values(item.marks_id).join(",") : "";
+      const marksIdStr = selected_exam_category.filter(mark_key=>mark_key.startsWith('marks'))
+                        .map(mark_key =>item.marks_id[mark_key])
       row.push(marksIdStr); // MARKS_ID (hidden column)
       row.push(item.learner ?? ""); // learner name
       row.push(item.stream ?? ""); // learner stream

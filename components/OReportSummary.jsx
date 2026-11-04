@@ -144,7 +144,7 @@ export default function OReportSummary({title}) {
                         Class Size 
                         <span
                         style={{ backgroundColor: colors.lighter_40 }}
-                        className="mt-1 text-xs py-1 px-2 rounded text-white font-thin"
+                        className="mt-1 text-xs py-1 px-2 rounded text-white font-semibold"
                         >
                         {transformed_data?.length}{" "}
                         </span>
@@ -179,7 +179,7 @@ export default function OReportSummary({title}) {
                             <span className="">LEARNER&apos;S NAME</span>
                             {Object.keys(sortby).includes("STUDENT NAME") && (
                                 <RiArrowDownLine
-                                className={`mt-1 ${sortby["AVERAGE"] === "asc" ? "rotate-0" : sortby["AVERAGE"] === "desc" ? "rotate-180" : ""} transition print:hidden font-thin`}
+                                className={`mt-1 ${sortby["AVERAGE"] === "asc" ? "rotate-0" : sortby["AVERAGE"] === "desc" ? "rotate-180" : ""} transition print:hidden font-semibold`}
                                 />
                             )}
                             </div>
@@ -212,7 +212,7 @@ export default function OReportSummary({title}) {
                             <span className="text-center">{clas>4?'PNT':'AVG'}</span>
                             {Object.keys(sortby).includes(clas>4?'total_points':"AVERAGE") && (
                                 <RiArrowDownLine
-                                className={`mt-1 ${sortby[clas>4?'total_points':"AVERAGE"] === "asc" ? "rotate-0" : sortby[clas>4?'total_points':"AVERAGE"] === "desc" ? "rotate-180" : ""}  transition-all duration-200 ease-in-out print:hidden font-thin`}
+                                className={`mt-1 ${sortby[clas>4?'total_points':"AVERAGE"] === "asc" ? "rotate-0" : sortby[clas>4?'total_points':"AVERAGE"] === "desc" ? "rotate-180" : ""}  transition-all duration-200 ease-in-out print:hidden font-semibold`}
                                 />
                             )}
                             </div>
@@ -346,7 +346,7 @@ export default function OReportSummary({title}) {
                             <span className="">LEARNER&apos;S NAME</span>
                             {Object.keys(sortby).includes("STUDENT NAME") && (
                                 <RiArrowDownLine
-                                className={`mt-1 ${sortby["AVERAGE"] === "asc" ? "rotate-0" : sortby["AVERAGE"] === "desc" ? "rotate-180" : ""} transition print:hidden font-thin`}
+                                className={`mt-1 ${sortby["AVERAGE"] === "asc" ? "rotate-0" : sortby["AVERAGE"] === "desc" ? "rotate-180" : ""} transition print:hidden font-semibold`}
                                 />
                             )}
                             </div>
@@ -382,7 +382,7 @@ export default function OReportSummary({title}) {
                             <span className="text-center">{clas>4?'PNT':'AVG'}</span>
                             {Object.keys(sortby).includes(clas>4?'total_points':"AVERAGE") && (
                                 <RiArrowDownLine
-                                className={`mt-1 ${sortby[clas>4?'total_points':"AVERAGE"] === "asc" ? "rotate-0" : sortby[clas>4?'total_points':"AVERAGE"] === "desc" ? "rotate-180" : ""}  transition-all duration-200 ease-in-out print:hidden font-thin`}
+                                className={`mt-1 ${sortby[clas>4?'total_points':"AVERAGE"] === "asc" ? "rotate-0" : sortby[clas>4?'total_points':"AVERAGE"] === "desc" ? "rotate-180" : ""}  transition-all duration-200 ease-in-out print:hidden font-semibold`}
                                 />
                             )}
                             </div>
@@ -457,7 +457,6 @@ export default function OReportSummary({title}) {
                                         actual_aoi_marks =  aoi_list?.map(value=>value && value!=0?value:'-').join(',')
                                         
                                     }   
-                                    // console.log(aoi_list, actual_aoi_marks);                              
                                     // 
                                     if(eoc_list.length){
                                         actual_subject_marks =  eoc_list?.map(value=>value?value:'-').join(',')

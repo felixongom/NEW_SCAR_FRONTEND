@@ -1,5 +1,5 @@
 "use client";
-import { a_subject_full_name, base_api_path, exam_by_id } from "@/utils/reportList"; 
+import { a_subject_full_name, base_api_path } from "@/utils/reportList"; 
 import EnroledMarkSheet from "@/components/Avance/EnroledMarkSheet"
 import OEnroledMarkSheet from "@/components/Avance/OEnroledMarkSheet"
 import ALayout from "@/components/ALayout";
@@ -12,6 +12,10 @@ import {brightness} from "color-tin"
 import Loading from "../enroled/loading";
 import _ from 'lodash'
 import { getToken, removeSubjectsForAorOLevel } from "@/utils";
+import { getLearnerMarksIds } from "@/utils/reshpe_data";
+import OExportToExcel from "@/hooks/useOExportMarks";
+import AExportToExcel from "@/hooks/useAExportMarks";
+import{ colorTin } from 'color-tin'
 
 
 export default function Results() {
@@ -20,12 +24,16 @@ export default function Results() {
   const [deleting, setDeleting] = useState(false)
   const [deleteTudent, setDeleteStudent] = useState(null)
   const [updateStudent, setUpdateStudent] = useState(null)
-    const[select_what_to_export, setSelectWhatToExport] = useState(false)
-    const[select_what_to_delete, setSelectWhatToDelete] = useState(false)
+  const[select_what_to_export, setSelectWhatToExport] = useState(false)
+  const[select_what_to_delete, setSelectWhatToDelete] = useState(false)
   const [selectedSubj,setselectedSubj] = useState({ids:'', subject:''})
+  // 
+  const [selected_students,setSelectedSudents] = useState([])
+  const [selected_exam_category,setSelectExamCategory] = useState([])
   const {set_time, dispatch, selected_clas, theme_bg, a_level_subject} = useDataContext()
   // 
-  let clas = selected_clas.split(' ')[1]
+  let clas = parseInt(selected_clas.split(' ')[1])
+  
 
   useEffect(()=>{
      const fetchData = async () => { 
@@ -46,13 +54,36 @@ export default function Results() {
     
     fetchData();
   },[clas, set_time.year, set_time.term,set_time.exam, selectedSubj?.ids, deleting])
-  
   // 
-
 
   const handleSelect = (group)=>{
     setselectedSubj(group)
+    setSelectedSudents([])
+    setSelectExamCategory([])
   }
+  // 
+  const selectStudents = (id)=>{
+    
+    if(id===true){
+      
+      if(selected_students.length){
+        setSelectedSudents([]) 
+      }else{
+        let ids = enroled?.map(student=>student.learner_id)
+        setSelectedSudents(ids) 
+      }
+      
+    }else{
+      let id_exists =  selected_students?.find(selected_id=>selected_id===id)
+      if(!id_exists){
+        setSelectedSudents(prev=>[...prev, id]) 
+      }else{
+        let new_ids = selected_students?.filter(selected_id=>selected_id!==id)
+        setSelectedSudents(new_ids) 
+      }
+    }
+  }
+  
       
  const doDelete = async (cases)=>{
      let payload = {ids:deleteTudent, set_time};
@@ -65,6 +96,7 @@ export default function Results() {
       try {
         setDeleting(true)
         await axios.post(`${base_api_path}delete-marks/${clas}`,payload);
+        setSelectedSudents([])
         
       } catch (err) {
         console.error(err);
@@ -95,11 +127,37 @@ export default function Results() {
      }
    }
   
-  const enroled = _.orderBy(results, ['stream', 'learner'], ['asc', 'asc'])  
+  const enroled = _.orderBy(results, ['stream', 'learner'], ['asc', 'asc']) 
   const one_student = enroled[0]
-  // console.log(one_student);
   let list_of_subjects = removeSubjectsForAorOLevel(a_level_subject?.subject_group ||[], parseInt(clas))
+  // 
+  const selectExamCateory = (exam_category)=>{
+    if(exam_category===true){
+      
+      if(selected_exam_category.length){
+        setSelectExamCategory([]) 
+      }else{
+        setSelectExamCategory([...Object.keys(one_student?.aoi_id || {}), ...Object.keys(one_student?.marks_id || {})]) 
+      }
+      
+    }else{ 
+      let exam_exists =  selected_exam_category?.includes(exam_category)
+      if(!exam_exists){
+        setSelectExamCategory(prev=>[...prev, exam_category])
+      }else{
+        let new_exams = selected_exam_category?.filter(exam_key=>exam_key!==exam_category)
+        setSelectExamCategory(new_exams) 
+      }
+    } 
+  }
 
+    const prepareMarksIds = ()=>{
+      setDeleteStudent(getLearnerMarksIds(enroled, selected_students, selected_exam_category))
+      setSelectWhatToDelete(prev=>!prev)
+    }
+
+    let colors = colorTin(theme_bg, 10);
+  
   return (
     <> 
     {
@@ -109,13 +167,12 @@ export default function Results() {
           <div className="bg-transparent fixed overflow-hidden" style={{zIndex:5, height:'100vh', width:'100vw', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:10}}>
             {deleting && <div className="text-gray-100 font-semibold text-7xl">. . .</div>}
             <div className="flex gap-3 bg-white py-10 px-10 rounded-md">
-              <button onClick={()=>doUpdate('update')}  className="bg-orange-700 hover:bg-orange-500 rounded-md transition text-gray-100 text-sm px-2 py-1"> Save</button>
-              <button onClick={()=>doDelete('marks')}  className="bg-gray-100 text-rose-700 rounded-lg border-rose-700 border-1 text-sm py-1 px-3"> Delete marks</button>
-              <button onClick={()=>doDelete('councel')}  className="bg-green-700-700 text-slate-800 rounded-md text-sm py-1 px-3 border-slate-800 border"> Councel</button>
+              <button onClick={()=>doUpdate('update')} className="bg-orange-700 hover:bg-orange-500 rounded-md transition text-gray-100 text-sm px-2 py-1"> Save</button>
+              <button onClick={()=>doDelete('marks')} className="bg-gray-100 text-rose-700 rounded-lg border-rose-700 border-1 text-sm py-1 px-3"> Delete marks</button>
+              <button onClick={()=>doDelete('councel')} className="bg-green-700-700 text-slate-800 rounded-md text-sm py-1 px-3 border-slate-800 border"> Councel</button>
             </div>
           </div>
         </>
-      
     }
     
     <ALayout>
@@ -150,6 +207,9 @@ export default function Results() {
           setSelectWhatToExport={setSelectWhatToExport}
           setSelectWhatToDelete={setSelectWhatToDelete}
           subject_name ={selectedSubj?.subject}
+          // 
+          selectStudents={selectStudents}
+          selected_students={selected_students} 
           />: 
           <OEnroledMarkSheet 
           enroled={enroled}
@@ -159,6 +219,9 @@ export default function Results() {
           setUpdateStudent={setUpdateStudent}
           setSelectWhatToExport={setSelectWhatToExport}
           setSelectWhatToDelete={setSelectWhatToDelete}
+          // 
+          selectStudents={selectStudents}
+          selected_students={selected_students}
           />)} 
          </div>
       </div>
@@ -167,19 +230,16 @@ export default function Results() {
         <div className="w-full h-full fixed overflow-hidden bg-slate-800 opacity-80"/>
         <div className="w-full flex mt-1 justify-center overflow-hidden">
           <div className="bg-gray-100 overflow-hidden rounded-lg opacity-100 w-[90%] md:w-[50%] relative">
-            <h1 className="py-1 w-full text-white p-1 md:px-4" style={{background:theme_bg}}>SELLECT EXAM AND EXPORT</h1>
-            <button onClick={()=>setSelectWhatToExport(prev=>!prev)} className="h-[25px] w-[25px] rounded-sm bg-slate-400 hover:bg-red-500 text-white absolute top-1 right-1">x</button>
+            <h1 className="py-3 w-full text-white p-1 md:px-4" style={{background:colors.darker_40}}>SELLECT EXAM AND EXPORT</h1>
+            <button onClick={()=>setSelectWhatToExport(prev=>!prev)} className="flex justify-center items-center px-2 rounded-full bg-slate-400 border hover:bg-red-600 text-white absolute top-3 right-3 text-sm">x</button>
             <div className="p-2 md:p-4">
-              <div  className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+              <div onClick={() => selectExamCateory(true)} style={{background:selected_exam_category.length?colors.lighter_70:'#fff'}}  className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                 <button
                   style={{
-                    borderColor: true ? theme_bg : "#999",
+                    borderColor: selected_exam_category.length ? theme_bg : "#999",
                     }}
-                    // onClick={() => toggleStudent(true)}
-                    className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                    ${true ? "border-green-600" : "border-gray-500"}`}
-                    >
-                     {true ? (
+                    className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}>
+                     {selected_exam_category.length ? (
                       <span
                       className="h-2 w-2 rounded-full"
                       style={{ backgroundColor: theme_bg }}
@@ -188,18 +248,16 @@ export default function Results() {
                 </button>
                   ALL
               </div>
-              {Object.keys({...one_student?.aoi_id} || {}).map((marks_id, i)=>{
+              {Object.keys({...one_student?.aoi_id} || {}).map((aoi_key, i)=>{
                 return(
-                  <div key={'aoi'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                  <div key={'aoi'+i} onClick={() => selectExamCateory(aoi_key)} style={{background:selected_exam_category.includes(aoi_key) ?colors.lighter_70:'#fff'}}  className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                     <button
                       style={{
-                        borderColor: true ? theme_bg : "#999",
+                        borderColor: selected_exam_category.includes(aoi_key) ? theme_bg : "#999",
                       }}
-                        // onClick={() => toggleStudent(true)}
-                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                            ${true ? "border-green-600" : "border-gray-500"}`}
+                      className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}
                       >
-                      {true ? (
+                      {selected_exam_category.includes(aoi_key) ? (
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ backgroundColor: theme_bg }}
@@ -210,29 +268,40 @@ export default function Results() {
                   </div>
                 )
               })}
-              {Object.keys({...one_student?.marks_id} || {}).map((marks_id, i)=>{
+              {Object.keys({...one_student?.marks_id} || {}).map((marks_key, i)=>{
+                
                 return(
-                  <div key={'exam'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                  <div key={'exam'+i} onClick={() => selectExamCateory(marks_key)} style={{background:selected_exam_category.includes(marks_key) ?colors.lighter_70:'#fff'}} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                     <button
                       style={{
-                        borderColor: true ? theme_bg : "#999",
+                        borderColor: selected_exam_category.includes(marks_key) ? theme_bg : "#999",
                       }}
-                        // onClick={() => toggleStudent(true)}
-                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                            ${true ? "border-green-600" : "border-gray-500"}`}
+                      className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}
                       >
-                      {true ? (
+                      {selected_exam_category.includes(marks_key) ? (
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ backgroundColor: theme_bg }}
                         />
                       ) : null}
                       </button>
-                    {exam_by_id[marks_id.split('_')[1]] || 'Exam '+ marks_id.split('_')[1]}
+                      {one_student.papers['paper_'+(i + 1)]}
                   </div>
                 )
               })}
-            <button className="w-full py-2 rounded-md text-white mt-3" style={{background:theme_bg}}>EXPORT TO EXCEL</button>
+            {clas>4?
+            <AExportToExcel 
+              data={enroled?.filter(learner=>selected_students.includes(learner.learner_id))} 
+              theme_bg={theme_bg} 
+              selected_exam_category={selected_exam_category}
+            />
+            :
+            <OExportToExcel 
+              data={enroled?.filter(learner=>selected_students.includes(learner.learner_id))} 
+              theme_bg={theme_bg} 
+              selected_exam_category={selected_exam_category}
+            />
+            }
             </div>
 
           </div>
@@ -240,24 +309,22 @@ export default function Results() {
         </div>
       </div>}
 
-      {select_what_to_delete && 
+      {select_what_to_delete &&
       <div className="w-full h-full overflow-hidden z-10 fixed">
         <div className="w-full h-full fixed overflow-hidden bg-slate-800 opacity-80"/>
         <div className="w-full flex mt-1 justify-center overflow-hidden">
           <div className="bg-gray-100 overflow-hidden rounded-lg opacity-100 w-[90%] md:w-[50%] relative">
-            <h1 className="py-1 w-full text-white p-1 md:px-4" style={{background:theme_bg}}>SELLECT EXAM AND DELETE</h1>
-            <button onClick={()=>setSelectWhatToDelete(prev=>!prev)} className="h-[25px] w-[25px] rounded-sm bg-slate-400 hover:bg-red-500 text-white absolute top-1 right-1">x</button>
+            <h1 className="py-3 w-full text-white p-1 md:px-4" style={{background:colors.darker_40}}>SELLECT EXAM AND DELETE</h1>
+            <button onClick={()=>setSelectWhatToDelete(prev=>!prev)} className="flex justify-center items-center px-2 rounded-full bg-slate-400 border hover:bg-red-600 text-white absolute top-3 right-3 text-sm">x</button>
             <div className="p-2 md:p-4">
-              <div  className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+              <div onClick={() => selectExamCateory(true)}  style={{background:selected_exam_category.length?colors.lighter_70:'#fff'}} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                 <button
                   style={{
-                    borderColor: true ? theme_bg : "#999",
+                    borderColor: selected_exam_category.length ? theme_bg : "#999",
                     }}
-                    // onClick={() => toggleStudent(true)}
-                    className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                    ${true ? "border-green-600" : "border-gray-500"}`}
+                    className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}
                     >
-                     {true ? (
+                     {selected_exam_category.length ? (
                       <span
                       className="h-2 w-2 rounded-full"
                       style={{ backgroundColor: theme_bg }}
@@ -266,51 +333,47 @@ export default function Results() {
                 </button>
                   ALL
               </div>
-              {Object.keys({...one_student?.aoi_id} || {}).map((marks_id, i)=>{
+              {Object.keys({...one_student?.aoi_id} || {}).map((aoi_key, i)=>{
                 return(
-                  <div key={'aoi'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                  <div key={'aoi'+i} onClick={() => selectExamCateory(aoi_key)} style={{background:selected_exam_category.includes(aoi_key) ?colors.lighter_70:'#fff'}} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                     <button
                       style={{
-                        borderColor: true ? theme_bg : "#999",
+                        borderColor: selected_exam_category.includes(aoi_key) ? theme_bg : "#999",
                       }}
-                        // onClick={() => toggleStudent(true)}
-                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                            ${true ? "border-green-600" : "border-gray-500"}`}
+                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}
                       >
-                      {true ? (
+                      {selected_exam_category.includes(aoi_key) ? (
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ backgroundColor: theme_bg }}
                         />
                       ) : null}
                       </button>
-                        AOI {i+1}
+                        AOI{i+1}
                   </div>
                 )
               })}
-              {Object.keys({...one_student?.marks_id} || {}).map((marks_id, i)=>{
+              {Object.keys({...one_student?.marks_id} || {}).map((marks_key, i)=>{
                 return(
-                  <div key={'exam'+i} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
+                  <div key={'exam'+i} onClick={() => selectExamCateory(marks_key)} style={{background:selected_exam_category.includes(marks_key) ?colors.lighter_70:'#fff'}} className="flex gap-4 items-center border-b border-slate-100 px-2 py-4 bg-white rounded-md cursor-pointer text-slate-800 mb-5 shadow">
                     <button
                       style={{
-                        borderColor: true ? theme_bg : "#999",
+                        borderColor: selected_exam_category.includes(marks_key) ? theme_bg : "#999",
                       }}
-                        // onClick={() => toggleStudent(true)}
-                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full
-                            ${true ? "border-green-600" : "border-gray-500"}`}
+                        className={`flex h-4 w-4  items-center justify-center border transition bg-white rounded-full`}
                       >
-                      {true ? (
+                      {selected_exam_category.includes(marks_key) ? (
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ backgroundColor: theme_bg }}
                         />
                       ) : null}
                       </button>
-                    {exam_by_id[marks_id.split('_')[1]] || 'Exam '+ marks_id.split('_')[1]}
+                    {one_student.papers['paper_'+(i + 1)]}
                   </div>
                 )
               })}
-            <button className="w-full py-2 rounded-md text-white mt-3" style={{background:theme_bg}}>EXPORT TO EXCEL</button>
+              <button onClick={prepareMarksIds} className="w-full py-2 rounded-md text-white mt-3" style={{background:theme_bg}}>DELETE MARKS</button>
             </div>
 
           </div>

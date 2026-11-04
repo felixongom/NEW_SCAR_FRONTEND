@@ -1,10 +1,11 @@
 // ExportToExcel.jsx
 import React from "react";
 import XLSX from "xlsx-js-style";
-import { a_subject_full_name } from "@/utils/reportList";
+import { a_subject_full_name, exam_by_id } from "@/utils/reportList";
 import {brightness} from "color-tin"
 
-export default function OExportToExcel({ data = [], theme_bg }) {  
+export default function OExportToExcel({ data = [], theme_bg, selected_exam_category }) {  
+  if( data.length==0 || selected_exam_category.length==0 ) return
   
   let header_fill_color = theme_bg.split('#')[1] 
   
@@ -20,15 +21,18 @@ export default function OExportToExcel({ data = [], theme_bg }) {
     // Assume single subject export; get first paper as filename
     const firstItem = data[0];
 
-    const aoiKeys = Object.keys(firstItem.aoi_marks || {}) //aoi key 
-    const aoiLabels = aoiKeys.map((_, i) => `A${i+1}(X/20)`);
+    //aoi key 
+    const aoiKeys = selected_exam_category?.filter(aoi=>aoi.startsWith('aoi')) //aoi key 
+    const aoiLabels = aoiKeys.map((aoi_key) => `A${aoi_key.split('_')[1]}(X/20)`);
+    
     // 
-    const paperKeys = Object.keys(firstItem.papers || {}); //paper key
+    const paperKeys = selected_exam_category.filter(mark_key=>mark_key.startsWith('marks'))
+                      .map(marks=>'paper_'+ marks?.split('_')[1]); //paper key
     const paperLabels = paperKeys.map((k) => `${firstItem.papers[k]}(X/80)`);
 
     // Determine subject name for filename
-    const subjectName = paperLabels[0].split(" ")[0]; // e.g., 'PHY' from 'PHY 1'
-
+    const subjectName = data[0]?.papers?.paper_1?.split(" ")[0]; // e.g., 'PHY' from 'PHY 1'
+    
     // =====================
     // MAIN DATA SHEET
     // =====================
@@ -38,15 +42,17 @@ export default function OExportToExcel({ data = [], theme_bg }) {
     data.forEach((item) => {
       const row = [];
       // join all marks_id values into comma-separated string
-      const aoiIdStr = item.aoi_id ? Object.values(item.aoi_id).join(",") : "";
-      const marksIdStr = item.marks_id ? Object.values(item.marks_id).join(",") : "";
-      row.push(aoiIdStr+","+marksIdStr); // AOI_ID and MARKS_ID (hidden column)
+      const aoiIdStr = aoiKeys.map(aoi_key=>item.aoi_id[aoi_key]).join(",");
+      const marksIdStr = selected_exam_category.filter(mark_key=>mark_key.startsWith('marks'))
+                        .map(mark_key =>item.marks_id[mark_key])
+                             
+
+      row.push(aoiIdStr+(marksIdStr?',':'')+marksIdStr); // AOI_ID and MARKS_ID (hidden column)
       row.push(item.learner ?? ""); // learner name
       row.push(item.stream ?? ""); // learner stream
       
       aoiKeys.forEach((pk) => {
         const val = item.aoi_marks?.[pk] ?? "";
-        console.log("++", val, "++");
         row.push(val);
       });
       // 
@@ -90,7 +96,7 @@ export default function OExportToExcel({ data = [], theme_bg }) {
     ws["!cols"] = headers.map((_, i) => {
       if (i === 0) return { hidden: true, wch: 15 }; // Hide MARKS_ID
       if (i === 1) return { wch: 40 }; // Learner column wider
-      return { wch: 10 }; // Marks columns
+      return { wch: 15 }; // Marks columns
     });
 
     // =====================
@@ -101,7 +107,7 @@ export default function OExportToExcel({ data = [], theme_bg }) {
       ["YEAR", firstItem.year],
       ["TERM", firstItem.term],
       ["CLASS", firstItem.clas],
-      ["EXAM", firstItem.exam],
+      ["EXAM", exam_by_id[firstItem.exam]],
     ];
 
     const infoAOA = [infoHeaders, ...infoData];
@@ -157,7 +163,7 @@ export default function OExportToExcel({ data = [], theme_bg }) {
   return (
     <button
       onClick={handleExport}
-      className="px-2 py-1 bg-blue-600 text-white rounded"
+      className="px-2 py-2 bg-blue-600 text-white rounded w-full"
       style={{backgroundColor:theme_bg}}
     >
       Export Excel

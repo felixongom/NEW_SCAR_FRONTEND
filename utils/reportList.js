@@ -34,7 +34,6 @@ let a_subject_full_name ={
     TD:'TECHNICAL DRAWING',
     FAN:'FOOD AND NUTRITION',
     SM:'SUBSIDIARY MATHEMATICS',
-    'S/M':'SUBSIDIARY MATHEMATICS'
 }
 
 // 

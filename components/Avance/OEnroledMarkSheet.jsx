@@ -1,9 +1,8 @@
 'use client';
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import OExportToExcel from '@/hooks/useOExportMarks';
 import {pairMarksWithIds} from "@/utils/reshpe_data"
 import { useDataContext } from "@/context/DataProvider";
 import { HeadedPaper } from "../Headers/HeadedPaper";
@@ -13,11 +12,11 @@ import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
 import { roundOff } from "@/utils";
 
-const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name }) => {
+const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, setSelectWhatToDelete, subject_name, selectStudents, selected_students }) => {
   const gridApiRef = useRef(null);// stores the grid API
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const { theme_bg,set_time, selected_clas } = useDataContext();
-  const[sheet, setSheet] = useState(true)
+  const[sheet, setSheet] = useState(false)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const[toggle_show_hide_header, setToggleShowHideHeader] = useState(false)
   
@@ -48,6 +47,8 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
     return [...labels]
   }, [enroled]);
 
+  
+
   //building aoi column
   const aoiColumns = useMemo(() => {
     if (!enroled.length) return [];
@@ -63,7 +64,7 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
 
 
   const columnDefs = useMemo(() =>[
-      { headerCheckboxSelection: true, checkboxSelection: true, width: 40, cellStyle },
+      // { headerCheckboxSelection: true, checkboxSelection: true, width: 40, cellStyle },
       { field: "sequence", headerName: "NO", editable: false, filter:false, sortable:false, width: 50, cellStyle },
       { field: "learner", headerName: "LEARNER", width:250, cellStyle },
       { field: "stream", headerName: "STREAM", width: 100, cellStyle:{ ...cellStyle, justifyContent: 'center' } },
@@ -112,18 +113,6 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
     });
   };
 
-  const onDeleteRow = () => {
-
-    const api = gridApiRef.current;
-    if (!api) return;
-    const selectedNodes = api.getSelectedNodes();
-    const selectedIds = selectedNodes.map(node => Object.values(node.data?.marks_id));
-    const selectedAoiIds = selectedNodes.map(node => {
-      return node.data?.aoi_id && Object.values(node.data?.aoi_id)
-    });
-    return selectedIds.length && setDeleteStudent([...selectedIds, ...selectedAoiIds].flat().filter(id=>id));
-  };
-
   const onUpdateRows = () => {
     
     const api = gridApiRef.current;
@@ -148,44 +137,35 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
 
   const height = enroled ? window.innerHeight : 50;
   let colors = colorTin(theme_bg, 10);
-  const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])
+  const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])  
+
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div className="py-4 relative flex px-1 mb-[10px] border-b border-gray-300 print:hidden">
-        {sheet && (
+        {!sheet && (
           <>
-            <OExportToExcel 
-              data={enroled} 
-              theme_bg={theme_bg} 
-              />
             <button
               onClick={()=>setSelectWhatToExport(prev=>!prev)}
-              className="px-2 py-1 bg-blue-600 text-white rounded hidden"
+              className={`rounded transition text-gray-100 px-2 py-1 text-xs ${ !selected_students.length && 'hidden'}`}
               style={{backgroundColor:theme_bg}}
-              >EXPORT</button> 
+            >Export Selected</button>
             <button
-              className="bg-red-700 ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
-              onClick={onDeleteRow}
-            >
-              Delete Selected
-            </button>
-            <button
-              className="bg-red-700 hidden ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs"
+              className={`bg-red-700 ml-2 hover:bg-red-500 rounded transition text-gray-100 px-2 py-1 text-xs ${ !selected_students.length && 'hidden'}`}
               onClick={()=>setSelectWhatToDelete(prev=>!prev)}
             >
               Delete Selected
             </button>
-            <button
-              className="bg-orange-700 hover:bg-orange-500 rounded transition text-gray-100 px-2 py-1 text-xs"
-              onClick={onUpdateRows}
-              style={{ marginLeft: "10px" }}
-            >
-              Save
-            </button>
           </>
 
         )}
+         {sheet && (
+            <button
+              className="bg-orange-700 hover:bg-orange-500 rounded transition text-gray-100 px-2 py-1 text-xs"
+              onClick={onUpdateRows}>
+              Save
+            </button>
+         )}
         <div className="flex items-center gap-2 top-2 right-1 absolute text-sm">
           <button
             style={{
@@ -249,21 +229,21 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
       <div>
         <div className={`w-full ${toggle_show_hide_header && 'hidden'} print:block`}>
           <HeadedPaper subject_name={subject_name}/>
-          <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${a_subject_full_name[subject_name]||subject_name}`}/>
+          <Title text={`${selected_clas } ${exam[set_time.exam]} ${roman_term[set_time.term]} ${a_subject_full_name[subject_name]||subject_name} RESULTS`}/>
         </div>
         <div
-        className="border-b flex gap-4 p-2 py-3 text-white print:hidden"
+          className="border-b flex gap-4 p-2 py-3 text-white print:hidden"
           style={{ backgroundColor: theme_bg }}>
           <h2 className="text-sm font-bold">
             Class Size{" "}
             <span
               style={{ backgroundColor: colors.lighter_40 }}
-              className="mt-1 text-xs py-1 px-2 rounded text-white font-thin"
+              className="mt-1 text-xs py-1 px-2 rounded text-white"
             >
               {enroled?.length}{" "}
             </span>
           </h2>
-
+          <button className={`px-2 py-1 text-xs text-center ${selected_students.length==0 &&'hidden'}`} style={{backgroundColor:colors.lighter_30}}>{selected_students?.length} selected</button>
         </div>
         <table className="w-full">
           <thead>
@@ -276,20 +256,19 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[4%] py-2 print:hidden">
                 <div className="w-full h-full flex justify-center items-center">
                   <button
-                  style={{
-                    borderColor: true ? theme_bg : "#999",
+                    style={{
+                    borderColor: selected_students.length ? theme_bg : "#999",
                     }}
-                    // onClick={() => toggleStudent(true)}
-                    className={`flex h-4 w-4  items-center justify-center border transition bg-white
-                    ${true ? "border-green-600" : "border-gray-500"}`}
+                    onClick={() => selectStudents(true)}
+                    className={`flex h-4 w-4  items-center justify-center border transition bg-white`}
                     >
-                     {true ? (
+                     {selected_students.length ? (
                       <span
                       className="h-2 w-2 rounded-sm"
                       style={{ backgroundColor: theme_bg }}
                     />
                     ) : null}
-                </button>
+                  </button>
                 </div>
               </th>
               <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 print:py-1">NO.</th>
@@ -299,8 +278,8 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
                 <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI {i+1}(x/20)</th> 
               ))}
               {toggle_show_hide_text &&  <th style={{border:`1px solid ${theme_bg}`}} className="px-1 w-[10%] text-center">AOI(x/20)</th> }
-              {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['EOC 1', 'EOC 1', 'EOC 1']).map((_, i)=>(
-                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">EOC(x/80)</th> 
+              {(toggle_show_hide_text?Object.keys(enroled[0]?.marks || {}):['BOT', 'MOT', 'EOT']).map((exam, i)=>(
+                <th key={i} style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center">{exam?.toLocaleUpperCase()}(x/80)</th> 
               ))}
               {toggle_show_hide_text && 
               <>
@@ -312,26 +291,26 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
             </tr>
           </thead>
           {class_list?.map((learner, i)=>{
+            let row_backround =  selected_students.includes(learner.learner_id)?'#ccffe6':(i%2==1? colors.lighter_90:'white')
             return(
-              <tr key={i} style={{backgroundColor:i%2==1? colors.lighter_90:'white'}} className={`font-mono md:text-sm ${learner.grade_letter>'C'?'text-red-600':learner.grade_letter<'B'?'text-[#009900]':''}`}>
+              <tr key={i} style={{backgroundColor:row_backround}} className={`font-mono md:text-sm ${learner.grade_letter>'C'?'text-red-600':learner.grade_letter<'B'?'text-[#009900]':''}`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:hidden">
                   <div className="w-full h-full flex justify-center items-center">
                     <button
                     style={{
-                      borderColor: true ? theme_bg : "#999",
+                      borderColor: selected_students.includes(learner.learner_id) ? theme_bg : "#999",
                       }}
-                      // onClick={() => toggleStudent(true)}
-                      className={`flex h-4 w-4  items-center justify-center border transition bg-white
-                      ${true ? "border-green-600" : "border-gray-500"}`}
+                      onClick={() => selectStudents(learner.learner_id)}
+                      className={`flex h-4 w-4  items-center justify-center border transition bg-white`}
                       >
-                      {true ? (
+                      {selected_students.includes(learner.learner_id) ? (
                         <span
                         className="h-2 w-2 rounded-sm"
                         style={{ backgroundColor: theme_bg }}
                       />
                       ) : null}
-                  </button>
-                </div>
+                    </button>
+                  </div>
                 </td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:py-1 text-center">{i+1}</td>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 text-left">{learner.learner}</td>
@@ -349,7 +328,6 @@ const OEnroledMarkSheet = ({ enroled, setDeleteStudent, setUpdateStudent, setSel
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic text-center">{learner.grade_letter}</td>
                   <td style={{border:`1px solid ${theme_bg}`}} className="px-1 italic print:hidden">{learner.marks_comment}</td>
                 </>
-                
                 }
               </tr>
             )

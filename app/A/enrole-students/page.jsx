@@ -36,15 +36,6 @@ export default function AoneClass() {
     let paper_bg = brightness(theme_bg)<60?theme_bg:"#1a1a1a"
     let paper_color = brightness(theme_bg)<60?'#1a1a00':"white"
     let years_list = numbersArray(10, year_of_entry-5).reverse() //[2025,2026,2027,2028,2029,2030 ]
-  
-  //auth
-  // const router = useRouter()
-  // const pathname = usePathname(); 
-  // // 
-  // useEffect(()=>{    
-  //   if(main_school_info) return router.push(pathname);
-  //   if(!main_school_info) return router.push('/');
-  // },[])
 
   // fetch list of subject
   useEffect(()=>{

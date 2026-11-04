@@ -106,10 +106,19 @@ function reshapeGradeTostring(sscar_code, is_subsidiary, grade_array){
   return result_object
 }
 
+ //
+const getLearnerMarksIds = (learners, learnerIds, keys) => {
+    let list_of_ids = _.filter(learners, (learner)=> learnerIds.includes(learner.learner_id))
+        .flatMap(learner => [
+            ..._.map(keys, key => learner.aoi_id?.[key]),
+            ..._.map(keys, key => learner.marks_id?.[key]) 
+        ])
+    return _.filter(list_of_ids, ids=>ids!==undefined)
+}; 
+
  export {
   capitalize,
-  transformStudentData,
-  convertSchoolInfoToObject,
   pairMarksWithIds,
-  reshapeGradeTostring
+  reshapeGradeTostring,
+  getLearnerMarksIds
 }
