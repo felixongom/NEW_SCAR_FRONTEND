@@ -114,7 +114,6 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setS
     let edited = pairMarksWithIds(editedRows.map(row=>({marks:row.marks, marks_id:row.marks_id})));
     setUpdateStudent([...edited]);
     return 
-
   };
 
   const sortData = (column)=>{
@@ -237,7 +236,7 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setS
               }}
             >
             
-              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 print:py-1">
+              <th style={{border:`1px solid ${theme_bg}`}} className="px-1 text-center w-[4%] py-2 print:py-1 print:hidden">
                 <div className="w-full h-full flex justify-center items-center">
                   <button
                     style={{
