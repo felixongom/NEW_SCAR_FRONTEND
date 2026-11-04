@@ -12,7 +12,7 @@ import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import {colorTin} from 'color-tin'
 import _ from 'lodash'
 
-const EnroledMarkSheet = ({ enroled,setUpdateStudent, setDeleteStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name, selectStudents, selected_students}) => {
+const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name, selectStudents, selected_students}) => {
   const gridApiRef = useRef(null);              // stores the grid API
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const[sheet, setSheet] = useState(false)
@@ -97,16 +97,6 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setDeleteStudent, setSelec
       return next;
     });
   };
-
-  // const onDeleteRow = () => {
-  //   const api = gridApiRef.current;
-  //   if (!api) return;
-  //   const selectedNodes = api.getSelectedNodes();
-  //   const selectedIds = selectedNodes.map(node => Object.values(node.data.marks_id));
-  //   if(selectedIds.length){
-  //     setDeleteStudent(selectedIds.flat());
-  //   }
-  // };
 
   const onUpdateRows = () => {
     

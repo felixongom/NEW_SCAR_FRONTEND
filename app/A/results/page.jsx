@@ -202,7 +202,7 @@ export default function Results() {
           <EnroledMarkSheet 
           enroled={enroled}
           dispatch={dispatch}
-          setDeleteStudent={setDeleteStudent}
+          // setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
           setSelectWhatToExport={setSelectWhatToExport}
           setSelectWhatToDelete={setSelectWhatToDelete}
@@ -215,7 +215,7 @@ export default function Results() {
           enroled={enroled}
           dispatch={dispatch}
           subject_name ={selectedSubj?.subject}
-          setDeleteStudent={setDeleteStudent}
+          // setDeleteStudent={setDeleteStudent}
           setUpdateStudent={setUpdateStudent}
           setSelectWhatToExport={setSelectWhatToExport}
           setSelectWhatToDelete={setSelectWhatToDelete}
