@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -98,15 +98,15 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setDeleteStudent, setSelec
     });
   };
 
-  const onDeleteRow = () => {
-    const api = gridApiRef.current;
-    if (!api) return;
-    const selectedNodes = api.getSelectedNodes();
-    const selectedIds = selectedNodes.map(node => Object.values(node.data.marks_id));
-    if(selectedIds.length){
-      setDeleteStudent(selectedIds.flat());
-    }
-  };
+  // const onDeleteRow = () => {
+  //   const api = gridApiRef.current;
+  //   if (!api) return;
+  //   const selectedNodes = api.getSelectedNodes();
+  //   const selectedIds = selectedNodes.map(node => Object.values(node.data.marks_id));
+  //   if(selectedIds.length){
+  //     setDeleteStudent(selectedIds.flat());
+  //   }
+  // };
 
   const onUpdateRows = () => {
     

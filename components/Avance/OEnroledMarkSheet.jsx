@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef} from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
