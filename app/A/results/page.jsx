@@ -97,6 +97,7 @@ export default function Results() {
         setDeleting(true)
         await axios.post(`${base_api_path}delete-marks/${clas}`,payload);
         setSelectedSudents([])
+        setSelectExamCategory([])
         
       } catch (err) {
         console.error(err);
