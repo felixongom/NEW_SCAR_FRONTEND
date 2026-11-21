@@ -282,7 +282,7 @@ const countAverageGrades = (students, exam) => {
 //
 
 const removeSubjectsForAorOLevel = (subjects, clas) => {
-  let subjects_to_remove = clas<5?['GP','SM','ECO', 'DIV']:['PE', 'KIS', 'CRE','ENG']
+  let subjects_to_remove = clas<5?['GP','SM','ECO', 'DIV','ECO']:['PE', 'KIS', 'CRE','ENG']
 
   if(Array.isArray(subjects)){
     return _.orderBy(_.filter(subjects, item =>

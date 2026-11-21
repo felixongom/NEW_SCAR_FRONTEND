@@ -1,9 +1,5 @@
 'use client';
-import { useState, useMemo, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import {pairMarksWithIds} from "@/utils/reshpe_data"
+import { useState, useMemo } from "react";
 import { useDataContext } from "@/context/DataProvider";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
 import { HeadedPaper } from "../Headers/HeadedPaper";
@@ -11,36 +7,35 @@ import { Title } from "../StudentUpdateComponent";
 import {a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import {colorTin} from 'color-tin'
 import _ from 'lodash'
+// DATA GRID
+import { DataGrid } from "react-gridix";
+import "react-gridix/style.css";
 
-const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name, selectStudents, selected_students}) => {
-  const gridApiRef = useRef(null);              // stores the grid API
+const EnroledMarkSheet = ({ enroled,  loading, setUpdateStudent, setSelectWhatToExport,setSelectWhatToDelete, subject_name, selectStudents, selected_students}) => {
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const[sheet, setSheet] = useState(false)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const { theme_bg,set_time, selected_clas} = useDataContext();
   const [sort_column, setSortColumn]= useState({})
   const[toggle_show_hide_header, setToggleShowHideHeader] = useState(false)
-
-  const cellStyle = { display: 'flex', alignItems: 'center' };
-
+  // 
   const paperColumns = useMemo(() => {
     if (!enroled.length) return [];
     let labels = Object.keys(enroled[0].papers).map((paperKey, idx) => ({
       field: `marks.${paperKey}`,
       headerName: `PAPER ${idx + 1}`,
       editable: true,
-      width: 100,
-      cellStyle: { ...cellStyle, justifyContent: 'center' }
+      width: '100px',
+      align:'center',
+      validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=100),
     }));
-    
-
-
+    // 
     let ict_marks =  {
       field: 'ict_marks.paper_1',
       headerName: `TOTAL`,
       editable: false,
       width: 100,
-      cellStyle: { ...cellStyle, justifyContent: 'center' }
+      align:'center',
     }
     // push ict total marks
     if(enroled[0].ict_marks ) {
@@ -52,69 +47,28 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setS
   // 
 
   const columnDefs = useMemo(() =>[
-      { field: "sequence", headerName: "NO", editable: false,filter:false, sortable:false, width: 60, cellStyle },
-      { field: "learner", headerName: "LEARNER", cellStyle },
-      { field: "stream", headerName: "STREAM", width: 100, cellStyle },
-      ...paperColumns,
-      { field: "marks_string_05", headerName: "HOLDER", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
-      { field: "grade_string", headerName: "SCORE", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
-      { field: "grade_letter", headerName: "GRADE", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
-      { field: "comment", headerName: "COMMENT", cellStyle: { ...cellStyle, flex:3,fontFamily: 'Arial'} },
-    ], [paperColumns]);
+    { field: "learner_id", headerName: "#", type: "sequence", width: '40px', align:'left' },
+    { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'170px', align:'left', overflow: "ellipsis" },
+    { field: "gender", headerName: "SEX", editable:false, align:'center', valueFormatter:(value)=>value.toLowerCase().includes('female')?'F':'M'},
+    { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
+    ...paperColumns,
+    { field: "marks_string_05",editable:false, headerName: "HOLDER", width: 100, align:'center'},
+    { field: "grade_string", headerName: "SCORE",editable:false, width: 100, align:'center',cellClassName:'italic'},
+    { field: "grade_letter", headerName: "GRADE",editable:false, width: 100, align:'center', sortable:true, cellClassName:'italic'},
+    { field: "comment", headerName: "COMMENT", editable:false, width:'140px', overflow:'ellipsis', editable:false,cellClassName:'italic'},
+  ], [paperColumns]);
 
-  const defaultColDef = useMemo(() => ({
-    sortable: true,
-    filter: true,
-    resizable: true,
-  }), []);
-
-  const getRowStyle = (params) => {
-    const subj = params.data.papers.paper_1.split(' ')[0];
-    if (['GP', 'ICT', 'SM'].includes(subj) && [9, 8, 7].includes(params.data.grades[0])) {
-      return { color: "#cc0000" };
-    } else if (['GP', 'ICT', 'SM'].includes(subj) && [3,4,5,6].includes(params.data.grades[0])) {
-      return { color: "#000000" };
-    
-    } else if (['GP', 'ICT', 'SM'].includes(subj) && [1, 2].includes(params.data.grades[0])) {
-      return { color: "#009900" };
-    }else if (params.data.grade_letter === 'A') {
-      return { color: "#009900" };
-    }else if (['E','F','O'].includes(params.data.grade_letter)) {
-      return { color: "#cc0000" };
-    }
-  };
-
-  const onGridReady = (params) => {
-    gridApiRef.current = params.api;
-  };
-
-  // Track edited rows
-  const onCellValueChanged = (params) => {
-    // use a unique key for each row; here we assume "sequence" is unique
-    setEditedIds(prev => {
-      const next = new Set(prev);
-      next.add(params.data.sequence);
-      return next;
-    });
-  };
-
-  const onUpdateRows = () => {
-    
-    const api = gridApiRef.current;
-    if (!api) return;
-    
-    const editedRows = [];
-    api.forEachNode(node => {
-      if (editedIds.has(node.data.sequence)) {
-        editedRows.push(node.data);
-      }
-    });
-    
-    
-    let edited = pairMarksWithIds(editedRows.map(row=>({marks:row.marks, marks_id:row.marks_id})));
-    setUpdateStudent([...edited]);
-    return 
-  };
+  // 
+  function onCellEdit({field, newValue, row}){
+    const field_array = field.split('.')
+    let paper_id = field_array[1].split('_')[1] 
+    let field_id = row['marks_id'][`marks_${paper_id}_id`]
+    // 
+    const edited_object = {id:field_id, mark:Number(newValue)}
+    setEditedIds(prev=>prev?[...prev, edited_object]:[edited_object])
+  }
+  
+  const onUpdateRows = () => setUpdateStudent(editedIds);
 
   const sortData = (column)=>{
     const active_column = sort_column[column]=='asc'?'desc':'asc'
@@ -193,20 +147,41 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setS
 
       {sheet?
       <div className="ag-theme-alpine" style={{ height, width: "100%" }}>
-        <AgGridReact
-          onGridReady={onGridReady}
-          onCellValueChanged={onCellValueChanged}    
-          getRowStyle={getRowStyle}
-          rowData={enroled}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          rowSelection="multiple"
-          suppressClickEdit={false}
-          singleClickEdit={true}
-          enterNavigatesVertically={true}
-          enterNavigatesVerticallyAfterEdit={true}
-          rowHeight={38}
-        />
+        <DataGrid
+          columns={columnDefs}
+          rows={enroled || []}//
+          getRowId={(r) => r.learner_id }
+          className="shadow-none rounded-md"
+          searchable
+          searchPlaceholder="Search students . . ."
+          emptyMessage="No Data Yet . . ."
+                 
+          loading={loading}
+          loadingRows={12}
+          editable
+          onCellEdit={onCellEdit}
+          enterMovesDown
+          keyboardNavigation
+               
+          triped
+          stripeColors={['#fff', colors.lighter_90]}
+          rowClassName={({grade_letter})=>`${grade_letter<'B'?'text-green-600':grade_letter>'C'?'text-red-600':''}`}
+          classNames={{
+            search: "rounded-md border-slate-300 px-1 py-1 focus:border-slate-800",
+            row: "font-mono font-lg",
+            footer: "bg-slate-800 text-slate-100",
+            toolbar: "px-4 py-3 print:hidden",
+            table:'min-w-[1000px] md:min-w-full',
+            cell: "py-2 h-full", // styling the cell
+            editor:'h-[25px] focus:border-slate-400', 
+            pageButton: "rounded-fulll font-bold bg-white text-black hover:bg-red-600",
+          }}
+          // 
+          styles={{
+            toolbar:{background:colors.lighter_90},
+            headerCell:{background:'#fff', borderBottom:`2px solid ${theme_bg}`, color:theme_bg, fontWeight:700,  fontSize:'12px', paddingBottom:'10px', paddingTop:'10px'},
+            cell:{borderBottom:`1px solid ${colors.lighter_70}`,}
+          }}/>
       </div>:
       <div>
         <div className={`w-full ${toggle_show_hide_header && 'hidden'} print:block`}>
@@ -281,7 +256,7 @@ const EnroledMarkSheet = ({ enroled,setUpdateStudent, setSelectWhatToExport,setS
               style={{
                 backgroundColor:i%2==1? colors.lighter_90:'white',
                 borderBottom:(class_list.length-1===i)?`2px solid ${theme_bg}`:''
-                }} className={`font-mono md:text-sm ${learner.grade_letter>'C'?'text-red-600':learner.grade_letter<'B'?'text-[#009900]':''}`}>
+                }} className={`font-mono md:text-sm ${(toggle_show_hide_text && learner.grade_letter)>'C'?'text-red-600':(toggle_show_hide_text && learner.grade_letter)<'B'?'text-[#009900]':''}`}>
                 
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:hidden">
                   <div className="w-full h-full flex justify-center items-center">

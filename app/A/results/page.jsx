@@ -9,7 +9,6 @@ import SetTime from "@/components/Avance/SetTime";
 import NavBar from "@/components/Avance/NavBar";
 import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
-import Loading from "../enroled/loading";
 import _ from 'lodash'
 import { getToken, removeSubjectsForAorOLevel } from "@/utils";
 import { getLearnerMarksIds } from "@/utils/reshpe_data";
@@ -118,6 +117,7 @@ export default function Results() {
       try {
         setDeleting(true)
         await axios.post(`${base_api_path}update-marks/${clas}`,{results:updateStudent});
+        console.log('ARRAY',updateStudent)
         setUpdateStudent(null)
         } catch (err) {
           console.error(err);
@@ -158,6 +158,7 @@ export default function Results() {
     }
 
     let colors = colorTin(theme_bg, 10);
+    
   
   return (
     <> 
@@ -168,8 +169,8 @@ export default function Results() {
           <div className="bg-transparent fixed overflow-hidden" style={{zIndex:5, height:'100vh', width:'100vw', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:10}}>
             {deleting && <div className="text-gray-100 font-semibold text-7xl">. . .</div>}
             <div className="flex gap-3 bg-white py-10 px-10 rounded-md">
-              <button onClick={()=>doUpdate('update')} className="bg-orange-700 hover:bg-orange-500 rounded-md transition text-gray-100 text-sm px-2 py-1"> Save</button>
-              <button onClick={()=>doDelete('marks')} className="bg-gray-100 text-rose-700 rounded-lg border-rose-700 border-1 text-sm py-1 px-3"> Delete marks</button>
+              {updateStudent && updateStudent.length && <button onClick={()=>doUpdate('update')} className="bg-orange-700 hover:bg-orange-500 rounded-md transition text-gray-100 text-sm px-2 py-1"> Save</button>}
+              {deleteTudent && deleteTudent.length && <button onClick={()=>doDelete('marks')} className="bg-gray-100 text-rose-700 rounded-lg border-rose-700 border-1 text-sm py-1 px-3"> Delete marks</button>}
               <button onClick={()=>doDelete('councel')} className="bg-green-700-700 text-slate-800 rounded-md text-sm py-1 px-3 border-slate-800 border"> Councel</button>
             </div>
           </div>
@@ -180,12 +181,12 @@ export default function Results() {
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
          <NavBar heading={'RESULTS'}/>
          <SetTime/>
-         {loading && <Loading/>}
+         {/* {loading && <Loading/>} */}
          <h2 className="mt-3 font-bold print:hidden">Select A subject</h2>
          <div className="flex flex-wrap bg-white shadow-sm gap-3 my-4 p-3 print:hidden">
 
           {list_of_subjects?.map((group, i)=>(
-           <div
+           <button
            key={i}
            style={{
             background:`${selectedSubj.subject  === group?.subject? theme_bg: "#e6e6e6"}`,
@@ -193,7 +194,7 @@ export default function Results() {
             fontWeight:`${selectedSubj.subject  === group?.subject? "bold":'normal'}`,
            }} 
            onClick={()=>handleSelect(group)}
-           className="p-1 px-2 rounded cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</div>
+           className="p-1 px-2 text-sm rounded cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</button>
           ))}
           </div>
 
@@ -201,28 +202,30 @@ export default function Results() {
           <div className="px-2">
           {results && (clas>4? 
           <EnroledMarkSheet 
-          enroled={enroled}
-          dispatch={dispatch}
-          // setDeleteStudent={setDeleteStudent}
-          setUpdateStudent={setUpdateStudent}
-          setSelectWhatToExport={setSelectWhatToExport}
-          setSelectWhatToDelete={setSelectWhatToDelete}
-          subject_name ={selectedSubj?.subject}
-          // 
-          selectStudents={selectStudents}
-          selected_students={selected_students} 
+            loading={loading}
+            enroled={enroled}
+            dispatch={dispatch}
+            // setDeleteStudent={setDeleteStudent}
+            setUpdateStudent={setUpdateStudent}
+            setSelectWhatToExport={setSelectWhatToExport}
+            setSelectWhatToDelete={setSelectWhatToDelete}
+            subject_name ={selectedSubj?.subject}
+            // 
+            selectStudents={selectStudents}
+            selected_students={selected_students} 
           />: 
-          <OEnroledMarkSheet 
-          enroled={enroled}
-          dispatch={dispatch}
-          subject_name ={selectedSubj?.subject}
-          // setDeleteStudent={setDeleteStudent}
-          setUpdateStudent={setUpdateStudent}
-          setSelectWhatToExport={setSelectWhatToExport}
-          setSelectWhatToDelete={setSelectWhatToDelete}
-          // 
-          selectStudents={selectStudents}
-          selected_students={selected_students}
+          <OEnroledMarkSheet
+            loading={loading}
+            enroled={enroled}
+            dispatch={dispatch}
+            subject_name ={selectedSubj?.subject}
+            //
+            setUpdateStudent={setUpdateStudent}
+            setSelectWhatToExport={setSelectWhatToExport}
+            setSelectWhatToDelete={setSelectWhatToDelete}
+            // 
+            selectStudents={selectStudents}
+            selected_students={selected_students}
           />)} 
          </div>
       </div>

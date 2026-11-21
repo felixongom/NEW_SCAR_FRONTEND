@@ -54,40 +54,6 @@ function capitalize(str) {
   return _str.charAt(0).toUpperCase() + _str.slice(1).toLowerCase();
 }
 
-//pair id and marks in the a level
-function pairMarksWithIds(data, marks_type='marks') {
-  if(marks_type==='marks'){
-    return _.flatMap(data, item => {
-      return _.map(item.marks, (markValue, paperKey) => {
-        const num = paperKey.split('_')[1]; // "1", "2", ...
-        const idKey = `marks_${num}_id`;
-        return { id: item.marks_id[idKey], mark: markValue };
-      });
-    });
-  /*
-    {
-      marks:{paper_1: 45},
-      marks_id:{marks_1_id: 79}
-    }
-    {
-      marks:{aoi_1: null, aoi_2: 13}
-      marks_id:{aoi_1_id: 81, aoi_2_id: 82
-    }
-  */
-    
-  }else{
-    return _.flatMap(data, item => {
-      return _.map(item.marks, (markValue, paperKey) => {
-        const num = paperKey.split('_')[1]; // "1", "2", ...
-        const idKey = `aoi_${num}_id`;
-        let res = { id: item.marks_id[idKey], mark: markValue}
-        return res;
-      });
-    });
-
-  }
-  
-}
 
 // reshape grade data to an oobject for sending to the server
 function reshapeGradeTostring(sscar_code, is_subsidiary, grade_array){
@@ -118,7 +84,6 @@ const getLearnerMarksIds = (learners, learnerIds, keys) => {
 
  export {
   capitalize,
-  pairMarksWithIds,
   reshapeGradeTostring,
   getLearnerMarksIds
 }

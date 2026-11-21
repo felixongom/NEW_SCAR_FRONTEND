@@ -6,6 +6,7 @@ import { useDataContext } from "@/context/DataProvider"
 import { base_api_path } from "@/utils/reportList"
 import axios from "axios"
 import {brightness} from "color-tin"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 
 export default function Schools({}){
@@ -81,7 +82,7 @@ export default function Schools({}){
                         <td className="p-1 text-xs capitalize">{index+1}</td>
                         <td className={`p-1 text-left' text-xs capitalize`}>{school.school.slice(0,30)}</td>
                         <td className={`p-1 text-left' text-xs capitalize`}>{school.campus||'--'}</td>
-                        <td className={`p-1 text-left' text-xs capitalize`}> <img src={school.logo} width={35} height={35} alt="logo"/> </td>
+                        <td className={`p-1 text-left' text-xs capitalize`}> <Image src={school.logo} width={35} height={35} alt="logo"/> </td>
                         <td className={`p-1 text-left' text-xs capitalize`}>{school.sscar_code}</td>
                         <td className="p-1 text-xs">{school.password.length<35? school.password:'--'}</td>
                         <td className={`p-1 text-xs`}>{school.time_left}</td>

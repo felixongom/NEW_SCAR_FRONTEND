@@ -1,9 +1,5 @@
 'use client';
-import { useState, useMemo, useRef} from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import {pairMarksWithIds} from "@/utils/reshpe_data"
+import { useState, useMemo} from "react";
 import { useDataContext } from "@/context/DataProvider";
 import { HeadedPaper } from "../Headers/HeadedPaper";
 import { Title } from "../StudentUpdateComponent";
@@ -11,17 +7,19 @@ import { a_subject_full_name, exam, roman_term } from "@/utils/reportList";
 import { MdOutlineLocalPrintshop } from "react-icons/md";
 import {colorTin} from 'color-tin'
 import { roundOff } from "@/utils";
+// DATA GRID
+import { DataGrid } from "react-gridix";
+import "react-gridix/style.css";
 
-const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, setSelectWhatToDelete, subject_name, selectStudents, selected_students }) => {
-  const gridApiRef = useRef(null);// stores the grid API
+const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatToExport, setSelectWhatToDelete, subject_name, selectStudents, selected_students }) => {
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const { theme_bg,set_time, selected_clas } = useDataContext();
   const[sheet, setSheet] = useState(false)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const[toggle_show_hide_header, setToggleShowHideHeader] = useState(false)
-  
   const [sort_column, setSortColumn]= useState({})
-  const cellStyle = { display: 'flex', alignItems: 'center' };
+  // 
+  let clas = parseInt(selected_clas.split(' ')[0])
 
   const paperColumns = useMemo(() => {
     if (!enroled.length) return [];
@@ -29,25 +27,25 @@ const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, s
       field: `marks.${paperKey}`,
       headerName: `PAPER ${idx + 1}`,
       editable: true,
-      width: 100,
-      cellStyle: { ...cellStyle, justifyContent: 'center' }
+      width: '100px',
+      align:'center',
+      validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=80),
     }));
     
     let ict_marks =  {
       field: 'ict_marks.paper_1',
       headerName: `TOTAL`,
-      editable: false,
-      width: 100,
-      cellStyle: { ...cellStyle, justifyContent: 'center' }
+      width: '100px',
+      editable:false,
+      align:'center',
     }
     // push ict total marks
-    if(enroled[0].ict_marks ) {
+    if(enroled[0].ict_marks && clas<5 ) {
       labels.push(ict_marks)
     }
     return [...labels]
-  }, [enroled]);
+  }, [clas, enroled]);
 
-  
 
   //building aoi column
   const aoiColumns = useMemo(() => {
@@ -55,87 +53,53 @@ const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, s
     let labels = Object.keys(enroled[0]?.aoi_marks || {}).map((paperKey, idx) => ({
       field: `aoi_marks.${paperKey}`,
       headerName: `A${idx + 1}`,
-      editable: true,
-      width: 60,
-      cellStyle: { ...cellStyle, justifyContent: 'center' }
+      width: '100px',
+      editable:true,
+      validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=20),
+      align:'center',
     }));
     return [...labels]
   }, [enroled]);  
 
 
   const columnDefs = useMemo(() =>[
-      // { headerCheckboxSelection: true, checkboxSelection: true, width: 40, cellStyle },
-      { field: "sequence", headerName: "NO", editable: false, filter:false, sortable:false, width: 50, cellStyle },
-      { field: "learner", headerName: "LEARNER", width:250, cellStyle },
-      { field: "stream", headerName: "STREAM", width: 100, cellStyle:{ ...cellStyle, justifyContent: 'center' } },
+      { field: "learner_id", headerName: "#", type: "sequence", width: '40px', align:'left' },
+      { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'170px', align:'left', overflow: "ellipsis" },
+      { field: "gender", headerName: "SEX", editable:false, align:'center'},
+      { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
       ...aoiColumns,
       ...paperColumns,
-      { field: "average_aoi", headerName: "AOI", width: 100, cellStyle:{...cellStyle, justifyContent:'center', fontWeight:'700'} },
-      { field: "marks_plas_aoi", headerName: "TOTAL", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center',fontWeight:'700' } },
-      { field: "grade_letter", headerName: "GRADE", width: 100, cellStyle: { ...cellStyle, justifyContent: 'center' } },
-      { field: "marks_comment", headerName: "COMMENT", width: 100, cellStyle: { ...cellStyle, justifyContent: 'left', fontStyle:'italic' } },
+      { field: "average_aoi", headerName: "AOI", cellClassName:'font-semibold', editable:false, align:'center', valueFormatter:(value)=>value===0?'':value },
+      { field: "marks_plas_aoi", headerName: "TOTAL", cellClassName:'font-semibold', editable:false, sortable:true, align:'center'},
+      { field: "grade_letter", headerName: "GRADE", editable:false, sortable:true, cellClassName:'italic', align:'center'},
+      { field: "marks_comment", headerName: "COMMENT", editable:false, sortable:true, align:'left', cellClassName:'italic', headerClassName:'text-xs p-1 italic'},
     ], [paperColumns]);
+  // 
 
-  const defaultColDef = useMemo(() => ({
-    sortable: true,
-    filter: true,
-    resizable: true,
-  }), []);
-
-  const getRowStyle = (params) => {
-    let clas = parseInt(selected_clas.split(' ')[0])
-    const subj = params.data.papers.paper_1.split(' ')[0];
-
-    if (clas>4 && ['GP', 'ICT', 'SM'].includes(subj) && [9, 8, 7].includes(params?.data?.grades[0])) {
-      return { color: "#cc0000" };
-    } else if (clas>4 && ['GP', 'ICT', 'SM'].includes(subj) && [3,4,5,6].includes(params?.data?.grades[0])) {
-      return { color: "#000000" };
-    } else if (clas>4 && ['GP', 'ICT', 'SM'].includes(subj) && [1, 2].includes(params?.data?.grades[0])) {
-      return { color: "#009900" };
-    }else if (params.data.grade_letter === 'A') {
-      return { color: "#009900" };
-    }else if (['E','D'].includes(params?.data?.grade_letter)) {
-      return { color: "#cc0000" };
-    }
-  };
-
-  const onGridReady = (params) => {
-    gridApiRef.current = params.api;
-  };
-
-  // Track edited rows
-  const onCellValueChanged = (params) => {
-    // use a unique key for each row; here we assume "sequence" is unique
-    setEditedIds(prev => {
-      const next = new Set(prev);
-      next.add(params.data.sequence);
-      return next;
-    });
-  };
-
-  const onUpdateRows = () => {
-    
-    const api = gridApiRef.current;
-    if (!api) return;
-    
-    const editedRows = [];
-    api.forEachNode(node => {
-      if (editedIds.has(node.data.sequence)) {
-        editedRows.push(node.data);
-      }
-    });
-    
-    let edited = pairMarksWithIds(editedRows.map(row=>({marks:row.marks, marks_id:row.marks_id})));
-    let aoi_edited = pairMarksWithIds(editedRows.map(row=>({marks:row.aoi_marks, marks_id:row.aoi_id})), 'aoi');
-    setUpdateStudent([...edited, ...aoi_edited]);
-  };
+  const onUpdateRows = () => setUpdateStudent(editedIds);
   // 
   const sortData = (column)=>{
     const active_column = sort_column[column]=='asc'?'desc':'asc'
     setSortColumn({[column]:active_column})
   }
+  // 
+  function onCellEdit({field, newValue, row}){
+    const field_array = field.split('.')
+    let field_id
 
-  const height = enroled ? window.innerHeight : 50;
+    if(field?.includes('aoi')){
+      field_id = row['aoi_id'][field_array[1]+'_id']
+
+    }else{
+      let paper_id = field_array[1].split('_')[1] 
+      field_id = row['marks_id'][`marks_${paper_id}_id`]
+      
+    }
+    // 
+    const edited_object = {id:field_id, mark:Number(newValue)}
+    setEditedIds(prev=>prev?[...prev, edited_object]:[edited_object])
+  }
+
   let colors = colorTin(theme_bg, 10);
   const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])  
 
@@ -207,21 +171,45 @@ const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, s
 
       </div>
       {sheet?
-      <div className="ag-theme-alpine" style={{ height, width: "100%" }}>
-        <AgGridReact
-          onGridReady={onGridReady}
-          onCellValueChanged={onCellValueChanged}    
-          getRowStyle={getRowStyle}
-          rowData={enroled}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          rowSelection="multiple"
-          suppressClickEdit={false}
-          singleClickEdit={true}
-          enterNavigatesVertically={true}
-          enterNavigatesVerticallyAfterEdit={true}
-          rowHeight={38}
-        />
+      <div className="w-full">
+        <DataGrid
+          columns={columnDefs}
+          rows={enroled || []}//
+          getRowId={(r) => r.learner_id }
+          className="shadow-none rounded-md"
+          searchable
+          searchPlaceholder="Search students . . ."
+          emptyMessage="No Data Yet . . ."
+             
+          loading={loading}
+          loadingRows={12}
+          editable
+          onCellEdit={onCellEdit}
+          enterMovesDown
+          keyboardNavigation
+          
+          triped
+          stripeColors={['#fff', colors.lighter_90]}
+          rowClassName={({grade_letter})=>{
+            console.log(grade_letter);
+            return `${grade_letter<'B'?'text-green-600':grade_letter>'C'?'text-red-600':''}`
+           }}
+          classNames={{
+            search: "rounded-md border-slate-300 px-1 py-1 focus:border-slate-800",
+            row: "font-mono font-lg",
+            footer: "bg-slate-800 text-slate-100",
+            toolbar: "px-4 py-3 print:hidden",
+            table:'min-w-[1000px] md:min-w-full',
+            cell: "py-2 h-full", // styling the cell
+            editor:'h-[25px] focus:border-slate-400', 
+            pageButton: "rounded-fulll font-bold bg-white text-black hover:bg-red-600",
+          }}
+          // 
+          styles={{
+            toolbar:{background:colors.lighter_90},
+            headerCell:{background:'#fff', borderBottom:`2px solid ${theme_bg}`, color:theme_bg, fontWeight:700,  fontSize:'12px', paddingBottom:'10px', paddingTop:'10px'},
+            cell:{borderBottom:`1px solid ${colors.lighter_70}`,}
+        }}/>
       </div>
       
       :
@@ -293,7 +281,7 @@ const OEnroledMarkSheet = ({ enroled, setUpdateStudent, setSelectWhatToExport, s
           {class_list?.map((learner, i)=>{
             let row_backround =  selected_students.includes(learner.learner_id)?'#ccffe6':(i%2==1? colors.lighter_90:'white')
             return(
-              <tr key={i} style={{backgroundColor:row_backround}} className={`font-mono md:text-sm ${learner.grade_letter>'C'?'text-red-600':learner.grade_letter<'B'?'text-[#009900]':''}`}>
+              <tr key={i} style={{backgroundColor:row_backround}} className={`font-mono md:text-sm ${toggle_show_hide_text && learner.grade_letter>'C'?'text-red-600':(toggle_show_hide_text && learner.grade_letter)<'B'?'text-[#009900]':''}`}>
                 <td style={{border:`1px solid ${theme_bg}`}} className="px-1 py-2 print:hidden">
                   <div className="w-full h-full flex justify-center items-center">
                     <button

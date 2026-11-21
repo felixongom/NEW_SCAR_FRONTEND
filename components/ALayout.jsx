@@ -1,8 +1,4 @@
 'use client'
-
-import { ModuleRegistry } from "ag-grid-community";
-import { AllCommunityModule } from "ag-grid-community";
-ModuleRegistry.registerModules([AllCommunityModule]);
 import SideMenu from "./Avance/SideMenu" 
 import { useEffect, useState} from "react";
 import { useDataContext } from "@/context/DataProvider";

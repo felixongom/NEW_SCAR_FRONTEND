@@ -6,24 +6,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDataContext} from "@/context/DataProvider";
 import { countStudentsByStream, getToken } from "@/utils";
-import Loading from "./loading";
 // import { usePathname, useRouter } from "next/navigation";
 import SetTime from "@/components/Avance/SetTime";
 import AResultTable from "@/components/AResultTable";
 import OResultTable from "@/components/OResultTable";
 import { ExportPaycodeComponet } from "@/components/StudentUpdateComponent";
+// DATA GRID
+import "react-gridix/style.css";
 
 export default function AoneClass() {
   const [deleting, setDeleting] = useState(false)
    const [show_delete_popup, setShowDeletingPopup] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [show_paycode_popup, setShowPaycodePopup] = useState(false) 
    const [is_uploading_paycode, setIsUploadingPayCode] = useState(false);
   
 
   const [selected_student, setSelectedStudent] = useState([]);
-  const {set_time, selected_clas, dispatch} = useDataContext()
-  
+  const {transformed_data, set_time, selected_clas, dispatch, theme_bg} = useDataContext()
+ 
   // 
   let clas = selected_clas?parseInt(selected_clas?.split(' ')[1]):5
   //auth
@@ -43,7 +44,6 @@ export default function AoneClass() {
       dispatch({type: 'DATA_CHUNK',payload: ''}) 
       dispatch({type: 'TRANSFORMED_DATA',payload: ''}) 
       try {
-        
           setLoading(true)        
           const response = await axios.get(`${base_api_path}enrolement/clas/${clas}/year/${set_time.year}/term/${set_time.term}/exam/${set_time.exam}`, {
             headers:{'Authorization':`Bearer ${getToken('access_token')}`}
@@ -54,21 +54,21 @@ export default function AoneClass() {
             payload: _.orderBy(response?.data, ['STREAM', 'STUDENT NAME'], ['asc', 'asc']),
           })  
           // 
-          setLoading(false)
+          // setLoading(false)
         
       } catch (err) {
         console.log(err);
       }finally{
         setLoading(false)
-
       }
     };
     if(!(set_time.exam=='AOI' || set_time.exam=='EOC')){
       fetchData();
+      setLoading(true)
     }
   },[selected_clas, clas, set_time.year, set_time.term, set_time.exam, deleting, is_uploading_paycode])
   //
-  
+
   const doDelete = async (cases)=>{
     let payload = {ids:selected_student, set_time, clas};
     
@@ -86,10 +86,11 @@ export default function AoneClass() {
     }
   }
 
+
   
   return (
     <>
-    {loading && <Loading/>}
+    {/* {loading && <Loading/>} */}
     {
       show_delete_popup && selected_student.length>0 && 
         <>
@@ -120,6 +121,8 @@ export default function AoneClass() {
          <SetTime/>
          { parseInt(clas) <5 &&
           <OResultTable
+          loading={loading} 
+            transformed_data={transformed_data}
             setSelectedStudent={setSelectedStudent}
             selected_student={selected_student}
             setShowDeletingPopup={setShowDeletingPopup}
@@ -128,12 +131,14 @@ export default function AoneClass() {
             />} 
 
         { parseInt(clas) >= 5 &&
-         <AResultTable 
+         <AResultTable
+            loading={loading} 
+            transformed_data={transformed_data}
             setSelectedStudent={setSelectedStudent}
             selected_student={selected_student}
             setShowDeletingPopup={setShowDeletingPopup}
             setShowPaycodePopup={setShowPaycodePopup}
-          />}
+        />}
         
       </div>
     </ALayout>

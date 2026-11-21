@@ -425,10 +425,10 @@ export function ChangeExanAllAoiEoc(){
     let clas = parseInt(selected_clas.split(' ')[1])
 
     return(clas<5?
-        <div className="flex justify-center gap-1 bg-white">
+        <div className="flex justify-center gap-1">
         {[reserve_exam, 'AOI', 'EOC'].map(exam=>{
             return(
-            <button key={exam} onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 py-1 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
+            <button key={exam} onClick={()=>dispatch({type:"SET_TIME", payload:{...set_time, exam:exam=='ALL'?reserve_exam:exam}})} className={`px-1 md:px-2 rounded-full border border-slate-800 shadow-sm text-xs md:text-sm transition-all duration-100 ${exam===set_time.exam?'bg-gray-700 font-semibold text-white':'white'}`}>{exam}</button>
         )})}
         </div>
         :null)   

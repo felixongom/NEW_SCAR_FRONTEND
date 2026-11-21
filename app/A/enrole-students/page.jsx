@@ -1,7 +1,5 @@
 "use client";
 import ALayout from "@/components/ALayout";
-import AEnroleStudents from "@/components/AEnroleStudent"
-// import { usePathname, useRouter } from 'next/navigation'
 import { useDataContext } from "@/context/DataProvider";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/Avance/NavBar";
@@ -9,13 +7,17 @@ import EnrolementSetTime from "@/components/Avance/EnrolementSetTime";
 import { base_api_path } from "@/utils/reportList";
 import axios from "axios";
 import {brightness} from "color-tin"
-import Loading from "../enroled/loading";
 import { getToken, numbersArray, removeSubjectsForAorOLevel } from "@/utils";
 import { IoIosArrowDown } from "react-icons/io";
 import  {colorTin} from 'color-tin'
 import {StudentEnorolementComponent, StudentUpdateComponent} from "@/components/StudentUpdateComponent"
 import toast from "react-hot-toast";
 import { Ring } from "ldrs/react";
+// DATA GRID
+import { DataGrid } from "react-gridix";
+import "react-gridix/style.css";
+import { FaRegEdit } from "react-icons/fa";
+
 
 export default function AoneClass() {
   const {dispatch, theme_bg, set_enrolement_time,selected_clas } = useDataContext()
@@ -24,7 +26,7 @@ export default function AoneClass() {
     const [year_of_entry, setYearOfEntry] = useState(new Date().getFullYear())
     const [students, setStudents] = useState([])
     const [selected_Student, setSelectedStudent] = useState([])
-    const [set_student_loading, setStudentLoading] = useState(false)
+    const [set_student_loading, setStudentLoading] = useState(true)
     const [enroling, setEnrolling] = useState(false)
     const [deleting, setDeleting] = useState(false)
     const [activate_delete, setActivateDelete] = useState(false)
@@ -52,25 +54,23 @@ export default function AoneClass() {
 
   //
   useEffect(()=>{ 
+    
     const fetchData = async () => {   
       let level = parseInt(selected_clas.split(' ')[1])>4?'A':'O'
       try {
-        setStudentLoading(true)        
+        setStudentLoading(true)
         const response = await axios.get(`${base_api_path}students/entry-year/${year_of_entry}/${level}`, {
           headers:{'Authorization':`Bearer ${getToken('access_token')}`}
         }); // Example API
         setStudents(response.data)
         setStudentLoading(false)
-        setShowStudentPopup(false)
       } catch (err) {
         console.log(err);
-      }finally{
-        setStudentLoading(false)
       }
     };
     fetchData();
+    setStudentLoading(false)
   },[year_of_entry, selected_clas, deleting, updating])
-
   // 
   const handleSelect = (paper_id)=>{
     
@@ -89,6 +89,7 @@ export default function AoneClass() {
     setStudents([])
     setYearOfEntry(year)
     setOpenYear(pre=>!pre)
+    setStudentLoading(true)
   }
   // function to enrole student
   const enroleStudent = async ()=>{
@@ -137,7 +138,181 @@ export default function AoneClass() {
    const entry_clas = parseInt(selected_clas.split(' ')[1])>4?'5':'1'
   let list_of_subjects = removeSubjectsForAorOLevel(subjects?.swapped_subjects || {}, entry_clas)  
 
+  const toggleStudent = (id) => {
+    if(id===true){
+      let ids = students.map(student=>student.id)
+
+      if(selected_Student.length){
+        setSelectedStudent([])
+      }else{
+        setSelectedStudent(ids)
+      }
+    }else{
+      setSelectedStudent((prev) =>prev.includes(id)? prev.filter((x) => x !== id): [...prev, id]);
+    }
+  }
+  // DATA GRID
+  function linkRenderer({row}){
+    return(
+      <button className="h-[25px] w-[25px] bg-gray-200 rounded-md flex justify-center items-center text-center hover:bg-gray-700 text-yellow-500 hover:text-white">
+        <FaRegEdit onClick={()=>setShowStudentPopup(row)} className="cursor-pointer"/> 
+      </button>
+    )
+  }
+  function checkBoxRenderer({value,row}){
+    return(
+      <button
+        style={{borderColor:selected_Student.length?theme_bg:'#999'}}
+          onClick={() => toggleStudent(value)}
+          className={`flex h-4 w-4  items-center justify-center border transition
+          ${selected_Student.includes(row.id)? "border-green-600": "border-gray-500"}`}>
+          {selected_Student.includes(row.id) ? <span className="h-2 w-2 rounded-sm" style={{backgroundColor:theme_bg}}/>:null}
+      </button>
+    )
+  }
+  function headerCheckBoxRenrer(){
+    return(
+      <button
+        style={{borderColor:selected_Student.length?theme_bg:'#999'}}
+          onClick={() => toggleStudent(true)}
+          className={`flex h-4 w-4  items-center justify-center border transition
+          ${selected_Student.length? "border-green-600": "border-gray-500"}`}>
+          {selected_Student.length ? <span className="h-2 w-2 rounded-sm" style={{backgroundColor:theme_bg}}/>:null}
+      </button>
+    )
+  }
+  function toolBarOptions(){
+    return(
+      <div >
+        <button 
+          disabled={enroling?true:false}
+          onClick={()=>setShowEnrolemetPopup(prev=>!prev)} 
+          className='text-white px-3 py-1 rounded text-xs shadow-md'
+          style={{backgroundColor:colors.darker_10}}
+          >
+          Copy Enrolment
+        </button>
+        <button disabled={enroling?true:false} onClick={()=>setActivateDelete(prev=>!prev)} className='bg-white border-2 border-red-600 hover:bg-red-500 text-red-500 hover:text-white px-3 py-1 rounded text-xs shadow-md ml-1'>
+          {deleting ? <Ring size={25} stroke={2} bgOpacity={0} speed={2} color="white"/>:'Delete'}
+        </button>
+        <button 
+          disabled={enroling?true:false} 
+          onClick={enroleStudent} className='bg-cyan-700 hover:bg-cyan-600 text-white px-3 py-1 rounded text-xs shadow-md ml-1'
+          style={{backgroundColor:colors.theme_bg}}>
+            {enroling ? <Ring size={25} stroke={2} bgOpacity={0} speed={2} color="white"/>:'Enrole'}
+        </button>
+       </div> 
+    )
+  }
  
+
+    const columns = [
+      
+      { field: "id", headerName: "#",
+        headerClassName:'font-semibold border-b-2 border-gray-400 text-sm',
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        width:"50px",overflow: "ellipsis", 
+        type: "sequence",
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},  
+      },
+      { 
+        field: "id", headerClassName:'border-b-2 border-gray-400 text-sm', 
+        width:"5%",overflow: "ellipsis", type: "boolean text-sm",
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        cellRenderer:checkBoxRenderer, 
+        headerRenderer:headerCheckBoxRenrer,
+        headerCheckbox: true,
+        type:'boolean'
+      },
+      { 
+        field: "learner_id", headerName: "STUDENT NO.",
+        width: "12%",
+        align: "left", 
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        overflow: "ellipsis",
+        headerClassName:'border-b-2 border-gray-400 text-sm',
+        editable:false 
+      },
+      { field: "STUDENT NAME",
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        width:"20%",
+        overflow: "ellipsis",
+        headerClassName:'border-b-2 border-gray-400', 
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        // align: "center", 
+        sortable:true,
+        editable:false,
+      },
+      { field: "SEX", 
+        headerName: "SEX",
+        headerClassName:'border-b-2 border-gray-400 text-sm', width:'20',
+        align: "center",
+        width:"8%",
+        headerClassName:'border-b-2 border-gray-400', 
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        overflow: "ellipsis",
+        editable:false
+      },
+      { field: "STREAM", 
+        headerName: "STREAM",
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        width:"10%",
+        overflow: "ellipsis",
+        sortable:true,
+        align: "center",
+        editable:false
+      },
+      { field: "learner_password", 
+        headerName:'L PASSWORD',
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        width:"12%",
+        overflow: "ellipsis",
+        align: "center",
+        editable:false
+      },
+      { field: "parent_password", 
+        headerName:'P PASSWORD',
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        width:"12%",
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        align: "center",
+        overflow: "ellipsis",
+        editable:false
+      },
+      { 
+        field: "pay_code", 
+        headerName: "PAY CODE",
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        width:"10%",
+        filterable:false, 
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        valueFormatter:(value)=>value||`-`,
+        align: "center",
+        overflow: "ellipsis", 
+        editable:false
+      },
+      { 
+        field: 'id', 
+        headerName: "ACTION",
+        headerClassName:'border-b-2 border-gray-400 text-sm', 
+        width:"10%",
+        headerStyle:{backgroundColor:'#fff', color:theme_bg},
+        cellStyle:{borderBottom:`1px solid ${colors.lighter_70}`},
+        cellRenderer:linkRenderer,
+        align: "left", 
+      },
+    ];
+
   // In your App.js
   return (
     <> 
@@ -178,7 +353,7 @@ export default function AoneClass() {
       />
     </div>} 
     <ALayout>
-      <div className={`flex-1 pl-1 ${(show_student_popup || coppy_enrolement_popup) && 'fixed'}`}>
+      <div className={`flex-1 pl-1 ${(show_student_popup || coppy_enrolement_popup) && 'fixed'} `}>
         <NavBar heading="ENROLE STUDENTS"/>
         <EnrolementSetTime/>
         <hr />
@@ -230,40 +405,45 @@ export default function AoneClass() {
               }
             </div>
           </div>  
-          <div>
-
-            <button 
-              disabled={enroling?true:false}
-              onClick={()=>setShowEnrolemetPopup(prev=>!prev)} 
-              className='text-white px-3 rounded text-sm shadow-md'
-              style={{backgroundColor:colors.darker_10}}
-              >
-              Copy Enrolment
-            </button>
-            <button disabled={enroling?true:false} onClick={()=>setActivateDelete(prev=>!prev)} className='bg-red-700 hover:bg-red-600 text-white px-3 rounded text-sm shadow-md ml-1'>
-              {deleting ? <Ring size={25} stroke={2} bgOpacity={0} speed={2} color="white"/>:'Delete'}
-            </button>
-            <button 
-              disabled={enroling?true:false} 
-              onClick={enroleStudent} className='bg-cyan-700 hover:bg-cyan-600 text-white px-3 rounded text-sm shadow-md ml-1'
-              style={{backgroundColor:colors.theme_bg}}
-              >
-              {enroling ? <Ring size={25} stroke={1} bgOpacity={0} speed={2} color="white"/>:'Enrole'}
-            </button>
-
-          </div>     
         </div>
-        {set_student_loading? <Loading/>:
-        <AEnroleStudents
-          set_student_loading={set_student_loading}
-          selected_student={selected_Student}
-          students={students} 
-          setSelectedStudent={setSelectedStudent}
-          colors={colors}
-          setShowStudentPopup={setShowStudentPopup}
-        />}
-        
-      </div>
+      <div className="w-full">
+        <DataGrid
+          columns={columns}
+          rows={students}
+          getRowId={(r) => r.id}
+          editable
+          // onRowsChange={setRows}
+          // columnFilters={true}
+          
+          className="overflow-y-hidden shadow-none rounded-md"
+          // styles={{root:{background:'magenta'}}}
+          triped
+          searchable
+          searchPlaceholder="Seach students ..."
+          toolbar={toolBarOptions()}
+          // 
+          pagination={false}
+          showFooter={false}
+          stickyToolbar
+          stickyHeader
+          loading={set_student_loading}
+          loadingRows={5}
+          
+          stripeColors={['#fff', colors.lighter_90]}
+          rowClassName={({id})=>selected_Student.includes(id)?'bg-green-200':null}
+          classNames={{
+            search: "rounded-md border-slate-300 px-1 py-1 focus:border-slate-800",
+            row: "hover:bg-gray-200d border-bk border-slate-800k font-mono",
+            footer: "bg-slate-800 text-slate-100",
+            toolbar: "bg-slate-800s px-4 py-3",
+            table:'min-w-[800px] md:min-w-full',
+            cell: "py-2 h-full", // styling the cell
+            pageButton: "rounded-fulll font-bold bg-white text-black hover:bg-red-600",
+            
+          }}
+          />
+      </div>    
+        </div>
     </ALayout>
     </>
   );
