@@ -48,7 +48,7 @@ const EnroledMarkSheet = ({ enroled,  loading, setUpdateStudent, setSelectWhatTo
   const columnDefs = useMemo(() =>[
     { field: "learner_id", headerName: "#", type: "sequence", width: '40px', align:'left' },
     { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'200px', align:'left', overflow: "ellipsis" },
-    { field: "gender", headerName: "SEX", editable:false, align:'center', valueFormatter:(value)=>value.toLowerCase().includes('female')?'F':'M'},
+    { field: "gender", headerName: "SEX", editable:false, align:'center', valueFormatter:(value)=>value?.toLowerCase()?.includes('female')?'F':'M'},
     { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
     ...paperColumns,
     { field: "marks_string_05",editable:false, headerName: "HOLDER", width: 100, align:'center'},
