@@ -23,7 +23,7 @@ export default function AoneClass() {
   
 
   const [selected_student, setSelectedStudent] = useState([]);
-  const {transformed_data, set_time, selected_clas, dispatch, theme_bg} = useDataContext()
+  const {transformed_data, set_time, selected_clas, dispatch} = useDataContext()
  
   // 
   let clas = selected_clas?parseInt(selected_clas?.split(' ')[1]):5
