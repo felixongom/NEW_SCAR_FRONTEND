@@ -16,12 +16,11 @@ import "react-gridix/style.css";
 
 export default function AoneClass() {
   const [deleting, setDeleting] = useState(false)
-   const [show_delete_popup, setShowDeletingPopup] = useState(false)
+  const [show_delete_popup, setShowDeletingPopup] = useState(false)
   const [loading, setLoading] = useState(true)
   const [show_paycode_popup, setShowPaycodePopup] = useState(false) 
-   const [is_uploading_paycode, setIsUploadingPayCode] = useState(false);
+  const [is_uploading_paycode, setIsUploadingPayCode] = useState(false);
   
-
   const [selected_student, setSelectedStudent] = useState([]);
   const {transformed_data, set_time, selected_clas, dispatch} = useDataContext()
  
