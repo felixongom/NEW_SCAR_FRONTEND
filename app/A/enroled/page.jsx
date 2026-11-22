@@ -52,9 +52,7 @@ export default function AoneClass() {
             type: 'TRANSFORMED_DATA',
             payload: _.orderBy(response?.data, ['STREAM', 'STUDENT NAME'], ['asc', 'asc']),
           })  
-          // 
-          // setLoading(false)
-        
+          //         
       } catch (err) {
         console.log(err);
       }finally{
@@ -105,16 +103,16 @@ export default function AoneClass() {
     }
       
     <ALayout>
+      
       {/* POPUP FOR PAYCODE STUDENT */}
-          {show_paycode_popup &&
-          <div className="absolute w-full h-full">
-            <ExportPaycodeComponet
+      {show_paycode_popup &&
+        <div className="absolute w-full h-full">
+        <ExportPaycodeComponet
               setShowPaycodePopup={setShowPaycodePopup}
               selected_student={selected_student}
               setIsUploading={setIsUploadingPayCode}
-              isUploading={is_uploading_paycode}
-            />
-          </div>} 
+              isUploading={is_uploading_paycode}/>
+      </div>} 
       <div className={`flex-1 ${!show_paycode_popup?'relative':'fixed'}`} style={{zIndex:1, height: 100, width: "100%" }}>
          <NavBar heading="ENROLED"/>
          <SetTime/>

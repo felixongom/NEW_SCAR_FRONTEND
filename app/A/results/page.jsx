@@ -9,6 +9,7 @@ import SetTime from "@/components/Avance/SetTime";
 import NavBar from "@/components/Avance/NavBar";
 import { useDataContext } from "@/context/DataProvider";
 import {brightness} from "color-tin"
+import Loading from "@/app/A/enroled/loading"
 import _ from 'lodash'
 import { getToken, removeSubjectsForAorOLevel } from "@/utils";
 import { getLearnerMarksIds } from "@/utils/reshpe_data";
@@ -26,6 +27,7 @@ export default function Results() {
   const[select_what_to_export, setSelectWhatToExport] = useState(false)
   const[select_what_to_delete, setSelectWhatToDelete] = useState(false)
   const [selectedSubj,setselectedSubj] = useState({ids:'', subject:''})
+  const[sheet, setSheet] = useState(false)
   // 
   const [selected_students,setSelectedSudents] = useState([])
   const [selected_exam_category,setSelectExamCategory] = useState([])
@@ -181,7 +183,7 @@ export default function Results() {
       <div className="ag-theme-quartz flex-1" style={{ height: 100, width: "100%" }}>
          <NavBar heading={'RESULTS'}/>
          <SetTime/>
-         {/* {loading && <Loading/>} */}
+         {loading &&  !sheet && <Loading/>}
          <h2 className="mt-3 font-bold print:hidden">Select A subject</h2>
          <div className="flex flex-wrap bg-white shadow-sm gap-3 my-4 p-3 print:hidden">
 
@@ -205,25 +207,27 @@ export default function Results() {
             loading={loading}
             enroled={enroled}
             dispatch={dispatch}
-            // setDeleteStudent={setDeleteStudent}
             setUpdateStudent={setUpdateStudent}
             setSelectWhatToExport={setSelectWhatToExport}
             setSelectWhatToDelete={setSelectWhatToDelete}
             subject_name ={selectedSubj?.subject}
             // 
+            sheet={sheet}
+            setSheet={setSheet}
             selectStudents={selectStudents}
             selected_students={selected_students} 
-          />: 
-          <OEnroledMarkSheet
+            />: 
+            <OEnroledMarkSheet
             loading={loading}
             enroled={enroled}
             dispatch={dispatch}
             subject_name ={selectedSubj?.subject}
-            //
             setUpdateStudent={setUpdateStudent}
             setSelectWhatToExport={setSelectWhatToExport}
             setSelectWhatToDelete={setSelectWhatToDelete}
             // 
+            sheet={sheet}
+            setSheet={setSheet}
             selectStudents={selectStudents}
             selected_students={selected_students}
           />)} 

@@ -11,10 +11,9 @@ import { roundOff } from "@/utils";
 import { DataGrid } from "react-gridix";
 import "react-gridix/style.css";
 
-const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatToExport, setSelectWhatToDelete, subject_name, selectStudents, selected_students }) => {
+const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatToExport, setSelectWhatToDelete, subject_name, selectStudents, selected_students, sheet, setSheet }) => {
   const [editedIds, setEditedIds] = useState(new Set()); // track edited rows
   const { theme_bg,set_time, selected_clas } = useDataContext();
-  const[sheet, setSheet] = useState(false)
   const[toggle_show_hide_text, setToggleShowHideText] = useState(true)
   const[toggle_show_hide_header, setToggleShowHideHeader] = useState(false)
   const [sort_column, setSortColumn]= useState({})
