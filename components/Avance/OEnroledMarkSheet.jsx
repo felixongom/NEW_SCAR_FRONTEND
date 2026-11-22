@@ -63,7 +63,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
 
   const columnDefs = useMemo(() =>[
       { field: "learner_id", headerName: "#", type: "sequence", width: '40px', align:'left' },
-      { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'170px', align:'left', overflow: "ellipsis" },
+      { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'200px', align:'left', overflow: "ellipsis" },
       { field: "gender", headerName: "SEX", editable:false, align:'center'},
       { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
       ...aoiColumns,
