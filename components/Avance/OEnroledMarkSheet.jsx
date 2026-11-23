@@ -25,6 +25,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
     let labels = Object.keys(enroled[0].papers).map((paperKey, idx) => ({
       field: `marks.${paperKey}`,
       headerName: `PAPER ${idx + 1}`,
+      type:'number',
       editable: true,
       width: '100px',
       align:'center',
@@ -37,13 +38,14 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       width: '100px',
       editable:false,
       align:'center',
+      type:'number',
     }
     // push ict total marks
     if(enroled[0].ict_marks && clas<5 ) {
       labels.push(ict_marks)
     }
     return [...labels]
-  }, [clas, enroled]);
+  }, [clas, enroled]);  
 
 
   //building aoi column
@@ -56,6 +58,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       editable:true,
       validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=20),
       align:'center',
+      type:'number',
     }));
     return [...labels]
   }, [enroled]);  
@@ -68,7 +71,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
       ...aoiColumns,
       ...paperColumns,
-      { field: "average_aoi", headerName: "AOI", cellClassName:'font-semibold', editable:false, align:'center', valueFormatter:(value)=>value===0?'':value },
+      { field: "average_aoi", headerName: "AOI", type:'number', cellClassName:'font-semibold', editable:false, align:'center', valueFormatter:(value)=>(value===0?'':String(value || ''))},
       { field: "marks_plas_aoi", headerName: "TOTAL", cellClassName:'font-semibold', editable:false, sortable:true, align:'center'},
       { field: "grade_letter", headerName: "GRADE", editable:false, sortable:true, cellClassName:'italic', align:'center'},
       { field: "marks_comment", headerName: "COMMENT", editable:false, sortable:true, align:'left', cellClassName:'italic', headerClassName:'text-xs p-1 italic'},
@@ -100,8 +103,8 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
 
   let colors = colorTin(theme_bg, 10);
   const class_list = _.orderBy(enroled, [Object.keys(sort_column)[0]], [Object.values(sort_column)[0]])  
-
-
+  // 
+  
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div className="py-4 relative flex px-1 mb-[10px] border-b border-gray-300 print:hidden">
@@ -189,7 +192,6 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
           triped
           stripeColors={['#fff', colors.lighter_90]}
           rowClassName={({grade_letter})=>{
-            console.log(grade_letter);
             return `${grade_letter<'B'?'text-green-600':grade_letter>'C'?'text-red-600':''}`
            }}
           classNames={{
