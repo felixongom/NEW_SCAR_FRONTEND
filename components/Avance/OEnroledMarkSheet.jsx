@@ -74,7 +74,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       { field: "average_aoi", headerName: "AOI", type:'number', cellClassName:'font-semibold', editable:false, align:'center', valueFormatter:(value)=>(value===0?'':String(value || ''))},
       { field: "marks_plas_aoi", headerName: "TOTAL", cellClassName:'font-semibold', editable:false, sortable:true, align:'center'},
       { field: "grade_letter", headerName: "GRADE", editable:false, sortable:true, cellClassName:'italic', align:'center'},
-      { field: "marks_comment", headerName: "COMMENT", editable:false, sortable:true, align:'left', cellClassName:'italic', headerClassName:'text-xs p-1 italic'},
+      { field: "marks_comment", headerName: "COMMENT", editable:false, sortable:true, align:'left', cellClassName:'italic',overflow: "ellipsis", headerClassName:'text-xs p-1'},
     ], [paperColumns]);
   // 
 
