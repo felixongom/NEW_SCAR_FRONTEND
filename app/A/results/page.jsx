@@ -119,7 +119,7 @@ export default function Results() {
       try {
         setDeleting(true)
         await axios.post(`${base_api_path}update-marks/${clas}`,{results:updateStudent});
-        console.log('ARRAY',updateStudent)
+        // console.log('ARRAY',updateStudent)
         setUpdateStudent(null)
         } catch (err) {
           console.error(err);
@@ -196,7 +196,7 @@ export default function Results() {
             fontWeight:`${selectedSubj.subject  === group?.subject? "bold":'normal'}`,
            }} 
            onClick={()=>handleSelect(group)}
-           className="p-1 px-2 text-sm rounded cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</button>
+           className="p-1 px-2 text-sm rounded-full cursor-pointer">{a_subject_full_name[group?.subject] ||group?.subject }</button>
           ))}
           </div>
 

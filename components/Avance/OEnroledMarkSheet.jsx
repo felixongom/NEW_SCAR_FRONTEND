@@ -75,7 +75,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
     ], [paperColumns]);
   // 
 
-  const onUpdateRows = () => setUpdateStudent(editedIds);
+  const onUpdateRows = () => setUpdateStudent(editedIds.filter(mark=>mark.id));
   // 
   const sortData = (column)=>{
     const active_column = sort_column[column]=='asc'?'desc':'asc'
@@ -87,12 +87,11 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
     let field_id
 
     if(field?.includes('aoi')){
-      field_id = row['aoi_id'][field_array[1]+'_id']
+      field_id = row['aoi_id']?.[field_array[1]+'_id']
 
     }else{
       let paper_id = field_array[1].split('_')[1] 
-      field_id = row['marks_id'][`marks_${paper_id}_id`]
-      
+      field_id = row['marks_id']?.[`marks_${paper_id}_id`]
     }
     // 
     const edited_object = {id:field_id, mark:Number(newValue)}

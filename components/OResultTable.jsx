@@ -143,7 +143,7 @@ export default function OResultTable({transformed_data,loading, setShowDeletingP
     { 
         field: "id", headerName: "#", align:'center',
         headerClassName:'font-semibold text-xs', 
-        width:"40px",overflow: "ellipsis", 
+        width:"38px",overflow: "ellipsis", 
         type: "sequence",
       },
       { 
@@ -159,10 +159,12 @@ export default function OResultTable({transformed_data,loading, setShowDeletingP
       { 
         field: "learner_id", headerName: "STUDENT NO.",
         width: "125px",
+        minWidth:0,
         align: "left", 
         overflow: "ellipsis",
         headerClassName:'text-xs px-1',
-        editable:false
+        editable:false,
+        resizable:true
       },
       { field: "STUDENT NAME",
         headerClassName:'text-xs p-1', 
@@ -230,7 +232,8 @@ export default function OResultTable({transformed_data,loading, setShowDeletingP
         headerName:'COMMENT',
         headerClassName:'text-xs p-1',
         cellRenderer:({row})=><i>{row[comment]}</i>, 
-        width:'120px',
+        width:'95px',
+        overflow: "ellipsis",
         sortable:true,
         editable:false,
         type:'text'

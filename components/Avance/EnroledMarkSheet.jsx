@@ -67,7 +67,7 @@ const EnroledMarkSheet = ({ enroled,  loading, setUpdateStudent, setSelectWhatTo
     setEditedIds(prev=>prev?[...prev, edited_object]:[edited_object])
   }
   
-  const onUpdateRows = () => setUpdateStudent(editedIds);
+  const onUpdateRows = () => setUpdateStudent(editedIds.filter(mark=>mark.id));
 
   const sortData = (column)=>{
     const active_column = sort_column[column]=='asc'?'desc':'asc'

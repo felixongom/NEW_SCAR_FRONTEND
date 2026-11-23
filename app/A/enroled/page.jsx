@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDataContext} from "@/context/DataProvider";
 import { countStudentsByStream, getToken } from "@/utils";
-// import { usePathname, useRouter } from "next/navigation";
 import SetTime from "@/components/Avance/SetTime";
 import AResultTable from "@/components/AResultTable";
 import OResultTable from "@/components/OResultTable";
