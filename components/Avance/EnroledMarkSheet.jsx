@@ -165,7 +165,7 @@ const EnroledMarkSheet = ({ enroled,  loading, setUpdateStudent, setSelectWhatTo
                
           triped
           stripeColors={['#fff', colors.lighter_90]}
-          rowClassName={({grade_letter})=>`${grade_letter<'B'?'text-green-600':grade_letter>'C'?'text-red-600':''}`}
+          rowClassName={({grade_letter})=>`${grade_letter=="A"?'text-green-600':['D','E','F'].includes(grade_letter)?'text-red-600':''}`}
           classNames={{
             search: "rounded-md border-slate-300 px-1 py-1 focus:border-slate-800",
             row: "font-mono font-lg",
