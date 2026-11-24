@@ -117,7 +117,7 @@ export default function AoneClass() {
          <SetTime/>
          { parseInt(clas) <5 &&
           <OResultTable
-          loading={loading} 
+            loading={loading} 
             transformed_data={transformed_data}
             setSelectedStudent={setSelectedStudent}
             selected_student={selected_student}

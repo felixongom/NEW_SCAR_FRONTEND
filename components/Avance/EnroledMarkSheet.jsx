@@ -161,6 +161,7 @@ const EnroledMarkSheet = ({ enroled,  loading, setUpdateStudent, setSelectWhatTo
           onCellEdit={onCellEdit}
           enterMovesDown
           keyboardNavigation
+          stickyHeader
                
           triped
           stripeColors={['#fff', colors.lighter_90]}

@@ -292,6 +292,7 @@ export default function AResultTable({transformed_data, loading, setShowDeleting
         searchPlaceholder="Seach students ..."
         emptyMessage="No Data Yet..."
         toolbar={toolBarOptions()}
+        stickyHeader
         
         loading={loading}
         loadingRows={12}

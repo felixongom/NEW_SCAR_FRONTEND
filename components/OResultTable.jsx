@@ -315,6 +315,7 @@ export default function OResultTable({transformed_data,loading, setShowDeletingP
         loadingRows={12}
         onViewChange={({filteredRows})=>dispatch({ type: "DATA_CHUNK", payload: filteredRows })}
         editable
+        stickyHeader
         // showToolbar={true}  
         // theme="ocean"
         triped
