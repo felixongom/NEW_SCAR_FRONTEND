@@ -30,6 +30,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       width: '100px',
       align:'center',
       validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=80),
+      validationMessage:'Allowed only 0 t0 80',
     }));
     
     let ict_marks =  {
@@ -57,6 +58,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
       width: '100px',
       editable:true,
       validate:(value)=>'' || null || undefined || (Number(value) >=0 && Number(value)<=20),
+      validationMessage:'Allowed only 0 t0 20',
       align:'center',
       type:'number',
     }));
@@ -66,7 +68,7 @@ const OEnroledMarkSheet = ({ enroled, loading, setUpdateStudent, setSelectWhatTo
 
   const columnDefs = useMemo(() =>[
       { field: "learner_id", headerName: "#", type: "sequence", width: '40px', align:'left' },
-      { field: "learner", headerName: "LEARNER", sortable:true, editable:false, width:'180px', align:'left', overflow: "ellipsis" },
+      { field: "learner", headerName: "LEARNER", sortable:true, resizable:true, editable:false, width:'180px', align:'left', overflow: "ellipsis" },
       { field: "gender", headerName: "SEX", editable:false, align:'center'},
       { field: "stream", headerName: "STREAM", editable:false, sortable:true, align:'center'},
       ...aoiColumns,
