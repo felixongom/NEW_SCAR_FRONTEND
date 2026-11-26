@@ -27,9 +27,7 @@ export default function MainWebReportLayout({children}) {
         <div className="w-full flex flex-1 p-2 bg-white shadow-sm justify-between align-middle print:hidden">
               <div className='flex space-x-2'>
                 <Link href={'/A/enroled'} className='p-1 bg-gray-300 cursor-pointer rounded flex gap-2 text-black hover:text-white hover:bg-black'>
-                  <TfiArrowLeft  
-                  className='text-l font-semibold text-sm' 
-                  />
+                  <TfiArrowLeft className='text-l font-semibold text-sm'/>
                   <span className='text-xs'>Back</span>
                 </Link>                
               </div>
